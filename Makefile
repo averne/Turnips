@@ -11,7 +11,7 @@ COMMIT            =   $(shell git rev-parse --short HEAD)
 
 APP_TITLE         =    $(notdir $(CURDIR))
 APP_AUTHOR        =    averne
-APP_ICON          =
+APP_ICON          =    icon.jpg
 APP_VERSION       =    $(VERSION)-$(COMMIT)
 APP_TITLEID       =
 

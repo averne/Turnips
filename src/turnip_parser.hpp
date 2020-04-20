@@ -49,13 +49,18 @@ static_assert(versions.size() == offsets.size());
 
 struct TurnipPrices {
     std::uint32_t buy_price = 0;
-    std::uint32_t sunday_am_price    = 0, sunday_pm_price    = 0;
-    std::uint32_t monday_am_price    = 0, monday_pm_price    = 0;
-    std::uint32_t tuesday_am_price   = 0, tuesday_pm_price   = 0;
-    std::uint32_t wednesday_am_price = 0, wednesday_pm_price = 0;
-    std::uint32_t thursday_am_price  = 0, thursday_pm_price  = 0;
-    std::uint32_t friday_am_price    = 0, friday_pm_price    = 0;
-    std::uint32_t satursday_am_price = 0, satursday_pm_price = 0;
+    union {
+        std::array<std::uint32_t, 14> week_prices;
+        struct {
+            std::uint32_t sunday_am_price    = 0, sunday_pm_price    = 0;
+            std::uint32_t monday_am_price    = 0, monday_pm_price    = 0;
+            std::uint32_t tuesday_am_price   = 0, tuesday_pm_price   = 0;
+            std::uint32_t wednesday_am_price = 0, wednesday_pm_price = 0;
+            std::uint32_t thursday_am_price  = 0, thursday_pm_price  = 0;
+            std::uint32_t friday_am_price    = 0, friday_pm_price    = 0;
+            std::uint32_t satursday_am_price = 0, satursday_pm_price = 0;
+        };
+    };
     std::uint32_t pattern_type;
     std::uint32_t unk;
 };

@@ -20,17 +20,17 @@ OUT               =    out
 BUILD             =    build
 SOURCES           =    src
 INCLUDES          =    include
-CUSTOM_LIBS       =
+CUSTOM_LIBS       =    lib/glfw lib/glad lib/imgui
 ROMFS             =
 
-DEFINES           =    __SWITCH__ VERSION=\"$(VERSION)\" COMMIT=\"$(COMMIT)\" DEBUG
+DEFINES           =    __SWITCH__ VERSION=\"$(VERSION)\" COMMIT=\"$(COMMIT)\"
 ARCH              =    -march=armv8-a+crc+crypto+simd -mtune=cortex-a57 -mtp=soft -fpie
 FLAGS             =    -Wall -pipe -g -O2 -ffunction-sections -fdata-sections
 CFLAGS            =    -std=gnu11
 CXXFLAGS          =    -std=gnu++17 -fno-rtti -fno-exceptions
 ASFLAGS           =
 LDFLAGS           =    -Wl,-pie -specs=$(DEVKITPRO)/libnx/switch.specs -g
-LINKS             =    -lnx
+LINKS             =    -lglfw -lEGL -lglapi -ldrm_nouveau -lm -lglad -limgui -lnx
 
 PREFIX            =    aarch64-none-elf-
 CC                =    $(PREFIX)gcc

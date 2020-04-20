@@ -1,0 +1,9 @@
+{
+    "files.exclude": {
+        "**/build": true,
+        "**/out": true,
+        "*.elf": true,
+        "*.nacp": true,
+        "*.nro": true
+    }
+}

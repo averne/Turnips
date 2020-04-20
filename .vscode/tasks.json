@@ -1,0 +1,68 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "all",
+            "type": "shell",
+            "command": "make",
+            "args": [
+                "all",
+                "-j$(nproc)"
+            ],
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared",
+                "clear": true
+            },
+            "problemMatcher": {
+                "base": "$gcc",
+                "fileLocation": "absolute"
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "clean",
+            "type": "shell",
+            "command": "make",
+            "args": [
+                "clean"
+            ],
+            "presentation": {
+                "panel": "shared",
+                "reveal": "never"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "mrproper",
+            "type": "shell",
+            "command": "make",
+            "args": [
+                "mrproper"
+            ],
+            "presentation": {
+                "panel": "shared",
+                "reveal": "never"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "run",
+            "type": "shell",
+            "command": "nxlink",
+            "args": [
+                "-s",
+                "${workspaceRoot}/out/${workspaceFolderBasename}.nro"
+            ],
+            "dependsOn": "all",
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            }
+        }
+    ]
+}

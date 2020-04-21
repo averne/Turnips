@@ -48,17 +48,17 @@ static_assert(sizeof(VersionInfo) == 0x10 && std::is_standard_layout_v<VersionIn
 static_assert(versions.size() == offsets.size());
 
 struct TurnipPrices {
-    std::uint32_t buy_price = 0;
+    std::uint32_t buy_price;
     union {
         std::array<std::uint32_t, 14> week_prices;
         struct {
-            std::uint32_t sunday_am_price    = 0, sunday_pm_price    = 0;
-            std::uint32_t monday_am_price    = 0, monday_pm_price    = 0;
-            std::uint32_t tuesday_am_price   = 0, tuesday_pm_price   = 0;
-            std::uint32_t wednesday_am_price = 0, wednesday_pm_price = 0;
-            std::uint32_t thursday_am_price  = 0, thursday_pm_price  = 0;
-            std::uint32_t friday_am_price    = 0, friday_pm_price    = 0;
-            std::uint32_t satursday_am_price = 0, satursday_pm_price = 0;
+            std::uint32_t sunday_am_price,    sunday_pm_price;
+            std::uint32_t monday_am_price,    monday_pm_price;
+            std::uint32_t tuesday_am_price,   tuesday_pm_price;
+            std::uint32_t wednesday_am_price, wednesday_pm_price;
+            std::uint32_t thursday_am_price,  thursday_pm_price;
+            std::uint32_t friday_am_price,    friday_pm_price;
+            std::uint32_t satursday_am_price, satursday_pm_price;
         };
     };
     std::uint32_t pattern_type;
@@ -67,27 +67,38 @@ struct TurnipPrices {
 
 static_assert(sizeof(TurnipPrices) == 0x44);
 
+constexpr static std::array patterns = {
+    "Fluctuating",
+    "Large spike",
+    "Decreasing",
+    "Small spike",
+};
+
 class Parser {
     public:
-        Parser(fs::File &header, std::vector<std::uint8_t> &&save): version(calc_version(header)), save(std::move(save)) { }
+        Version version;
+        TurnipPrices prices;
 
-        inline Version get_version() const {
-            return this->version;
-        }
+    public:
+        Parser(fs::File &header, const std::vector<std::uint8_t> &save):
+            version(this->calc_version(header)), prices(this->get_prices(save)) { }
 
-        inline std::size_t get_tp_offset() const {
-            auto ver = this->get_version();
-            if (ver != Version::Unknown)
-                return offsets[static_cast<std::size_t>(ver)];
-            else
-                return 0ul;
-        }
-
-        inline TurnipPrices get_prices() const {
-            return *reinterpret_cast<const TurnipPrices *>(&this->save[this->get_tp_offset()]);
+        inline std::string get_pattern() const {
+            return patterns[this->prices.pattern_type];
         }
 
     private:
+        inline std::size_t get_tp_offset() const {
+            return (this->version != Version::Unknown) ? offsets[static_cast<std::size_t>(this->version)] : 0ul;
+        }
+
+        inline TurnipPrices get_prices(const std::vector<std::uint8_t> &save) const {
+            if (auto offset = this->get_tp_offset(); offset != 0ul)
+                return *reinterpret_cast<const TurnipPrices *>(&save[offset]);
+            else
+                return {};
+        }
+
         inline Version calc_version(fs::File &header) {
             VersionInfo info;
             if (auto read = header.read(&info, sizeof(VersionInfo)); read != sizeof(VersionInfo)) {
@@ -100,11 +111,6 @@ class Parser {
                     return static_cast<Version>(i);
             return Version::Unknown;
         }
-
-
-    private:
-        Version version;
-        std::vector<std::uint8_t> save;
 };
 
 } // namespace tp

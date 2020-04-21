@@ -50,13 +50,15 @@ int main(int argc, char **argv) {
 
     printf("Parsing save...\n");
     auto parser = tp::Parser(header, std::move(decrypted));
-    auto p = parser.get_prices();
+    auto pattern = parser.get_pattern();
+    auto p = parser.prices;
 
     std::array<float, 14> float_prices;
     for (std::size_t i = 0; i < p.week_prices.size(); ++i)
         float_prices[i] = static_cast<float>(p.week_prices[i]);
     auto [min, max] = std::minmax_element(p.week_prices.begin() + 2, p.week_prices.end());
     float average = static_cast<float>(std::accumulate(p.week_prices.begin() + 2, p.week_prices.end(), 0)) / (p.week_prices.size() - 2);
+
     printf("Starting gui...\n");
     auto *window = gl::init_glfw(width, height);
     if (!window || R_FAILED(gl::init_glad()))
@@ -79,7 +81,7 @@ int main(int argc, char **argv) {
         im::SetWindowPos({300.0f, 120.0f}, ImGuiCond_Once);
         im::SetWindowSize({700.0f, 520.0f}, ImGuiCond_Once);
 
-        im::Text("Buy price: %d\n", p.buy_price);
+        im::Text("Buy price: %d, Pattern: %s\n", p.buy_price, pattern.c_str());
 
         im::BeginTable("##Prices table", 3, ImGuiTableFlags_RowBg | ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV);
         im::TableNextRow();

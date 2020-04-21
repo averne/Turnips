@@ -58,7 +58,7 @@ struct TurnipPrices {
             std::uint32_t wednesday_am_price, wednesday_pm_price;
             std::uint32_t thursday_am_price,  thursday_pm_price;
             std::uint32_t friday_am_price,    friday_pm_price;
-            std::uint32_t satursday_am_price, satursday_pm_price;
+            std::uint32_t saturday_am_price, saturday_pm_price;
         };
     };
     std::uint32_t pattern_type;

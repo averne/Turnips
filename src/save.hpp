@@ -32,7 +32,7 @@ static std::pair<std::array<std::uint8_t, 0x10>, std::array<std::uint8_t, 0x10>>
 
     std::vector<std::uint32_t> crypt_data(0x200, 0);
     if (auto read = header.read(crypt_data.data(), crypt_data.size(), 0x100); read != crypt_data_size)
-        printf("Failed to read header encryption data (got %#lx bytes, expected %#lx\n", read, crypt_data_size);
+        printf("Failed to read header encryption data (got %#lx bytes, expected %#lx)\n", read, crypt_data_size);
 
     auto key = get_param(crypt_data, 0);
     auto ctr = get_param(crypt_data, 2);

@@ -49,7 +49,7 @@ int main(int argc, char **argv) {
     auto decrypted  = sv::decrypt(main, 0x500000, key, ctr);
 
     printf("Parsing save...\n");
-    auto parser = tp::Parser(header, std::move(decrypted));
+    auto parser = tp::Parser(header, decrypted);
     auto pattern = parser.get_pattern();
     auto p = parser.prices;
 
@@ -62,7 +62,7 @@ int main(int argc, char **argv) {
     printf("Starting gui...\n");
     auto *window = gl::init_glfw(width, height);
     if (!window || R_FAILED(gl::init_glad()))
-        return 1;
+        goto exit;
     glViewport(0, 0, width, height);
     im::init(window, width, height);
 
@@ -100,8 +100,8 @@ int main(int argc, char **argv) {
         im::TableNextCell(); im::Text("%d", p.thursday_am_price);  im::TableNextCell(); im::Text("%d", p.thursday_pm_price);
         im::TableNextRow(); im::TextUnformatted("Friday");
         im::TableNextCell(); im::Text("%d", p.friday_am_price);    im::TableNextCell(); im::Text("%d", p.friday_pm_price);
-        im::TableNextRow(); im::TextUnformatted("Satursday");
-        im::TableNextCell(); im::Text("%d", p.satursday_am_price); im::TableNextCell(); im::Text("%d", p.satursday_pm_price);
+        im::TableNextRow(); im::TextUnformatted("Saturday");
+        im::TableNextCell(); im::Text("%d", p.saturday_am_price); im::TableNextCell(); im::Text("%d", p.saturday_pm_price);
         im::EndTable();
 
         im::Separator();
@@ -119,6 +119,7 @@ int main(int argc, char **argv) {
     im::exit();
     gl::exit_glfw(window);
 
+exit:
     header.close(), main.close();
     fs.close();
 

@@ -4,7 +4,7 @@ Turnip prices previewer for Animal Crossing: New Horizons.
 <p align="center"><img src="https://i.imgur.com/3mOcxZN.jpg" </p>
 
 # Compiling
-Building needs a working devkitA64 environment, with libnx installed.
+Building needs a working devkitA64 environment, with packages `libnx`, `switc-mesa` and `switch-libdrm_nouveau` installed (`sudo (dkp-)pacman -S switch-dev switch-mesa switch-libdrm_nouveau`).
 ```
 $ git clone --recursive https://github.com/averne/Turnips.git
 $ cd Turnips

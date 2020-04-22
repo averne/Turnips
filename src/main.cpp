@@ -35,13 +35,18 @@ int main(int argc, char **argv) {
     printf("Opening save...\n");
     FsFileSystem handle;
     auto rc = fsOpen_DeviceSaveData(&handle, acnh_programid);
-    if (R_FAILED(rc))
+    if (R_FAILED(rc)) {
         printf("Failed to open save: %#x\n", rc);
+        return 1;
+    }
     auto fs = fs::Filesystem(handle);
 
     fs::File header, main;
-    if (rc = fs.open_file(header, save_hdr_path) | fs.open_file(main, save_main_path); R_FAILED(rc))
+    if (rc = fs.open_file(header, save_hdr_path) | fs.open_file(main, save_main_path); R_FAILED(rc)) {
         printf("Failed to open save files: %#x\n", rc);
+        fs.close();
+        return 1;
+    }
 
     printf("Deriving keys...\n");
     auto [key, ctr] = sv::get_keys(header);

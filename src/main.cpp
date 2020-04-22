@@ -35,16 +35,15 @@ int main(int argc, char **argv) {
     printf("Opening save...\n");
     FsFileSystem handle;
     auto rc = fsOpen_DeviceSaveData(&handle, acnh_programid);
+    auto fs = fs::Filesystem(handle);
     if (R_FAILED(rc)) {
         printf("Failed to open save: %#x\n", rc);
         return 1;
     }
-    auto fs = fs::Filesystem(handle);
 
     fs::File header, main;
     if (rc = fs.open_file(header, save_hdr_path) | fs.open_file(main, save_main_path); R_FAILED(rc)) {
         printf("Failed to open save files: %#x\n", rc);
-        fs.close();
         return 1;
     }
 
@@ -67,7 +66,7 @@ int main(int argc, char **argv) {
     printf("Starting gui...\n");
     auto *window = gl::init_glfw(width, height);
     if (!window || R_FAILED(gl::init_glad()))
-        goto exit;
+        return 1;
     glViewport(0, 0, width, height);
     im::init(window, width, height);
 
@@ -123,10 +122,6 @@ int main(int argc, char **argv) {
 
     im::exit();
     gl::exit_glfw(window);
-
-exit:
-    header.close(), main.close();
-    fs.close();
 
     return 0;
 }

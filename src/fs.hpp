@@ -13,6 +13,10 @@ struct Directory {
     constexpr inline Directory() = default;
     constexpr inline Directory(const FsDir &handle): handle(handle) { }
 
+    inline ~Directory() {
+        this->close();
+    }
+
     inline Result open(FsFileSystem *fs, const std::string &path) {
         auto tmp = path;
         tmp.reserve(FS_MAX_PATH); // Fails otherwise
@@ -48,6 +52,10 @@ struct File {
 
     constexpr inline File() = default;
     constexpr inline File(const FsFile &handle): handle(handle) { }
+
+    inline ~File() {
+        this->close();
+    }
 
     inline Result open(FsFileSystem *fs, const std::string &path, std::uint32_t mode = FsOpenMode_Read) {
         auto tmp = path;
@@ -95,6 +103,10 @@ struct Filesystem {
 
     constexpr inline Filesystem() = default;
     constexpr inline Filesystem(const FsFileSystem &handle): handle(handle) { }
+
+    inline ~Filesystem() {
+        this->close();
+    }
 
     inline Result open(FsBisPartitionId id) {
         return fsOpenBisFileSystem(&this->handle, id, "");

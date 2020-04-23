@@ -10,9 +10,16 @@
 #include "turnip_parser.hpp"
 #include "save.hpp"
 
-constexpr auto acnh_programid = 0x01006f8002326000ul;
-constexpr auto save_main_path = "/main.dat";
-constexpr auto save_hdr_path  = "/mainHeader.dat";
+constexpr static auto acnh_programid = 0x01006f8002326000ul;
+constexpr static auto save_main_path = "/main.dat";
+constexpr static auto save_hdr_path  = "/mainHeader.dat";
+
+constexpr std::array day_names = {
+    "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday",
+};
+
+// AGBR
+constexpr std::uint32_t min_col = 0xff6a61bf, max_col = 0xff8cbea3, cur_col = 0xffac815e;
 
 extern "C" void userAppInit() {
     plInitialize(PlServiceType_User);
@@ -27,6 +34,13 @@ extern "C" void userAppExit() {
 #ifdef DEBUG
     socketExit();
 #endif
+}
+
+template <typename F>
+void do_with_color(std::uint32_t col, F f) {
+    im::PushStyleColor(ImGuiCol_Text, col);
+    f();
+    im::PopStyleColor();
 }
 
 constexpr static int width = 1280, height = 720;
@@ -60,7 +74,8 @@ int main(int argc, char **argv) {
     std::array<float, 14> float_prices;
     for (std::size_t i = 0; i < p.week_prices.size(); ++i)
         float_prices[i] = static_cast<float>(p.week_prices[i]);
-    auto [min, max] = std::minmax_element(p.week_prices.begin() + 2, p.week_prices.end());
+    auto  minmax  = std::minmax_element(p.week_prices.begin() + 2, p.week_prices.end());
+    auto  min = *minmax.first, max = *minmax.second;
     float average = static_cast<float>(std::accumulate(p.week_prices.begin() + 2, p.week_prices.end(), 0)) / (p.week_prices.size() - 2);
 
     printf("Starting gui...\n");
@@ -71,6 +86,17 @@ int main(int argc, char **argv) {
     im::init(window, width, height);
 
     while (!glfwWindowShouldClose(window)) {
+        u64 ts = 0;
+        rc = timeGetCurrentTime(TimeType_UserSystemClock, &ts);
+        if (R_FAILED(rc))
+            printf("Failed to get timestamp\n");
+
+        TimeCalendarTime           cal_time = {};
+        TimeCalendarAdditionalInfo cal_info = {};
+        rc = timeToCalendarTimeWithMyRule(ts, &cal_time, &cal_info);
+        if (R_FAILED(rc))
+            printf("Failed to convert timestamp\n");
+
         // New frame
         glfwPollEvents();
         if (glfwGetKey(window, GLFW_NX_KEY_PLUS))
@@ -89,27 +115,36 @@ int main(int argc, char **argv) {
 
         im::BeginTable("##Prices table", 3, ImGuiTableFlags_RowBg | ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV);
         im::TableNextRow();
-        im::TableNextCell(); im::TextUnformatted("AM");
-        im::TableNextCell(); im::TextUnformatted("PM");
+        im::TableNextCell(), im::TextUnformatted("AM");
+        im::TableNextCell(), im::TextUnformatted("PM");
 
-        im::TableNextRow(); im::TextUnformatted("Sunday");
-        im::TableNextCell(); im::Text("%d", p.sunday_am_price);    im::TableNextCell(); im::Text("%d", p.sunday_pm_price);
-        im::TableNextRow(); im::TextUnformatted("Monday");
-        im::TableNextCell(); im::Text("%d", p.monday_am_price);    im::TableNextCell(); im::Text("%d", p.monday_pm_price);
-        im::TableNextRow(); im::TextUnformatted("Tuesday");
-        im::TableNextCell(); im::Text("%d", p.tuesday_am_price);   im::TableNextCell(); im::Text("%d", p.tuesday_pm_price);
-        im::TableNextRow(); im::TextUnformatted("Wednesday");
-        im::TableNextCell(); im::Text("%d", p.wednesday_am_price); im::TableNextCell(); im::Text("%d", p.wednesday_pm_price);
-        im::TableNextRow(); im::TextUnformatted("Thursday");
-        im::TableNextCell(); im::Text("%d", p.thursday_am_price);  im::TableNextCell(); im::Text("%d", p.thursday_pm_price);
-        im::TableNextRow(); im::TextUnformatted("Friday");
-        im::TableNextCell(); im::Text("%d", p.friday_am_price);    im::TableNextCell(); im::Text("%d", p.friday_pm_price);
-        im::TableNextRow(); im::TextUnformatted("Saturday");
-        im::TableNextCell(); im::Text("%d", p.saturday_am_price); im::TableNextCell(); im::Text("%d", p.saturday_pm_price);
+        auto get_color = [&](std::uint32_t day, bool is_am) -> std::uint32_t {
+            std::uint32_t col = 0xffffffff;
+            auto price = p.week_prices[2 * day + !is_am];
+            if ((cal_info.wday == day) && ((is_am && (cal_time.hour < 12)) || (!is_am && (cal_time.hour >= 12))))
+                col &= cur_col;
+            if (price == max)
+                col &= max_col;
+            if (price == min)
+                col &= min_col;
+            return col;
+        };
+
+        auto print_day = [&](std::uint32_t day) -> void {
+            im::TableNextRow();  im::TextUnformatted(day_names[day]);
+            do_with_color(get_color(day, true),  [&] { im::TableNextCell(), im::Text("%d", p.week_prices[2 * day]); });
+            do_with_color(get_color(day, false), [&] { im::TableNextCell(), im::Text("%d", p.week_prices[2 * day + 1]); });
+        };
+
+        print_day(0);
+        print_day(1); print_day(2); print_day(3);
+        print_day(4); print_day(5); print_day(6);
         im::EndTable();
 
         im::Separator();
-        im::Text("Max: %d, Min: %d, Avg: %.1f\n", *max, *min, average);
+        do_with_color(max_col, [&] { im::Text("Max: %d", max); }); im::SameLine();
+        do_with_color(min_col, [&] { im::Text("Min: %d", min); }); im::SameLine();
+        im::Text("Avg: %.1f", average);
 
         im::Separator();
         im::TextUnformatted("Week graph");

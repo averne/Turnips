@@ -11,7 +11,7 @@
 namespace tp {
 
 enum class Version: std::size_t {
-    V100, V110, V111, V112, V113, V114,
+    V100, V110, V111, V112, V113, V114, V120,
     Unknown,
 };
 
@@ -32,16 +32,18 @@ struct VersionInfo {
 };
 
 constexpr static std::array versions = {
-    VersionInfo{ 0x67, 0x6f, 2, 0, 2, 0 }, // 1.0.0
-    VersionInfo{ 0x6d, 0x78, 2, 0, 2, 1 }, // 1.1.0
-    VersionInfo{ 0x6d, 0x78, 2, 0, 2, 2 }, // 1.1.1
-    VersionInfo{ 0x6d, 0x78, 2, 0, 2, 3 }, // 1.1.2
-    VersionInfo{ 0x6d, 0x78, 2, 0, 2, 4 }, // 1.1.3
-    VersionInfo{ 0x6d, 0x78, 2, 0, 2, 5 }, // 1.1.4
+    VersionInfo{ 0x67,    0x6f,    2, 0, 2, 0 }, // 1.0.0
+    VersionInfo{ 0x6d,    0x78,    2, 0, 2, 1 }, // 1.1.0
+    VersionInfo{ 0x6d,    0x78,    2, 0, 2, 2 }, // 1.1.1
+    VersionInfo{ 0x6d,    0x78,    2, 0, 2, 3 }, // 1.1.2
+    VersionInfo{ 0x6d,    0x78,    2, 0, 2, 4 }, // 1.1.3
+    VersionInfo{ 0x6d,    0x78,    2, 0, 2, 5 }, // 1.1.4
+    VersionInfo{ 0x20006, 0x20008, 2, 0, 2, 6 }, // 1.2.0
 };
 
 constexpr static std::array offsets = {
     0x4118C0ul, 0x412060ul, 0x412060ul, 0x412060ul, 0x412060ul, 0x412060ul,
+    0x412060ul,
 };
 
 static_assert(sizeof(VersionInfo) == 0x10 && std::is_standard_layout_v<VersionInfo>);

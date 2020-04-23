@@ -51,6 +51,8 @@ struct TurnipPrices {
     std::uint32_t unk;
 };
 
+namespace impl {
+
 constexpr static std::array versions = {
     VersionInfo{ 0x67,    0x6f,    2, 0, 2, 0 }, // 1.0.0
     VersionInfo{ 0x6d,    0x78,    2, 0, 2, 1 }, // 1.1.0
@@ -73,10 +75,11 @@ constexpr static std::array patterns = {
     "Small spike",
 };
 
-
 static_assert(sizeof(VersionInfo) == 0x10  && std::is_standard_layout_v<VersionInfo>);
 static_assert(sizeof(TurnipPrices) == 0x44 && std::is_standard_layout_v<TurnipPrices>);
 static_assert(versions.size() == offsets.size());
+
+} // namespace impl
 
 class Parser {
     public:
@@ -88,12 +91,12 @@ class Parser {
             version(this->calc_version(header)), prices(this->get_prices(save)) { }
 
         inline std::string get_pattern() const {
-            return patterns[this->prices.pattern_type];
+            return impl::patterns[this->prices.pattern_type];
         }
 
     private:
         inline std::size_t get_tp_offset() const {
-            return (this->version != Version::Unknown) ? offsets[static_cast<std::size_t>(this->version)] : 0ul;
+            return (this->version != Version::Unknown) ? impl::offsets[static_cast<std::size_t>(this->version)] : 0ul;
         }
 
         inline TurnipPrices get_prices(const std::vector<std::uint8_t> &save) const {
@@ -110,8 +113,8 @@ class Parser {
                 return Version::Unknown;
             }
 
-            for (std::size_t i = 0; i < versions.size(); ++i)
-                if (versions[i] == info)
+            for (std::size_t i = 0; i < impl::versions.size(); ++i)
+                if (impl::versions[i] == info)
                     return static_cast<Version>(i);
             return Version::Unknown;
         }

@@ -4,7 +4,7 @@ endif
 
 TOPDIR           ?=   $(CURDIR)
 
-VERSION           =   1.2.0
+VERSION           =   1.3.0
 COMMIT            =   $(shell git rev-parse --short HEAD)
 
 # -----------------------------------------------
@@ -20,8 +20,8 @@ OUT               =    out
 BUILD             =    build
 SOURCES           =    src
 INCLUDES          =    include
-CUSTOM_LIBS       =    lib/glfw lib/glad lib/imgui
-ROMFS             =
+CUSTOM_LIBS       =    lib/glfw lib/glad lib/imgui lib/stb_image
+ROMFS             =    res
 
 DEFINES           =    __SWITCH__ VERSION=\"$(VERSION)\" COMMIT=\"$(COMMIT)\"
 ARCH              =    -march=armv8-a+crc+crypto+simd -mtune=cortex-a57 -mtp=soft -fpie
@@ -30,7 +30,7 @@ CFLAGS            =    -std=gnu11
 CXXFLAGS          =    -std=gnu++17 -fno-rtti -fno-exceptions
 ASFLAGS           =
 LDFLAGS           =    -Wl,-pie -specs=$(DEVKITPRO)/libnx/switch.specs -g
-LINKS             =    -lglfw -lEGL -lglapi -ldrm_nouveau -lm -lglad -limgui -lnx
+LINKS             =    -lglfw -lEGL -lglapi -ldrm_nouveau -lm -lglad -limgui -lstbi -lnx
 
 PREFIX            =    aarch64-none-elf-
 CC                =    $(PREFIX)gcc
@@ -58,6 +58,7 @@ DFILES            =    $(OFILES:.o=.d)
 LIBS_TARGET       =    $(shell find $(addsuffix /lib,$(CUSTOM_LIBS)) -name "*.a" 2>/dev/null)
 ELF_TARGET        =    $(if $(OUT:=), $(OUT)/$(APP_TITLE).elf, .$(OUT)/$(APP_TITLE).elf)
 NACP_TARGET       =    $(if $(OUT:=), $(OUT)/$(APP_TITLE).nacp, .$(OUT)/$(APP_TITLE).nacp)
+ROMFS_TARGET      =
 NRO_TARGET        =    $(if $(OUT:=), $(OUT)/$(TARGET), .$(OUT)/$(TARGET))
 
 DEFINE_FLAGS      =    $(addprefix -D,$(DEFINES))
@@ -91,6 +92,7 @@ NROFLAGS          =    --icon=$(strip $(APP_ICON)) --nacp=$(strip $(NACP_TARGET)
 
 ifneq ($(ROMFS),)
     NROFLAGS     +=    --romfsdir=$(strip $(ROMFS))
+    ROMFS_TARGET +=    $(shell find $(ROMFS) -type 'f')
 endif
 
 # -----------------------------------------------
@@ -117,7 +119,7 @@ libs: $(CUSTOM_LIBS)
 $(CUSTOM_LIBS):
 	@$(MAKE) -s --no-print-directory -C $@
 
-$(NRO_TARGET): $(ELF_TARGET) $(NACP_TARGET) $(APP_ICON)
+$(NRO_TARGET): $(ELF_TARGET) $(NACP_TARGET) $(ROMFS_TARGET) $(APP_ICON)
 	@echo " NRO " $@
 	@mkdir -p $(dir $@)
 	@elf2nro $< $@ $(NROFLAGS) > /dev/null

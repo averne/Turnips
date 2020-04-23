@@ -4,6 +4,7 @@
 #include <utility>
 #include <switch.h>
 
+#include "background.hpp"
 #include "gl.hpp"
 #include "imgui.hpp"
 #include "fs.hpp"
@@ -13,16 +14,20 @@
 constexpr static auto acnh_programid = 0x01006f8002326000ul;
 constexpr static auto save_main_path = "/main.dat";
 constexpr static auto save_hdr_path  = "/mainHeader.dat";
+constexpr static auto bg_path        = "romfs:/background.png";
 
-constexpr std::array day_names = {
+constexpr static std::array day_names = {
     "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday",
 };
 
 // AGBR
-constexpr std::uint32_t min_col = 0xff6a61bf, max_col = 0xff8cbea3, cur_col = 0xffac815e;
+constexpr static std::uint32_t min_col = 0xff6a61bf, max_col = 0xff8cbea3, cur_col = 0xffac815e;
+
+constexpr static int width = 1280, height = 720;
 
 extern "C" void userAppInit() {
     plInitialize(PlServiceType_User);
+    romfsInit();
 #ifdef DEBUG
     socketInitializeDefault();
     nxlinkStdio();
@@ -31,6 +36,7 @@ extern "C" void userAppInit() {
 
 extern "C" void userAppExit() {
     plExit();
+    romfsExit();
 #ifdef DEBUG
     socketExit();
 #endif
@@ -42,8 +48,6 @@ void do_with_color(std::uint32_t col, F f) {
     f();
     im::PopStyleColor();
 }
-
-constexpr static int width = 1280, height = 720;
 
 int main(int argc, char **argv) {
     printf("Opening save...\n");
@@ -85,6 +89,11 @@ int main(int argc, char **argv) {
     glViewport(0, 0, width, height);
     im::init(window, width, height);
 
+    if (!bg::create(bg_path)) {
+        printf("Could not load background\n");
+        return 1;
+    }
+
     while (!glfwWindowShouldClose(window)) {
         u64 ts = 0;
         rc = timeGetCurrentTime(TimeType_UserSystemClock, &ts);
@@ -104,11 +113,14 @@ int main(int argc, char **argv) {
         glClearColor(0.18f, 0.2f, 0.25f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
+        bg::render();
+
         im::begin_frame(window);
 
+        im::SetNextWindowFocus();
         im::Begin("Turnips, version " VERSION "-" COMMIT, nullptr, ImGuiWindowFlags_NoResize |
                 ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove);
-        im::SetWindowPos({300.0f, 120.0f}, ImGuiCond_Once);
+        im::SetWindowPos({300.0f, 120.0f},  ImGuiCond_Once);
         im::SetWindowSize({700.0f, 520.0f}, ImGuiCond_Once);
 
         im::Text("Buy price: %d, Pattern: %s\n", p.buy_price, pattern.c_str());
@@ -153,9 +165,11 @@ int main(int argc, char **argv) {
 
         im::End();
         im::end_frame();
+
         glfwSwapBuffers(window);
     }
 
+    bg::destroy();
     im::exit();
     gl::exit_glfw(window);
 

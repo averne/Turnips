@@ -8,6 +8,7 @@
                 "${workspaceFolder}/lib/glad/include",
                 "${workspaceFolder}/lib/glfw/include",
                 "${workspaceFolder}/lib/imgui/include",
+                "${workspaceFolder}/lib/stb_image/include",
 
                 "~/Bureau/Switch/libnx/nx/source",
                 "~/Bureau/Switch/libnx/nx/include",

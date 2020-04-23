@@ -136,7 +136,7 @@ int main(int argc, char **argv) {
             do_with_color(get_color(day, false), [&] { im::TableNextCell(), im::Text("%d", p.week_prices[2 * day + 1]); });
         };
 
-        print_day(0);
+        // print_day(0); // Don't print Sunday
         print_day(1); print_day(2); print_day(3);
         print_day(4); print_day(5); print_day(6);
         im::EndTable();
@@ -148,7 +148,8 @@ int main(int argc, char **argv) {
 
         im::Separator();
         im::TextUnformatted("Week graph");
-        im::PlotLines("##Graph", float_prices.data(), float_prices.size(), 0, "", FLT_MAX, FLT_MAX, {im::GetWindowWidth() - 30.0f, 120.0f});
+        im::PlotLines("##Graph", float_prices.data() + 2, float_prices.size() - 2,
+            0, "", FLT_MAX, FLT_MAX, {im::GetWindowWidth() - 30.0f, 150.0f});
 
         im::End();
         im::end_frame();

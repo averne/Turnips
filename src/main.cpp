@@ -131,14 +131,14 @@ int main(int argc, char **argv) {
         im::TableNextCell(), im::TextUnformatted("PM");
 
         auto get_color = [&](std::uint32_t day, bool is_am) -> std::uint32_t {
-            std::uint32_t col = 0xffffffff;
+            std::uint32_t col = 0xff000000;
             auto price = p.week_prices[2 * day + !is_am];
             if ((cal_info.wday == day) && ((is_am && (cal_time.hour < 12)) || (!is_am && (cal_time.hour >= 12))))
-                col &= cur_col;
+                col |= cur_col;
             if (price == max)
-                col &= max_col;
+                col |= max_col;
             if (price == min)
-                col &= min_col;
+                col |= min_col;
             return col;
         };
 

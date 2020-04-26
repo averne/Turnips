@@ -16,7 +16,7 @@ static void init(GLFWwindow *window, int width, int height) {
     ImGui::CreateContext();
     ImGui::GlfwImpl::InitForOpengGl(window);
     ImGui::Gl3Impl::Init("#version 430");
-    ImGui::StyleColorsDark();
+    ImGui::StyleColorsLight();
 
     ImGuiIO &io = ImGui::GetIO();
     io.IniFilename = nullptr;

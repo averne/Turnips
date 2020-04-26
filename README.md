@@ -16,4 +16,4 @@ Output will be located in out/.
 
 # Credits
 - The [NHSE](https://github.com/kwsch/NHSE) project for save decrypting/parsing.
-- [Cianuro](https://twitter.com/CianuroArts) for the [background](https://twitter.com/CianuroArts/status/1245790634352480260).
+- [u/Kyek](https://reddit.com/u/Kyek) for the background and logo assets.

@@ -3,7 +3,7 @@ Turnip prices previewer for Animal Crossing: New Horizons.
 
 DISLAIMER: This reads data from your save. I am not responsible for any data loss, consider backing up before use.
 
-<p align="center"><img src="https://i.imgur.com/zhyOTG8.jpg" </p>
+<p align="center"><img src="https://i.imgur.com/UFwxNKF.jpg" </p>
 
 # Compiling
 Building needs a working devkitA64 environment, with packages `libnx`, `switch-mesa` and `switch-libdrm_nouveau` installed (`sudo (dkp-)pacman -S switch-dev switch-mesa switch-libdrm_nouveau`).

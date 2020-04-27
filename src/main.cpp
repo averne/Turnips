@@ -8,8 +8,9 @@
 #include "gl.hpp"
 #include "imgui.hpp"
 #include "fs.hpp"
-#include "turnip_parser.hpp"
 #include "save.hpp"
+#include "theme.hpp"
+#include "turnip_parser.hpp"
 
 constexpr static auto acnh_programid = 0x01006f8002326000ul;
 constexpr static auto save_main_path = "/main.dat";
@@ -20,12 +21,10 @@ constexpr static std::array day_names = {
     "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday",
 };
 
-// AGBR
-constexpr static std::uint32_t min_col = 0xff6a61bf, max_col = 0xff8cbea3, cur_col = 0xffac815e;
-
 constexpr static int width = 1280, height = 720;
 
 extern "C" void userAppInit() {
+    setsysInitialize();
     plInitialize(PlServiceType_User);
     romfsInit();
 #ifdef DEBUG
@@ -35,6 +34,7 @@ extern "C" void userAppInit() {
 }
 
 extern "C" void userAppExit() {
+    setsysExit();
     plExit();
     romfsExit();
 #ifdef DEBUG
@@ -89,10 +89,14 @@ int main(int argc, char **argv) {
     glViewport(0, 0, width, height);
     im::init(window, width, height);
 
-    if (!bg::create(bg_path)) {
-        printf("Could not load background\n");
-        return 1;
-    }
+    ColorSetId color_theme = ColorSetId_Dark;
+    rc = setsysGetColorSetId(&color_theme);
+    if (R_FAILED(rc))
+        printf("Failed to get theme id\n");
+    if (color_theme == ColorSetId_Light)
+        th::apply_theme(th::Theme::Light);
+    else
+        th::apply_theme(th::Theme::Dark);
 
     while (!glfwWindowShouldClose(window)) {
         u64 ts = 0;
@@ -131,14 +135,14 @@ int main(int argc, char **argv) {
         im::TableNextCell(), im::TextUnformatted("PM");
 
         auto get_color = [&](std::uint32_t day, bool is_am) -> std::uint32_t {
-            std::uint32_t col = 0xff000000;
+            std::uint32_t col = th::text_def_col;
             auto price = p.week_prices[2 * day + !is_am];
             if ((cal_info.wday == day) && ((is_am && (cal_time.hour < 12)) || (!is_am && (cal_time.hour >= 12))))
-                col |= cur_col;
-            if (price == max)
-                col |= max_col;
-            if (price == min)
-                col |= min_col;
+                col = th::text_cur_col;
+            else if (price == max)
+                col = th::text_max_col;
+            else if (price == min)
+                col = th::text_min_col;
             return col;
         };
 
@@ -154,8 +158,8 @@ int main(int argc, char **argv) {
         im::EndTable();
 
         im::Separator();
-        do_with_color(max_col, [&] { im::Text("Max: %d", max); }); im::SameLine();
-        do_with_color(min_col, [&] { im::Text("Min: %d", min); }); im::SameLine();
+        do_with_color(th::text_max_col, [&] { im::Text("Max: %d", max); }); im::SameLine();
+        do_with_color(th::text_min_col, [&] { im::Text("Min: %d", min); }); im::SameLine();
         im::Text("Avg: %.1f", average);
 
         im::Separator();

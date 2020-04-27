@@ -24,10 +24,11 @@ struct VersionInfo {
     constexpr inline VersionInfo() = default;
 
     constexpr inline bool operator ==(const VersionInfo &other) const {
-        return (this->major == other.major) && (this->minor == other.minor)
+        return (this->major == other.major) && (this->minor      == other.minor)
             && (this->unk_1 == other.unk_1) && (this->header_rev == other.header_rev)
-            && (this->unk_2 == other.unk_2) && (this->save_rev == other.save_rev);
+            && (this->unk_2 == other.unk_2) && (this->save_rev   == other.save_rev);
     }
+
     constexpr inline bool operator !=(const VersionInfo &other) const {
         return !(*this == other);
     }
@@ -75,7 +76,7 @@ constexpr static std::array patterns = {
     "Small spike",
 };
 
-static_assert(sizeof(VersionInfo) == 0x10  && std::is_standard_layout_v<VersionInfo>);
+static_assert(sizeof(VersionInfo)  == 0x10 && std::is_standard_layout_v<VersionInfo>);
 static_assert(sizeof(TurnipPrices) == 0x44 && std::is_standard_layout_v<TurnipPrices>);
 static_assert(versions.size() == offsets.size());
 

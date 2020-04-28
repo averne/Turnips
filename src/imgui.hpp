@@ -12,7 +12,7 @@ namespace im {
 
 using namespace ImGui;
 
-static void init(GLFWwindow *window, int width, int height) {
+static void init(GLFWwindow *window, int width, int height, float scale) {
     ImGui::CreateContext();
     ImGui::GlfwImpl::InitForOpengGl(window);
     ImGui::Gl3Impl::Init("#version 430");
@@ -66,7 +66,8 @@ static void init(GLFWwindow *window, int width, int height) {
 
     ImGuiStyle &style = ImGui::GetStyle();
     style.WindowRounding = 0.0f;
-    style.ScaleAllSizes(2.0f);
+    style.ScaleAllSizes(scale);
+    io.FontGlobalScale = scale - 1.0f;
 }
 
 static void exit() {

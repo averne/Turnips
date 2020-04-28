@@ -21,8 +21,6 @@ constexpr static std::array day_names = {
     "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday",
 };
 
-constexpr static int width = 1280, height = 720;
-
 extern "C" void userAppInit() {
     setsysInitialize();
     plInitialize(PlServiceType_User);
@@ -83,13 +81,23 @@ int main(int argc, char **argv) {
     float average = static_cast<float>(std::accumulate(p.week_prices.begin() + 2, p.week_prices.end(), 0)) / (p.week_prices.size() - 2);
 
     printf("Starting gui...\n");
-    auto *window = gl::init_glfw(width, height);
+    auto *window = gl::init_glfw(1920, 1080);
     if (!window || R_FAILED(gl::init_glad()))
         return 1;
-    glViewport(0, 0, width, height);
-    im::init(window, width, height);
 
-    ColorSetId color_theme = ColorSetId_Dark;
+    auto get_dims = []() -> std::tuple<int, int, float> {
+        if (appletGetOperationMode() == AppletOperationMode_Handheld)
+            return { 1280, 720, 2.0f };
+        return { 1920, 1080, 2.8f };
+    };
+
+    auto [width, height, scale] = get_dims();
+
+    glfwSetWindowSize(window, width, height);
+    glViewport(0, 0, width, height);
+    im::init(window, width, height, scale);
+
+    auto color_theme = ColorSetId_Dark;
     rc = setsysGetColorSetId(&color_theme);
     if (R_FAILED(rc))
         printf("Failed to get theme id\n");
@@ -124,8 +132,8 @@ int main(int argc, char **argv) {
         im::SetNextWindowFocus();
         im::Begin("Turnips, version " VERSION "-" COMMIT, nullptr, ImGuiWindowFlags_NoResize |
                 ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove);
-        im::SetWindowPos({300.0f, 120.0f},  ImGuiCond_Once);
-        im::SetWindowSize({700.0f, 520.0f}, ImGuiCond_Once);
+        im::SetWindowPos({0.23f * width, 0.17f * height},  ImGuiCond_Once);
+        im::SetWindowSize({0.55f * width, 0.72f * height}, ImGuiCond_Once);
 
         im::Text("Buy price: %d, Pattern: %s\n", p.buy_price, pattern.c_str());
 
@@ -135,15 +143,14 @@ int main(int argc, char **argv) {
         im::TableNextCell(), im::TextUnformatted("PM");
 
         auto get_color = [&](std::uint32_t day, bool is_am) -> std::uint32_t {
-            std::uint32_t col = th::text_def_col;
             auto price = p.week_prices[2 * day + !is_am];
             if ((cal_info.wday == day) && ((is_am && (cal_time.hour < 12)) || (!is_am && (cal_time.hour >= 12))))
-                col = th::text_cur_col;
+                return th::text_cur_col;
             else if (price == max)
-                col = th::text_max_col;
+                return th::text_max_col;
             else if (price == min)
-                col = th::text_min_col;
-            return col;
+                return th::text_min_col;
+            return th::text_def_col;
         };
 
         auto print_day = [&](std::uint32_t day) -> void {

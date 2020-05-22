@@ -15,7 +15,6 @@
 constexpr static auto acnh_programid = 0x01006f8002326000ul;
 constexpr static auto save_main_path = "/main.dat";
 constexpr static auto save_hdr_path  = "/mainHeader.dat";
-constexpr static auto bg_path        = "romfs:/background.png";
 
 constexpr static std::array day_names = {
     "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday",

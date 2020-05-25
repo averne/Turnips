@@ -10,7 +10,7 @@
 #include "fs.hpp"
 #include "save.hpp"
 #include "theme.hpp"
-#include "turnip_parser.hpp"
+#include "parser.hpp"
 
 constexpr static auto acnh_programid = 0x01006f8002326000ul;
 constexpr static auto save_main_path = "/main.dat";
@@ -68,9 +68,13 @@ int main(int argc, char **argv) {
     auto decrypted  = sv::decrypt(main, 0x500000, key, ctr);
 
     printf("Parsing save...\n");
-    auto parser = tp::Parser(header, decrypted);
-    auto pattern = parser.get_pattern();
-    auto p = parser.prices;
+    auto version_parser = tp::VersionParser(header);
+    auto turnip_parser = tp::TurnipParser(static_cast<tp::Version>(version_parser), decrypted);
+    auto pattern = turnip_parser.get_pattern();
+    auto p = turnip_parser.prices;
+
+    auto visitor_parser = tp::VisitorParser(static_cast<tp::Version>(version_parser), decrypted);
+    auto names = visitor_parser.get_visitor_names();
 
     std::array<float, 14> float_prices;
     for (std::size_t i = 0; i < p.week_prices.size(); ++i)
@@ -131,15 +135,16 @@ int main(int argc, char **argv) {
         im::SetNextWindowFocus();
         im::Begin("Turnips, version " VERSION "-" COMMIT, nullptr, ImGuiWindowFlags_NoResize |
                 ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove);
-        im::SetWindowPos({0.23f * width, 0.17f * height},  ImGuiCond_Once);
-        im::SetWindowSize({0.55f * width, 0.72f * height}, ImGuiCond_Once);
+        im::SetWindowPos({0.23f * width, 0.15f * height},  ImGuiCond_Once);
+        im::SetWindowSize({0.55f * width, 0.75f * height}, ImGuiCond_Once);
 
         im::Text("Buy price: %d, Pattern: %s\n", p.buy_price, pattern.c_str());
 
-        im::BeginTable("##Prices table", 3, ImGuiTableFlags_RowBg | ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV);
+        im::BeginTable("##Prices table", 4, ImGuiTableFlags_RowBg | ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV);
         im::TableNextRow();
         im::TableNextCell(), im::TextUnformatted("AM");
         im::TableNextCell(), im::TextUnformatted("PM");
+        im::TableNextCell(), im::TextUnformatted("Visitor");
 
         auto get_color = [&](std::uint32_t day, bool is_am) -> std::uint32_t {
             auto price = p.week_prices[2 * day + !is_am];
@@ -153,12 +158,13 @@ int main(int argc, char **argv) {
         };
 
         auto print_day = [&](std::uint32_t day) -> void {
-            im::TableNextRow();  im::TextUnformatted(day_names[day]);
+            im::TableNextRow(); im::TextUnformatted(day_names[day]);
             do_with_color(get_color(day, true),  [&] { im::TableNextCell(), im::Text("%d", p.week_prices[2 * day]); });
             do_with_color(get_color(day, false), [&] { im::TableNextCell(), im::Text("%d", p.week_prices[2 * day + 1]); });
+            im::TableNextCell(); im::TextUnformatted(names[day]);
         };
 
-        // print_day(0); // Don't print Sunday
+        print_day(0);
         print_day(1); print_day(2); print_day(3);
         print_day(4); print_day(5); print_day(6);
         im::EndTable();

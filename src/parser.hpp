@@ -54,7 +54,7 @@ struct TurnipPrices {
 };
 
 using VisitorSchedule = std::array<std::uint32_t, 7>;
-using VisitorNames    = std::array<const char *,  7>;
+using VisitorNames    = std::array<std::string,  7>;
 
 namespace impl {
 
@@ -136,10 +136,11 @@ class VersionParser {
 
 class TurnipParser {
     public:
-        Version      version;
-        TurnipPrices prices;
+        Version      version = {};
+        TurnipPrices prices  = {};
 
     public:
+        constexpr TurnipParser() = default;
         TurnipParser(Version version, const std::vector<std::uint8_t> &save): version(version), prices(this->get_prices(save)) { }
 
         inline std::string get_pattern() const {
@@ -161,10 +162,11 @@ class TurnipParser {
 
 class VisitorParser {
     public:
-        Version         version;
-        VisitorSchedule schedule;
+        Version         version  = {};
+        VisitorSchedule schedule = {};
 
     public:
+        constexpr VisitorParser() = default;
         VisitorParser(Version version, const std::vector<std::uint8_t> &save): version(version), schedule(this->get_schedule((save))) { }
 
         inline VisitorNames get_visitor_names() const {

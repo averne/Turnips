@@ -47,33 +47,35 @@ void do_with_color(std::uint32_t col, F f) {
 }
 
 int main(int argc, char **argv) {
-    printf("Opening save...\n");
-    FsFileSystem handle;
-    auto rc = fsOpen_DeviceSaveData(&handle, acnh_programid);
-    auto fs = fs::Filesystem(handle);
-    if (R_FAILED(rc)) {
-        printf("Failed to open save: %#x\n", rc);
-        return 1;
+    tp::TurnipParser turnip_parser; tp::VisitorParser visitor_parser;
+    {
+        printf("Opening save...\n");
+        FsFileSystem handle;
+        auto rc = fsOpen_DeviceSaveData(&handle, acnh_programid);
+        auto fs = fs::Filesystem(handle);
+        if (R_FAILED(rc)) {
+            printf("Failed to open save: %#x\n", rc);
+            return 1;
+        }
+        fs::File header, main;
+        if (rc = fs.open_file(header, save_hdr_path) | fs.open_file(main, save_main_path); R_FAILED(rc)) {
+            printf("Failed to open save files: %#x\n", rc);
+            return 1;
+        }
+
+        printf("Deriving keys...\n");
+        auto [key, ctr] = sv::get_keys(header);
+        printf("Decrypting save...\n");
+        auto decrypted  = sv::decrypt(main, 0x500000, key, ctr);
+
+        printf("Parsing save...\n");
+        auto version_parser = tp::VersionParser(header);
+        turnip_parser  = tp::TurnipParser(static_cast<tp::Version>(version_parser), decrypted);
+        visitor_parser = tp::VisitorParser(static_cast<tp::Version>(version_parser), decrypted);
     }
-
-    fs::File header, main;
-    if (rc = fs.open_file(header, save_hdr_path) | fs.open_file(main, save_main_path); R_FAILED(rc)) {
-        printf("Failed to open save files: %#x\n", rc);
-        return 1;
-    }
-
-    printf("Deriving keys...\n");
-    auto [key, ctr] = sv::get_keys(header);
-    printf("Decrypting save...\n");
-    auto decrypted  = sv::decrypt(main, 0x500000, key, ctr);
-
-    printf("Parsing save...\n");
-    auto version_parser = tp::VersionParser(header);
-    auto turnip_parser = tp::TurnipParser(static_cast<tp::Version>(version_parser), decrypted);
     auto pattern = turnip_parser.get_pattern();
     auto p = turnip_parser.prices;
 
-    auto visitor_parser = tp::VisitorParser(static_cast<tp::Version>(version_parser), decrypted);
     auto names = visitor_parser.get_visitor_names();
 
     std::array<float, 14> float_prices;
@@ -101,7 +103,7 @@ int main(int argc, char **argv) {
     im::init(window, width, height, scale);
 
     auto color_theme = ColorSetId_Dark;
-    rc = setsysGetColorSetId(&color_theme);
+    auto rc = setsysGetColorSetId(&color_theme);
     if (R_FAILED(rc))
         printf("Failed to get theme id\n");
     if (color_theme == ColorSetId_Light)
@@ -161,7 +163,7 @@ int main(int argc, char **argv) {
             im::TableNextRow(); im::TextUnformatted(day_names[day]);
             do_with_color(get_color(day, true),  [&] { im::TableNextCell(), im::Text("%d", p.week_prices[2 * day]); });
             do_with_color(get_color(day, false), [&] { im::TableNextCell(), im::Text("%d", p.week_prices[2 * day + 1]); });
-            im::TableNextCell(); im::TextUnformatted(names[day]);
+            im::TableNextCell(); im::TextUnformatted(names[day].c_str());
         };
 
         print_day(0);

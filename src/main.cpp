@@ -145,7 +145,7 @@ int main(int argc, char **argv) {
         im::SetWindowSize({0.55f * width, 0.73f * height}, ImGuiCond_Once);
         ts = 0;
         rc = timeGetCurrentTime(TimeType_UserSystemClock, &ts);    
-    if (rc <= date_posix + cal_info.wday * 86,400) {
+    if (rc <= date_posix + cal_info.wday * 86400) {
         im::Text("Last save time: %02d-%02d-%04d %02d:%02d:%02d\n",
             date.day, date.month, date.year, date.hour, date.minute, date.second);
     } else {
@@ -166,7 +166,7 @@ int main(int argc, char **argv) {
             u64 ts = 0;
             auto rc = timeGetCurrentTime(TimeType_UserSystemClock, &ts);
             auto date_posix = date_parser.to_posix();
-            if ((cal_info.wday == day && (rc <= date_posix + cal_info.wday * 86,400)) && ((is_am && (cal_time.hour < 12)) || (!is_am && (cal_time.hour >= 12))))
+            if ((cal_info.wday == day && (rc <= date_posix + cal_info.wday * 86400)) && ((is_am && (cal_time.hour < 12)) || (!is_am && (cal_time.hour >= 12))))
                 return th::text_cur_col;
             else if (price == max)
                 return th::text_max_col;

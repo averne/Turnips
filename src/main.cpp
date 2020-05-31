@@ -105,6 +105,7 @@ int main(int argc, char **argv) {
     glViewport(0, 0, width, height);
     im::init(window, width, height, scale);
 
+    date_posix = date_parser.to_posix();
     auto color_theme = ColorSetId_Dark;
     auto rc = setsysGetColorSetId(&color_theme);
     if (R_FAILED(rc))
@@ -142,7 +143,9 @@ int main(int argc, char **argv) {
                 ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove);
         im::SetWindowPos({0.23f * width, 0.16f * height},  ImGuiCond_Once);
         im::SetWindowSize({0.55f * width, 0.73f * height}, ImGuiCond_Once);
-    if (rc <= date.to_posix() + cal_info.wday * 86,400) {
+        u64 ts = 0;
+        rc = timeGetCurrentTime(TimeType_UserSystemClock, &ts);    
+    if (rc <= date_posix + cal_info.wday * 86,400) {
         im::Text("Last save time: %02d-%02d-%04d %02d:%02d:%02d\n",
             date.day, date.month, date.year, date.hour, date.minute, date.second);
     } else {
@@ -160,7 +163,10 @@ int main(int argc, char **argv) {
 
         auto get_color = [&](std::uint32_t day, bool is_am) -> std::uint32_t {
             auto price = p.week_prices[2 * day + !is_am];
-            if ((cal_info.wday == day && (rc <= date.to_posix() + cal_info.wday * 86,400)) && ((is_am && (cal_time.hour < 12)) || (!is_am && (cal_time.hour >= 12))))
+            u64 ts = 0;
+            rc = timeGetCurrentTime(TimeType_UserSystemClock, &ts);
+            date_posix = date_parser.to_posix();
+            if ((cal_info.wday == day && (rc <= date_posix + cal_info.wday * 86,400)) && ((is_am && (cal_time.hour < 12)) || (!is_am && (cal_time.hour >= 12))))
                 return th::text_cur_col;
             else if (price == max)
                 return th::text_max_col;

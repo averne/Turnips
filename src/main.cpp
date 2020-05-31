@@ -147,7 +147,7 @@ int main(int argc, char **argv) {
         im::Text("Last save time: %02d-%02d-%04d %02d:%02d:%02d\n",
             date.day, date.month, date.year, date.hour, date.minute, date.second);
     } else {
-        do_with_color(th::text_min_col, [&]{im::Text("THIS INFO IS OUTDATED, PLEASE OPEN ANIMAL CROSSING TO REFRESH IT!")});
+        do_with_color(th::text_min_col, [&] { im::Text("THIS INFO IS OUTDATED, PLEASE OPEN ANIMAL CROSSING TO REFRESH IT!"); });
     }
 
         im::Separator();

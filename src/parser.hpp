@@ -56,9 +56,16 @@ struct TurnipPrices {
 
 using VisitorSchedule = std::array<std::uint32_t, 7>;
 
+struct Date {
+    std::uint16_t year;
+    std::uint8_t month, day;
+    std::uint8_t hour, minute, second;
+};
+
 static_assert(sizeof(VersionInfo)     == 0x10 && std::is_standard_layout_v<VersionInfo>);
 static_assert(sizeof(TurnipPrices)    == 0x44 && std::is_standard_layout_v<TurnipPrices>);
 static_assert(sizeof(VisitorSchedule) == 0x1c && std::is_standard_layout_v<VisitorSchedule>);
+static_assert(sizeof(Date)            == 0x8  && std::is_standard_layout_v<Date>);
 
 class VersionParser {
     private:
@@ -189,6 +196,36 @@ class VisitorParser {
         inline VisitorSchedule get_schedule(const std::vector<std::uint8_t> &save) const {
             if (auto offset = this->get_vs_offset(); offset != 0ul)
                 return *reinterpret_cast<const VisitorSchedule *>(&save[offset]);
+            else
+                return {};
+        }
+};
+
+class DateParser {
+    private:
+        constexpr static inline std::array date_offsets = {
+            0xac0928ul, 0xac27c8ul, 0xac27c8ul, 0xac27c8ul, 0xac27c8ul, 0xac27c8ul,
+            0xace9f8ul, 0xace9f8ul,
+        };
+
+        static_assert(date_offsets.size() == static_cast<std::size_t>(Version::Total));
+
+    public:
+        Version version = {};
+        Date    date    = {};
+
+    public:
+        constexpr DateParser() = default;
+        DateParser(Version version, const std::vector<std::uint8_t> &save): version(version), date(this->get_date((save))) { }
+
+    private:
+        inline std::size_t get_date_offset() const {
+            return (this->version != Version::Unknown) ? this->date_offsets[static_cast<std::size_t>(this->version)] : 0ul;
+        }
+
+        inline Date get_date(const std::vector<std::uint8_t> &save) const {
+            if (auto offset = this->get_date_offset(); offset != 0ul)
+                return *reinterpret_cast<const Date *>(&save[offset]);
             else
                 return {};
         }

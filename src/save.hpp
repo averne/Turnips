@@ -44,13 +44,16 @@ static std::vector<std::uint8_t> decrypt(fs::File &main, std::size_t size,
     Aes128CtrContext ctx;
     aes128CtrContextCreate(&ctx, key.data(), ctr.data());
 
-    std::size_t offset = 0, read = 0, buf_size = std::min(0x1000ul, size);
+    std::size_t offset = 0, read = 0, buf_size = std::clamp(size, 0x1000ul, 0x80000ul);
     std::vector<std::uint8_t> buf(buf_size, 0);
     std::vector<std::uint8_t> res(size, 0);
 
-    while ((offset < size) && ((read = main.read(buf.data(), buf.size(), offset)) == buf_size)) {
+    while (offset < size) {
+        read = main.read(buf.data(), buf.size(), offset);
         aes128CtrCrypt(&ctx, &res[offset], buf.data(), read);
         offset += read;
+        if (read != buf.size())
+            break;
     }
 
     return res;

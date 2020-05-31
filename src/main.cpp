@@ -47,7 +47,7 @@ void do_with_color(std::uint32_t col, F f) {
 }
 
 int main(int argc, char **argv) {
-    tp::TurnipParser turnip_parser; tp::VisitorParser visitor_parser;
+    tp::TurnipParser turnip_parser; tp::VisitorParser visitor_parser; tp::DateParser date_parser;
     {
         printf("Opening save...\n");
         FsFileSystem handle;
@@ -66,17 +66,20 @@ int main(int argc, char **argv) {
         printf("Deriving keys...\n");
         auto [key, ctr] = sv::get_keys(header);
         printf("Decrypting save...\n");
-        auto decrypted  = sv::decrypt(main, 0x500000, key, ctr);
+        auto decrypted  = sv::decrypt(main, 0xb00000, key, ctr);
 
         printf("Parsing save...\n");
         auto version_parser = tp::VersionParser(header);
-        turnip_parser  = tp::TurnipParser(static_cast<tp::Version>(version_parser), decrypted);
+        turnip_parser  = tp::TurnipParser (static_cast<tp::Version>(version_parser), decrypted);
         visitor_parser = tp::VisitorParser(static_cast<tp::Version>(version_parser), decrypted);
+        date_parser    = tp::DateParser   (static_cast<tp::Version>(version_parser), decrypted);
     }
     auto pattern = turnip_parser.get_pattern();
     auto p = turnip_parser.prices;
 
     auto names = visitor_parser.get_visitor_names();
+
+    auto date = date_parser.date;
 
     std::array<float, 14> float_prices;
     for (std::size_t i = 0; i < p.week_prices.size(); ++i)
@@ -92,8 +95,8 @@ int main(int argc, char **argv) {
 
     auto get_dims = []() -> std::tuple<int, int, float> {
         if (appletGetOperationMode() == AppletOperationMode_Handheld)
-            return { 1280, 720, 2.0f };
-        return { 1920, 1080, 2.8f };
+            return { 1280, 720, 1.9f };
+        return { 1920, 1080, 2.7f };
     };
 
     auto [width, height, scale] = get_dims();
@@ -137,9 +140,13 @@ int main(int argc, char **argv) {
         im::SetNextWindowFocus();
         im::Begin("Turnips, version " VERSION "-" COMMIT, nullptr, ImGuiWindowFlags_NoResize |
                 ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove);
-        im::SetWindowPos({0.23f * width, 0.15f * height},  ImGuiCond_Once);
-        im::SetWindowSize({0.55f * width, 0.75f * height}, ImGuiCond_Once);
+        im::SetWindowPos({0.23f * width, 0.16f * height},  ImGuiCond_Once);
+        im::SetWindowSize({0.55f * width, 0.73f * height}, ImGuiCond_Once);
 
+        im::Text("Last save time: %02d-%02d-%04d %02d:%02d:%02d\n",
+            date.day, date.month, date.year, date.hour, date.minute, date.second);
+
+        im::Separator();
         im::Text("Buy price: %d, Pattern: %s\n", p.buy_price, pattern.c_str());
 
         im::BeginTable("##Prices table", 4, ImGuiTableFlags_RowBg | ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV);

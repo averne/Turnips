@@ -144,8 +144,8 @@ int main(int argc, char **argv) {
         im::SetWindowPos({0.23f * width, 0.16f * height},  ImGuiCond_Once);
         im::SetWindowSize({0.55f * width, 0.73f * height}, ImGuiCond_Once);
         ts = 0;
-        u64 time_posix = timeGetCurrentTime(TimeType_UserSystemClock, &ts);    
-    if (time_posix <= date_posix + (cal_info.wday * 86400)) {
+        timeGetCurrentTime(TimeType_UserSystemClock, &ts);    
+    if (ts <= date_posix + cal_info.wday * 86400) {
         im::Text("Last save time: %02d-%02d-%04d %02d:%02d:%02d\n",
             date.day, date.month, date.year, date.hour, date.minute, date.second);
     } else {
@@ -164,9 +164,9 @@ int main(int argc, char **argv) {
         auto get_color = [&](std::uint32_t day, bool is_am) -> std::uint32_t {
             auto price = p.week_prices[2 * day + !is_am];
             u64 ts = 0;
-            u64 time_posix = timeGetCurrentTime(TimeType_UserSystemClock, &ts);
+            timeGetCurrentTime(TimeType_UserSystemClock, &ts);
             auto date_posix = date_parser.to_posix();
-            if ((cal_info.wday == day && (time_posix <= date_posix + (cal_info.wday * 86400))) && ((is_am && (cal_time.hour < 12)) || (!is_am && (cal_time.hour >= 12))))
+            if ((cal_info.wday == day && (ts <= date_posix + cal_info.wday * 86400)) && ((is_am && (cal_time.hour < 12)) || (!is_am && (cal_time.hour >= 12))))
                 return th::text_cur_col;
             else if (price == max)
                 return th::text_max_col;

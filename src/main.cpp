@@ -128,6 +128,9 @@ int main(int argc, char **argv) {
         if (R_FAILED(rc))
             printf("Failed to convert timestamp\n");
 
+        bool is_outdated = (floor(ts / (24 * 60 * 60)) > floor(save_ts / (24 * 60 * 60)) + cal_info.wday)
+            && ((cal_info.wday != 0) || (cal_time.hour >= 5));
+
         // New frame
         glfwPollEvents();
         if (glfwGetKey(window, GLFW_NX_KEY_PLUS))
@@ -145,13 +148,10 @@ int main(int argc, char **argv) {
         im::SetWindowPos({0.23f * width, 0.16f * height},  ImGuiCond_Once);
         im::SetWindowSize({0.55f * width, 0.73f * height}, ImGuiCond_Once);
 
-        bool is_outdated = (floor(ts / (24 * 60 * 60)) > floor(save_ts / (24 * 60 * 60)) + cal_info.wday) && ((cal_info.wday != 0) || (cal_time.hour >= 5));
-        if (!is_outdated)
-            im::Text("Last save time: %02d-%02d-%04d %02d:%02d:%02d\n",
-                save_date.day, save_date.month, save_date.year, save_date.hour, save_date.minute, save_date.second);
-        else
-            do_with_color(th::text_min_col,
-                [] { im::TextUnformatted("THIS INFO IS OUTDATED, OPEN ANIMAL CROSSING TO REFRESH IT!"); });
+        im::Text("Last save time: %02d-%02d-%04d %02d:%02d:%02d\n",
+            save_date.day, save_date.month, save_date.year, save_date.hour, save_date.minute, save_date.second);
+        if (is_outdated)
+            im::SameLine(), do_with_color(th::text_min_col, [] { im::TextUnformatted("Save outdated!"); });
 
         im::Separator();
         im::Text("Buy price: %d, Pattern: %s\n", p.buy_price, pattern.c_str());
@@ -164,7 +164,7 @@ int main(int argc, char **argv) {
 
         auto get_color = [&](std::uint32_t day, bool is_am) -> std::uint32_t {
             auto price = p.week_prices[2 * day + !is_am];
-            if (!is_outdated && (cal_info.wday == day) && ((is_am && (cal_time.hour < 12)) || (!is_am && (cal_time.hour >= 12))))
+            if ((cal_info.wday == day) && ((is_am && (cal_time.hour < 12)) || (!is_am && (cal_time.hour >= 12))))
                 return th::text_cur_col;
             else if (price == max)
                 return th::text_max_col;

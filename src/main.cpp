@@ -146,9 +146,9 @@ int main(int argc, char **argv) {
         im::SetWindowSize({0.55f * width, 0.73f * height}, ImGuiCond_Once);
 
         bool is_outdated = (floor(ts / (24 * 60 * 60)) > floor(save_ts / (24 * 60 * 60)) + cal_info.wday) && ((cal_info.wday != 0) || (cal_time.hour >= 5));
-        if (!is_outdated) {
+        if (!is_outdated)
             im::Text("Last save time: %02d-%02d-%04d %02d:%02d:%02d\n",
-                sate_date.day, sate_date.month, sate_date.year, sate_date.hour, sate_date.minute, sate_date.second);
+                save_date.day, save_date.month, save_date.year, save_date.hour, save_date.minute, save_date.second);
         else
             do_with_color(th::text_min_col,
                 [] { im::TextUnformatted("THIS INFO IS OUTDATED, OPEN ANIMAL CROSSING TO REFRESH IT!"); });

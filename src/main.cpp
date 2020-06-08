@@ -3,6 +3,7 @@
 #include <numeric>
 #include <utility>
 #include <switch.h>
+#include <math.h>
 
 #include "background.hpp"
 #include "gl.hpp"
@@ -79,7 +80,8 @@ int main(int argc, char **argv) {
 
     auto names = visitor_parser.get_visitor_names();
 
-    auto date = date_parser.date;
+    auto save_date = date_parser.date;
+    auto save_ts   = date_parser.to_posix();
 
     std::array<float, 14> float_prices;
     for (std::size_t i = 0; i < p.week_prices.size(); ++i)
@@ -143,8 +145,13 @@ int main(int argc, char **argv) {
         im::SetWindowPos({0.23f * width, 0.16f * height},  ImGuiCond_Once);
         im::SetWindowSize({0.55f * width, 0.73f * height}, ImGuiCond_Once);
 
-        im::Text("Last save time: %02d-%02d-%04d %02d:%02d:%02d\n",
-            date.day, date.month, date.year, date.hour, date.minute, date.second);
+        bool is_outdated = (floor(ts / (24 * 60 * 60)) > floor(save_ts / (24 * 60 * 60)) + cal_info.wday) && ((cal_info.wday != 0) || (cal_time.hour >= 5));
+        if (!is_outdated)
+            im::Text("Last save time: %02d-%02d-%04d %02d:%02d:%02d\n",
+                save_date.day, save_date.month, save_date.year, save_date.hour, save_date.minute, save_date.second);
+        else
+            do_with_color(th::text_min_col,
+                [] { im::TextUnformatted("THIS INFO IS OUTDATED, OPEN ANIMAL CROSSING TO REFRESH IT!"); });
 
         im::Separator();
         im::Text("Buy price: %d, Pattern: %s\n", p.buy_price, pattern.c_str());
@@ -157,7 +164,7 @@ int main(int argc, char **argv) {
 
         auto get_color = [&](std::uint32_t day, bool is_am) -> std::uint32_t {
             auto price = p.week_prices[2 * day + !is_am];
-            if ((cal_info.wday == day) && ((is_am && (cal_time.hour < 12)) || (!is_am && (cal_time.hour >= 12))))
+            if (!is_outdated && (cal_info.wday == day) && ((is_am && (cal_time.hour < 12)) || (!is_am && (cal_time.hour >= 12))))
                 return th::text_cur_col;
             else if (price == max)
                 return th::text_max_col;

@@ -218,6 +218,12 @@ class DateParser {
         constexpr DateParser() = default;
         DateParser(Version version, const std::vector<std::uint8_t> &save): version(version), date(this->get_date((save))) { }
 
+        inline std::uint64_t to_posix() const {
+            std::uint64_t ts = 0;
+            timeToPosixTimeWithMyRule(reinterpret_cast<const TimeCalendarTime *>(&this->date), &ts, 1, nullptr);
+            return ts;
+        }
+
     private:
         inline std::size_t get_date_offset() const {
             return (this->version != Version::Unknown) ? this->date_offsets[static_cast<std::size_t>(this->version)] : 0ul;

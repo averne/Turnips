@@ -24,7 +24,7 @@
 #include <imgui.h>
 
 // #include "background.hpp"
-#include "deko.hpp"
+#include "gui.hpp"
 #include "fs.hpp"
 #include "save.hpp"
 #include "theme.hpp"
@@ -112,7 +112,7 @@ int main(int argc, char **argv) {
     float average = static_cast<float>(std::accumulate(p.week_prices.begin() + 2, p.week_prices.end(), 0)) / (p.week_prices.size() - 2);
 
     printf("Starting gui\n");
-    if (!dk::init())
+    if (!gui::init())
         printf("Failed to init\n");
 
     auto color_theme = ColorSetId_Dark;
@@ -124,7 +124,7 @@ int main(int argc, char **argv) {
     else
         th::apply_theme(th::Theme::Dark);
 
-    while (dk::loop()) {
+    while (gui::loop()) {
         u64 ts = 0;
         auto rc = timeGetCurrentTime(TimeType_UserSystemClock, &ts);
         if (R_FAILED(rc))
@@ -203,11 +203,11 @@ int main(int argc, char **argv) {
 
         im::End();
 
-        dk::render();
+        gui::render();
     }
 
     // bg::destroy();
-    dk::exit();
+    gui::exit();
 
     return 0;
 }

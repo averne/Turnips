@@ -17,13 +17,11 @@
 
 #pragma once
 
-#include <deko3d.hpp>
-
-namespace dk {
+namespace gui {
 
 bool init();
 bool loop();
 void render();
 void exit();
 
-} // namespace dk
+} // namespace gui

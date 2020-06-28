@@ -27,18 +27,10 @@
 
 #pragma once
 
-#ifndef CLASSIC
-namespace imgui
-{
-namespace nx
-{
-/// \brief Initialize switch platform
-bool init ();
-/// \brief Deinitialize switch platform
-void exit ();
+namespace imgui::nx {
 
-/// \brief Prepare switch for a new frame
-void newFrame ();
-}
-}
-#endif
+bool init();
+void exit();
+void newFrame();
+
+} // namespace imgui::nx

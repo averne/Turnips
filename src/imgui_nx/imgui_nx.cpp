@@ -55,15 +55,19 @@ void handleAppletHook(AppletHookType type, void *param) {
 	switch (appletGetOperationMode()) {
 		default:
 		case AppletOperationMode_Handheld:
-			// use handheld mode resolution (720p)
-			s_width  = 1280.0f;
-			s_height = 720.0f;
+			printf("Switching to 720p mode\n");
+			// use handheld mode resolution (720p) and scale
+			s_width  = 1280.0f, s_height = 720.0f;
+			ImGui::GetStyle().ScaleAllSizes(1.9f / 2.6f);
+			ImGui::GetIO().FontGlobalScale = 0.9f;
 			break;
 
 		case AppletOperationMode_Docked:
-			// use docked mode resolution (1080p)
-			s_width  = 1920.0f;
-			s_height = 1080.0f;
+			printf("Switching to 1080p mode\n");
+			// use docked mode resolution (1080p) and scale
+			s_width  = 1920.0f, s_height = 1080.0f;
+			ImGui::GetStyle().ScaleAllSizes(2.6f / 1.9f);
+			ImGui::GetIO().FontGlobalScale = 1.6f;
 			break;
 	}
 }
@@ -109,9 +113,22 @@ bool imgui::nx::init() {
 		io.Fonts->Build();
 	}
 
+	auto &style = ImGui::GetStyle();
+    style.WindowRounding = 0.0f;
+
+	auto mode = appletGetOperationMode();
+	if (mode == AppletOperationMode_Handheld) {
+		s_width  = 1280.0f, s_height = 720.0f;
+		style.ScaleAllSizes(1.9f);
+		io.FontGlobalScale = 0.9f;
+	} else {
+		s_width  = 1920.0f, s_height = 1080.0f;
+		style.ScaleAllSizes(2.6f);
+		io.FontGlobalScale = 1.6f;
+	}
+
 	// initialize applet hooks
 	appletHook(&s_appletHookCookie, handleAppletHook, nullptr);
-	handleAppletHook(AppletHookType_OnFocusState, nullptr);
 
 	// disable imgui.ini file
 	io.IniFilename = nullptr;

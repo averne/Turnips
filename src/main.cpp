@@ -151,8 +151,8 @@ int main(int argc, char **argv) {
         im::SetNextWindowFocus();
         im::Begin("Turnips, version " VERSION "-" COMMIT, nullptr, ImGuiWindowFlags_NoResize |
                 ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove);
-        im::SetWindowPos({0.23f * width, 0.16f * height},  ImGuiCond_Once);
-        im::SetWindowSize({0.55f * width, 0.73f * height}, ImGuiCond_Once);
+        im::SetWindowPos({0.23f * width, 0.16f * height});
+        im::SetWindowSize({0.55f * width, 0.73f * height});
 
         im::Text("Last save time: %02d-%02d-%04d %02d:%02d:%02d\n",
             save_date.day, save_date.month, save_date.year, save_date.hour, save_date.minute, save_date.second);

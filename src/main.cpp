@@ -115,14 +115,14 @@ int main(int argc, char **argv) {
     if (!dk::init())
         printf("Failed to init\n");
 
-    // auto color_theme = ColorSetId_Dark;
-    // auto rc = setsysGetColorSetId(&color_theme);
-    // if (R_FAILED(rc))
-    //     printf("Failed to get theme id\n");
-    // if (color_theme == ColorSetId_Light)
-    //     th::apply_theme(th::Theme::Light);
-    // else
-    //     th::apply_theme(th::Theme::Dark);
+    auto color_theme = ColorSetId_Dark;
+    auto rc = setsysGetColorSetId(&color_theme);
+    if (R_FAILED(rc))
+        printf("Failed to get theme id\n");
+    if (color_theme == ColorSetId_Light)
+        th::apply_theme(th::Theme::Light);
+    else
+        th::apply_theme(th::Theme::Dark);
 
     while (dk::loop()) {
         u64 ts = 0;
@@ -141,7 +141,12 @@ int main(int argc, char **argv) {
 
         // bg::render();
 
-        auto &[width, height] = im::GetIO().DisplaySize;
+        auto &io = im::GetIO();
+
+        if (io.NavInputs[ImGuiNavInput_DpadDown])
+            printf("Key down\n");
+
+        auto &[width, height] = io.DisplaySize;
 
         im::SetNextWindowFocus();
         im::Begin("Turnips, version " VERSION "-" COMMIT, nullptr, ImGuiWindowFlags_NoResize |

@@ -339,6 +339,7 @@ void render ()
 	dk::ImageView colorTarget{s_frameBuffers[slot]};
 	dk::ImageView depthTarget{s_depthBuffer};
 	cmdBuf.bindRenderTargets (&colorTarget, &depthTarget);
+	cmdBuf.setScissors (0, DkScissor{0, 0, s_width, s_height});
 	cmdBuf.clearColor (0, DkColorMask_RGBA, 0.125f, 0.294f, 0.478f, 1.0f);
 	cmdBuf.clearDepthStencil (true, 1.0f, 0xFF, 0);
 	s_queue.submitCommands (cmdBuf.finishList ());

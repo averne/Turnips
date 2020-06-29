@@ -1,17 +1,38 @@
+// Copyright (C) 2020 averne
+//
+// This file is part of Turnips.
+//
+// Turnips is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Turnips is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Turnips.  If not, see <http://www.gnu.org/licenses/>.
+
 #include <cstdio>
 #include <cstdint>
 #include <numeric>
 #include <utility>
 #include <switch.h>
 #include <math.h>
+#include <imgui.h>
 
-#include "background.hpp"
-#include "gl.hpp"
-#include "imgui.hpp"
+// #include "background.hpp"
+#include "gui.hpp"
 #include "fs.hpp"
 #include "save.hpp"
 #include "theme.hpp"
 #include "parser.hpp"
+
+namespace im {
+    using namespace ImGui;
+} // namespace im
 
 constexpr static auto acnh_programid = 0x01006f8002326000ul;
 constexpr static auto save_main_path = "/main.dat";
@@ -90,22 +111,9 @@ int main(int argc, char **argv) {
     auto  min = *minmax.first, max = *minmax.second;
     float average = static_cast<float>(std::accumulate(p.week_prices.begin() + 2, p.week_prices.end(), 0)) / (p.week_prices.size() - 2);
 
-    printf("Starting gui...\n");
-    auto *window = gl::init_glfw(1920, 1080);
-    if (!window || R_FAILED(gl::init_glad()))
-        return 1;
-
-    auto get_dims = []() -> std::tuple<int, int, float> {
-        if (appletGetOperationMode() == AppletOperationMode_Handheld)
-            return { 1280, 720, 1.9f };
-        return { 1920, 1080, 2.7f };
-    };
-
-    auto [width, height, scale] = get_dims();
-
-    glfwSetWindowSize(window, width, height);
-    glViewport(0, 0, width, height);
-    im::init(window, width, height, scale);
+    printf("Starting gui\n");
+    if (!gui::init())
+        printf("Failed to init\n");
 
     auto color_theme = ColorSetId_Dark;
     auto rc = setsysGetColorSetId(&color_theme);
@@ -116,9 +124,9 @@ int main(int argc, char **argv) {
     else
         th::apply_theme(th::Theme::Dark);
 
-    while (!glfwWindowShouldClose(window)) {
+    while (gui::loop()) {
         u64 ts = 0;
-        rc = timeGetCurrentTime(TimeType_UserSystemClock, &ts);
+        auto rc = timeGetCurrentTime(TimeType_UserSystemClock, &ts);
         if (R_FAILED(rc))
             printf("Failed to get timestamp\n");
 
@@ -131,22 +139,18 @@ int main(int argc, char **argv) {
         bool is_outdated = (floor(ts / (24 * 60 * 60)) > floor(save_ts / (24 * 60 * 60)) + cal_info.wday)
             && ((cal_info.wday != 0) || (cal_time.hour >= 5));
 
-        // New frame
-        glfwPollEvents();
-        if (glfwGetKey(window, GLFW_NX_KEY_PLUS))
-            break;
-        glClearColor(0.18f, 0.2f, 0.25f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
+        auto &io = im::GetIO();
 
-        bg::render();
+        if (io.NavInputs[ImGuiNavInput_DpadDown])
+            printf("Key down\n");
 
-        im::begin_frame(window);
+        auto &[width, height] = io.DisplaySize;
 
         im::SetNextWindowFocus();
         im::Begin("Turnips, version " VERSION "-" COMMIT, nullptr, ImGuiWindowFlags_NoResize |
                 ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove);
-        im::SetWindowPos({0.23f * width, 0.16f * height},  ImGuiCond_Once);
-        im::SetWindowSize({0.55f * width, 0.73f * height}, ImGuiCond_Once);
+        im::SetWindowPos({0.23f * width, 0.16f * height});
+        im::SetWindowSize({0.55f * width, 0.73f * height});
 
         im::Text("Last save time: %02d-%02d-%04d %02d:%02d:%02d\n",
             save_date.day, save_date.month, save_date.year, save_date.hour, save_date.minute, save_date.second);
@@ -196,14 +200,11 @@ int main(int argc, char **argv) {
             0, "", FLT_MAX, FLT_MAX, {im::GetWindowWidth() - 30.0f, 150.0f});
 
         im::End();
-        im::end_frame();
 
-        glfwSwapBuffers(window);
+        gui::render();
     }
 
-    bg::destroy();
-    im::exit();
-    gl::exit_glfw(window);
+    gui::exit();
 
     return 0;
 }

@@ -5,8 +5,6 @@
             "includePath": [
                 "${workspaceFolder}/**",
 
-                "${workspaceFolder}/lib/glad/include",
-                "${workspaceFolder}/lib/glfw/include",
                 "${workspaceFolder}/lib/imgui/include",
                 "${workspaceFolder}/lib/stb_image/include",
 

@@ -20,7 +20,7 @@ OUT               =    out
 BUILD             =    build
 SOURCES           =    src
 INCLUDES          =    include
-CUSTOM_LIBS       =    lib/glfw lib/glad lib/imgui lib/stb_image
+CUSTOM_LIBS       =    lib/imgui lib/stb_image
 ROMFS             =    res
 
 DEFINES           =    __SWITCH__ VERSION=\"$(VERSION)\" COMMIT=\"$(COMMIT)\"
@@ -30,7 +30,7 @@ CFLAGS            =    -std=gnu11
 CXXFLAGS          =    -std=gnu++17 -fno-rtti -fno-exceptions
 ASFLAGS           =
 LDFLAGS           =    -Wl,-pie -specs=$(DEVKITPRO)/libnx/switch.specs -g
-LINKS             =    -lglfw -lEGL -lglapi -ldrm_nouveau -lm -lglad -limgui -lstbi -lnx
+LINKS             =    -limgui -lstbi -ldeko3d -lnx
 
 PREFIX            =    aarch64-none-elf-
 CC                =    $(PREFIX)gcc
@@ -52,8 +52,10 @@ LIBS              =    $(CUSTOM_LIBS) $(LIBNX) $(PORTLIBS)
 CFILES            =    $(shell find $(SOURCES) -name *.c)
 CPPFILES          =    $(shell find $(SOURCES) -name *.cpp)
 SFILES            =    $(shell find $(SOURCES) -name *.s -or -name *.S)
+GLSLFILES         =    $(shell find $(SOURCES) -name *.glsl)
 OFILES            =    $(CFILES:%=$(BUILD)/%.o) $(CPPFILES:%=$(BUILD)/%.o) $(SFILES:%=$(BUILD)/%.o)
 DFILES            =    $(OFILES:.o=.d)
+DKSHFILES         =    $(GLSLFILES:%.glsl=$(ROMFS)/shaders/%.dksh)
 
 LIBS_TARGET       =    $(shell find $(addsuffix /lib,$(CUSTOM_LIBS)) -name "*.a" 2>/dev/null)
 ELF_TARGET        =    $(if $(OUT:=), $(OUT)/$(APP_TITLE).elf, .$(OUT)/$(APP_TITLE).elf)
@@ -92,7 +94,7 @@ NROFLAGS          =    --icon=$(strip $(APP_ICON)) --nacp=$(strip $(NACP_TARGET)
 
 ifneq ($(ROMFS),)
     NROFLAGS     +=    --romfsdir=$(strip $(ROMFS))
-    ROMFS_TARGET +=    $(shell find $(ROMFS) -type 'f')
+    ROMFS_TARGET +=    $(shell find $(ROMFS) -type 'f') $(DKSHFILES)
 endif
 
 # -----------------------------------------------
@@ -119,10 +121,20 @@ libs: $(CUSTOM_LIBS)
 $(CUSTOM_LIBS):
 	@$(MAKE) -s --no-print-directory -C $@
 
-$(NRO_TARGET): $(ELF_TARGET) $(NACP_TARGET) $(ROMFS_TARGET) $(APP_ICON)
+$(ROMFS)/shaders/%_vsh.dksh: %_vsh.glsl
+	@mkdir -p $(dir $@)
+	@echo " VERT" $(notdir $<)
+	@uam -s vert -o $@ $<
+
+$(ROMFS)/shaders/%_fsh.dksh: %_fsh.glsl
+	@mkdir -p $(dir $@)
+	@echo " FRAG" $(notdir $<)
+	@uam -s frag -o $@ $<
+
+$(NRO_TARGET): $(ROMFS_TARGET) $(APP_ICON) $(NACP_TARGET) $(ELF_TARGET)
 	@echo " NRO " $@
 	@mkdir -p $(dir $@)
-	@elf2nro $< $@ $(NROFLAGS) > /dev/null
+	@elf2nro $(ELF_TARGET) $@ $(NROFLAGS) > /dev/null
 	@echo "Built" $(notdir $@)
 
 $(ELF_TARGET): $(OFILES) $(LIBS_TARGET) | libs
@@ -153,7 +165,7 @@ $(BUILD)/%.s.o: %.s %.S
 
 clean:
 	@echo Cleaning...
-	@rm -rf $(BUILD) $(OUT)
+	@rm -rf $(BUILD) $(OUT) $(ROMFS)/shaders
 
 mrproper: clean
 	@for dir in $(CUSTOM_LIBS); do $(MAKE) --no-print-directory -C $$dir clean; done

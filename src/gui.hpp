@@ -17,11 +17,15 @@
 
 #pragma once
 
+#include <string>
+
 namespace gui {
 
 bool init();
 bool loop();
 void render();
 void exit();
+
+bool create_background(const std::string &path);
 
 } // namespace gui

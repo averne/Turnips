@@ -16,8 +16,10 @@
 // along with Turnips.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <cstdio>
+#include <cstring>
 #include <switch.h>
 #include <imgui.h>
+#include <stb_image.h>
 #include "imgui_nx/imgui_deko3d.h"
 #include "imgui_nx/imgui_nx.h"
 
@@ -27,8 +29,11 @@ namespace gui {
 
 namespace {
 
+constexpr std::uint32_t BG_IMAGE_ID   = 1;
+constexpr std::uint32_t BG_SAMPLER_ID = 1;
+
 constexpr auto MAX_SAMPLERS = 2;
-constexpr auto MAX_IMAGES   = 1;
+constexpr auto MAX_IMAGES   = 2;
 
 constexpr auto FB_NUM       = 2u;
 
@@ -217,6 +222,12 @@ bool loop() {
     imgui::nx::newFrame();
     ImGui::NewFrame();
 
+    // Add background image
+    ImGui::GetBackgroundDrawList()->AddImage(
+        imgui::deko3d::makeTextureID(dkMakeTextureHandle(BG_IMAGE_ID, BG_SAMPLER_ID)),
+        ImVec2(0, 0),
+        ImGui::GetIO().DisplaySize);
+
     return true;
 }
 
@@ -264,6 +275,69 @@ void exit() {
 
     imgui::deko3d::exit();
     deko3dExit();
+}
+
+bool create_background(const std::string &path) {
+    int w, h, nchan;
+    auto *data = stbi_load(path.c_str(), &w, &h, &nchan, 4);
+    if (!data) {
+        printf("Failed to load background image: %s\n", stbi_failure_reason());
+        return false;
+    }
+
+    auto imageSize = w * h * nchan;
+
+    printf("Decoded png at %s, %dx%d with %d channels: %d (%#x) bytes\n", path.c_str(), w, h, nchan, imageSize, imageSize);
+
+    // wait for previous commands to complete
+    s_queue.waitIdle();
+
+    dk::ImageLayout layout;
+    dk::ImageLayoutMaker{s_device}
+        .setFlags(0)
+        .setFormat(DkImageFormat_RGBA8_Unorm)
+        .setDimensions(w, h)
+        .initialize(layout);
+
+    printf("Initialized layout: %#lx aligned to %#x\n", layout.getSize(), layout.getAlignment());
+
+    auto memBlock = dk::MemBlockMaker{s_device, imgui::deko3d::align(imageSize, DK_MEMBLOCK_ALIGNMENT)}
+        .setFlags(DkMemBlockFlags_CpuUncached | DkMemBlockFlags_GpuCached)
+        .create();
+
+    s_imageMemBlock = dk::MemBlockMaker{s_device, imgui::deko3d::align(layout.getSize(), DK_MEMBLOCK_ALIGNMENT)}
+        .setFlags(DkMemBlockFlags_GpuCached | DkMemBlockFlags_Image)
+        .create();
+
+    printf("Created mem blocks of size %#x & %#x\n", memBlock.getSize(), s_imageMemBlock.getSize());
+
+    std::memcpy(memBlock.getCpuAddr(), data, imageSize);
+
+    dk::Image image;
+    image.initialize(layout, s_imageMemBlock, 0);
+    s_imageDescriptors[BG_IMAGE_ID].initialize(image);
+
+    // copy texture to image
+    dk::ImageView imageView(image);
+    s_cmdBuf[0].copyBufferToImage({memBlock.getGpuAddr()},
+        imageView,
+        {0, 0, 0, static_cast<std::uint32_t>(w), static_cast<std::uint32_t>(h), 1});
+    s_queue.submitCommands(s_cmdBuf[0].finishList());
+
+    // initialize sampler descriptor
+    s_samplerDescriptors[BG_SAMPLER_ID].initialize(
+        dk::Sampler{}
+            .setFilter(DkFilter_Linear, DkFilter_Linear)
+            .setWrapMode(DkWrapMode_ClampToEdge, DkWrapMode_ClampToEdge, DkWrapMode_ClampToEdge));
+
+    // wait for commands to complete before releasing memblocks
+    s_queue.waitIdle();
+
+    stbi_image_free(data);
+
+    printf("Done uploading texture\n");
+
+    return true;
 }
 
 } // namespace gui

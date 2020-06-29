@@ -139,8 +139,6 @@ int main(int argc, char **argv) {
         bool is_outdated = (floor(ts / (24 * 60 * 60)) > floor(save_ts / (24 * 60 * 60)) + cal_info.wday)
             && ((cal_info.wday != 0) || (cal_time.hour >= 5));
 
-        // bg::render();
-
         auto &io = im::GetIO();
 
         if (io.NavInputs[ImGuiNavInput_DpadDown])
@@ -206,7 +204,6 @@ int main(int argc, char **argv) {
         gui::render();
     }
 
-    // bg::destroy();
     gui::exit();
 
     return 0;

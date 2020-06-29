@@ -47,8 +47,6 @@
 
 #include "imgui_deko3d.h"
 
-#include "../fs.hpp"
-
 namespace
 {
 /// \brief Vertex buffer size
@@ -209,7 +207,8 @@ DkCmdList setupRenderState (dk::UniqueCmdBuf &cmdBuf_,
 	vertUBO.projMtx = glm::orthoRH_ZO (L, R, B, T, -1.0f, 1.0f);
 
 	// create command buffer to initialize/reset render state
-	cmdBuf_.setViewports (0, DkViewport{0.0f, 0.0f, width_, height_});
+	cmdBuf_.setViewports (0,
+		DkViewport{0.0f, 0.0f, static_cast<float>(width_), static_cast<float>(height_)});
 	cmdBuf_.bindShaders (DkStageFlag_GraphicsMask, {&s_shaders[0], &s_shaders[1]});
 	cmdBuf_.bindUniformBuffer (DkStage_Vertex,
 	    0,
@@ -327,7 +326,8 @@ void imgui::deko3d::init (dk::UniqueDevice &device_,
 
 	// copy font texture atlas to image view
 	dk::ImageView imageView{fontTexture};
-	cmdBuf_.copyBufferToImage ({memBlock.getGpuAddr ()}, imageView, {0, 0, 0, width, height, 1});
+	cmdBuf_.copyBufferToImage ({memBlock.getGpuAddr ()}, imageView,
+		{0, 0, 0, static_cast<std::uint32_t>(width), static_cast<std::uint32_t>(height), 1});
 
 	// submit commands to transfer font texture
 	queue_.submitCommands (cmdBuf_.finishList ());
@@ -486,8 +486,9 @@ void imgui::deko3d::render (dk::UniqueDevice &device_,
 					clip.z = height;
 
 				// apply scissor boundaries
-				cmdBuf_.setScissors (
-				    0, DkScissor{clip.x, clip.y, clip.z - clip.x, clip.w - clip.y});
+				cmdBuf_.setScissors (0,
+					DkScissor{static_cast<std::uint32_t>(clip.x), static_cast<std::uint32_t>(clip.y),
+					static_cast<std::uint32_t>(clip.z - clip.x), static_cast<std::uint32_t>(clip.w - clip.y)});
 
 				// get texture handle
 				auto const textureHandle = reinterpret_cast<std::uintptr_t> (cmd.TextureId);

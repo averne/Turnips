@@ -28,11 +28,12 @@
 #include "imgui_nx.h"
 #include <imgui.h>
 
-#include <chrono>
 #include <cstring>
+#include <array>
+#include <chrono>
 #include <functional>
 #include <string>
-#include <tuple>
+#include <utility>
 #include <switch.h>
 
 using namespace std::chrono_literals;
@@ -93,6 +94,29 @@ void updateTouch(ImGuiIO &io_) {
     had_mouse = true;
 }
 
+void updateKeys(ImGuiIO &io_) {
+    constexpr std::array mapping = {
+        std::pair(ImGuiNavInput_Activate,  KEY_A),
+        std::pair(ImGuiNavInput_Cancel,    KEY_B),
+        std::pair(ImGuiNavInput_Input,     KEY_X),
+        std::pair(ImGuiNavInput_Menu,      KEY_Y),
+        std::pair(ImGuiNavInput_FocusPrev, KEY_L),
+        std::pair(ImGuiNavInput_TweakSlow, KEY_L),
+        std::pair(ImGuiNavInput_FocusNext, KEY_R),
+        std::pair(ImGuiNavInput_TweakFast, KEY_R),
+        std::pair(ImGuiNavInput_DpadUp,    KEY_DUP),
+        std::pair(ImGuiNavInput_DpadRight, KEY_DRIGHT),
+        std::pair(ImGuiNavInput_DpadDown,  KEY_DDOWN),
+        std::pair(ImGuiNavInput_DpadLeft,  KEY_DLEFT),
+    };
+
+    auto down = hidKeysDown(CONTROLLER_P1_AUTO);
+
+    for (auto [im, nx]: mapping)
+        if (down & nx)
+            io_.NavInputs[im] = 1.0f;
+}
+
 } // namespace
 
 bool imgui::nx::init() {
@@ -141,6 +165,9 @@ bool imgui::nx::init() {
 
     // setup config flags
     io.ConfigFlags |= ImGuiConfigFlags_IsTouchScreen;
+	io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
+
+    io.BackendFlags |= ImGuiBackendFlags_HasGamepad;
 
     // disable mouse cursor
     io.MouseDrawCursor = false;
@@ -165,6 +192,7 @@ void imgui::nx::newFrame() {
 
     // update inputs
     updateTouch(io);
+    updateKeys(io);
 
     // clamp mouse to screen
     s_mousePos.x = std::clamp(s_mousePos.x, 0.0f, s_width);

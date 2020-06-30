@@ -74,17 +74,23 @@ void handleAppletHook(AppletHookType type, void *param) {
 
 void updateTouch(ImGuiIO &io_) {
     // read touch positions
+    static bool had_mouse = false;
+
     auto const touchCount = hidTouchCount();
-    if (touchCount < 1)
+    if (touchCount < 1) {
+        io_.MouseDown[0] = false;
+        had_mouse = false;
         return;
+    }
 
     // use first touch position
     touchPosition pos;
     hidTouchRead(&pos, 0);
 
-    // set mouse position to touch point; force hide mouse cursor
+    // set mouse position to touch point
     s_mousePos = ImVec2(pos.px, pos.py);
-    io_.MouseDown[0] = true;
+    io_.MouseDown[0] = !had_mouse;
+    had_mouse = true;
 }
 
 } // namespace
@@ -136,7 +142,7 @@ bool imgui::nx::init() {
     // setup config flags
     io.ConfigFlags |= ImGuiConfigFlags_IsTouchScreen;
 
-    // initially disable mouse cursor
+    // disable mouse cursor
     io.MouseDrawCursor = false;
 
     return true;

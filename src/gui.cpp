@@ -17,6 +17,7 @@
 
 #include <cstdio>
 #include <cstring>
+#include <numeric>
 #include <switch.h>
 #include <imgui.h>
 #include <stb_image.h>
@@ -24,6 +25,8 @@
 #include "imgui_nx/imgui_nx.h"
 
 #include "gui.hpp"
+
+#include "theme.hpp"
 
 namespace gui {
 
@@ -61,6 +64,10 @@ dk::ImageDescriptor   *s_imageDescriptors   = nullptr;
 
 dk::UniqueQueue        s_queue;
 dk::UniqueSwapchain    s_swapchain;
+
+constexpr std::array day_names = {
+    "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday",
+};
 
 void rebuildSwapchain(unsigned const width_, unsigned const height_) {
     // destroy old swapchain
@@ -338,6 +345,105 @@ bool create_background(const std::string &path) {
     printf("Done uploading texture\n");
 
     return true;
+}
+
+void draw_turnip_tab(const tp::TurnipParser &parser, const TimeCalendarTime &cal_time, const TimeCalendarAdditionalInfo &cal_info) {
+    if (!im::BeginTabItem("Turnips"))
+        return;
+
+    auto prices  = parser.prices;
+    auto pattern = parser.get_pattern();
+
+    std::array<float, 14> float_prices;
+    for (std::size_t i = 0; i < prices.week_prices.size(); ++i)
+        float_prices[i] = static_cast<float>(prices.week_prices[i]);
+    auto  minmax  = std::minmax_element(prices.week_prices.begin() + 2, prices.week_prices.end());
+    auto  min = *minmax.first, max = *minmax.second;
+    float average = static_cast<float>(std::accumulate(prices.week_prices.begin() + 2,
+        prices.week_prices.end(), 0)) / (prices.week_prices.size() - 2);
+
+    im::Text("Buy price: %d, Pattern: %s\n", prices.buy_price, pattern.c_str());
+
+    im::BeginTable("##Prices table", 3, ImGuiTableFlags_RowBg | ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV);
+    im::TableNextRow();
+    im::TableNextCell(), im::TextUnformatted("AM");
+    im::TableNextCell(), im::TextUnformatted("PM");
+
+    auto get_color = [&](std::uint32_t day, bool is_am) -> std::uint32_t {
+        auto price = prices.week_prices[2 * day + !is_am];
+        if ((cal_info.wday == day) && ((is_am && (cal_time.hour < 12)) || (!is_am && (cal_time.hour >= 12))))
+            return th::text_cur_col;
+        else if (price == max)
+            return th::text_max_col;
+        else if (price == min)
+            return th::text_min_col;
+        return th::text_def_col;
+    };
+
+    auto print_day = [&](std::uint32_t day) -> void {
+        im::TableNextRow(); im::TextUnformatted(day_names[day]);
+        do_with_color(get_color(day, true),  [&] { im::TableNextCell(), im::Text("%d", prices.week_prices[2 * day]); });
+        do_with_color(get_color(day, false), [&] { im::TableNextCell(), im::Text("%d", prices.week_prices[2 * day + 1]); });
+    };
+
+    print_day(0);
+    print_day(1); print_day(2); print_day(3);
+    print_day(4); print_day(5); print_day(6);
+    im::EndTable();
+
+    im::Separator();
+    do_with_color(th::text_max_col, [&] { im::Text("Max: %d", max); }); im::SameLine();
+    do_with_color(th::text_min_col, [&] { im::Text("Min: %d", min); }); im::SameLine();
+    im::Text("Avg: %.1f", average);
+
+    im::Separator();
+    im::TextUnformatted("Week graph");
+    im::PlotLines("##Graph", float_prices.data() + 2, float_prices.size() - 2,
+        0, "", FLT_MAX, FLT_MAX, {im::GetWindowWidth() - 30.0f, 125.0f});
+
+    im::EndTabItem();
+}
+
+void draw_visitor_tab(const tp::VisitorParser &parser, const TimeCalendarAdditionalInfo &cal_info) {
+    if (!im::BeginTabItem("Visitors"))
+        return;
+
+    auto names = parser.get_visitor_names();
+
+    im::Dummy(ImVec2(0.0f, 10.0f));
+    im::BeginTable("##Visitors table", 2, ImGuiTableFlags_RowBg | ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV);
+
+    auto get_color = [&](std::uint32_t day) -> std::uint32_t {
+        return (cal_info.wday == day) ? th::text_cur_col : th::text_def_col;
+    };
+
+    auto print_day = [&](std::uint32_t day) -> void {
+        im::TableNextCell(); im::TextUnformatted(day_names[day]);
+        do_with_color(get_color(day), [&] { im::TableNextCell(), im::Text("%s", names[day].c_str()); });
+    };
+
+    print_day(0);
+    print_day(1); print_day(2); print_day(3);
+    print_day(4); print_day(5); print_day(6);
+    im::EndTable();
+
+    im::EndTabItem();
+}
+
+void draw_weather_tab(const tp::WeatherSeedParser &parser) {
+    if (!im::BeginTabItem("Weather"))
+        return;
+
+    auto seed = parser.calculate_weather_seed();
+
+    im::Dummy(ImVec2(0.0f, 10.0f));
+    im::Text("Hemisphere: %s", parser.get_hemisphere_name().c_str());
+    im::Text("Weather seed: %d (%#x)", seed, seed);
+
+    im::Separator();
+    im::TextUnformatted("Enter this seed on wuffs.org/acnh/weather to predict weather &\nmeteor showers");
+
+    im::EndTabItem();
 }
 
 } // namespace gui

@@ -79,14 +79,20 @@ struct Date {
     std::uint8_t hour, minute, second;
 };
 
+struct WeatherInfo {
+    std::uint32_t hemisphere;
+    std::uint32_t raw_seed;
+};
+
 static_assert(sizeof(VersionInfo)     == 0x10 && std::is_standard_layout_v<VersionInfo>);
 static_assert(sizeof(TurnipPrices)    == 0x44 && std::is_standard_layout_v<TurnipPrices>);
 static_assert(sizeof(VisitorSchedule) == 0x1c && std::is_standard_layout_v<VisitorSchedule>);
 static_assert(sizeof(Date)            == 0x8  && std::is_standard_layout_v<Date>);
+static_assert(sizeof(WeatherInfo)     == 0x8  && std::is_standard_layout_v<WeatherInfo>);
 
 class VersionParser {
     private:
-        constexpr static inline std::array versions = {
+        constexpr static std::array versions = {
             VersionInfo{ 0x67,    0x6f,    2, 0, 2, 0 }, // 1.0.0
             VersionInfo{ 0x6d,    0x78,    2, 0, 2, 1 }, // 1.1.0
             VersionInfo{ 0x6d,    0x78,    2, 0, 2, 2 }, // 1.1.1
@@ -126,12 +132,12 @@ class VersionParser {
 
 class TurnipParser {
     private:
-        constexpr static inline std::array turnip_offsets = {
+        constexpr static std::array turnip_offsets = {
             0x4118C0ul, 0x412060ul, 0x412060ul, 0x412060ul, 0x412060ul, 0x412060ul,
             0x412060ul, 0x412060ul,
         };
 
-        constexpr static inline std::array turnip_patterns = {
+        constexpr static std::array turnip_patterns = {
             "Fluctuating",
             "Large spike",
             "Decreasing",
@@ -167,12 +173,12 @@ class TurnipParser {
 
 class VisitorParser {
     private:
-        constexpr static inline std::array visitor_offsets = {
+        constexpr static std::array visitor_offsets = {
             0x414f8cul, 0x41572cul, 0x41572cul, 0x41572cul, 0x41572cul, 0x41572cul,
             0x4159d8ul, 0x4159d8ul,
         };
 
-        constexpr static inline std::array visitor_names = {
+        constexpr static std::array visitor_names = {
             "None",
             "Gulliver",
             "Label",
@@ -220,7 +226,7 @@ class VisitorParser {
 
 class DateParser {
     private:
-        constexpr static inline std::array date_offsets = {
+        constexpr static std::array date_offsets = {
             0xac0928ul, 0xac27c8ul, 0xac27c8ul, 0xac27c8ul, 0xac27c8ul, 0xac27c8ul,
             0xace9f8ul, 0xace9f8ul,
         };
@@ -249,6 +255,51 @@ class DateParser {
         inline Date get_date(const std::vector<std::uint8_t> &save) const {
             if (auto offset = this->get_date_offset(); offset != 0ul)
                 return *reinterpret_cast<const Date *>(&save[offset]);
+            else
+                return {};
+        }
+};
+
+class WeatherSeedParser {
+    private:
+        constexpr static std::array info_offsets = {
+            0x1d70ccul, 0x1d70d4ul, 0x1d70d4ul, 0x1d70d4ul, 0x1d70d4ul, 0x1d70d4ul,
+            0x1d70d4ul, 0x1d70d4ul,
+        };
+
+        constexpr static std::uint32_t weather_seed_max = 2147483647;
+
+        constexpr static std::array hemisphere_names = {
+            "Northern",
+            "Soutern",
+        };
+
+        static_assert(info_offsets.size() == static_cast<std::size_t>(Version::Total));
+
+    public:
+        Version     version  = {};
+        WeatherInfo info     = {};
+
+    public:
+        constexpr WeatherSeedParser() = default;
+        WeatherSeedParser(Version version, const std::vector<std::uint8_t> &save): version(version), info(this->get_info((save))) { }
+
+        constexpr inline std::uint32_t calculate_weather_seed() const {
+            return this->info.raw_seed - this->weather_seed_max - 1;
+        }
+
+        inline std::string get_hemisphere_name() const {
+            return this->hemisphere_names[this->info.hemisphere];
+        }
+
+    private:
+        inline std::size_t get_info_offset() const {
+            return (this->version != Version::Unknown) ? this->info_offsets[static_cast<std::size_t>(this->version)] : 0ul;
+        }
+
+        inline WeatherInfo get_info(const std::vector<std::uint8_t> &save) const {
+            if (auto offset = this->get_info_offset(); offset != 0ul)
+                return *reinterpret_cast<const WeatherInfo *>(&save[offset]);
             else
                 return {};
         }

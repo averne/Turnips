@@ -17,7 +17,17 @@
 
 #pragma once
 
+#include <cstdint>
+#include <array>
 #include <string>
+#include <imgui.h>
+#include <switch.h>
+
+#include "parser.hpp"
+
+namespace im {
+    using namespace ImGui;
+} // namespace im
 
 namespace gui {
 
@@ -27,5 +37,16 @@ void render();
 void exit();
 
 bool create_background(const std::string &path);
+
+void draw_turnip_tab(const tp::TurnipParser &parser, const TimeCalendarTime &cal_time, const TimeCalendarAdditionalInfo &cal_info);
+void draw_visitor_tab(const tp::VisitorParser &parser, const TimeCalendarAdditionalInfo &cal_info);
+void draw_weather_tab(const tp::WeatherSeedParser &parser);
+
+template <typename F>
+void do_with_color(std::uint32_t col, F f) {
+    im::PushStyleColor(ImGuiCol_Text, col);
+    f();
+    im::PopStyleColor();
+}
 
 } // namespace gui

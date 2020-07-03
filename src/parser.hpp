@@ -281,7 +281,7 @@ class WeatherSeedParser {
 
         constexpr static std::array hemisphere_names = {
             "Northern",
-            "Soutern",
+            "Southern",
         };
 
         static_assert(info_offsets.size() == static_cast<std::size_t>(Version::Total));

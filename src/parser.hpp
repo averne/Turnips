@@ -196,6 +196,7 @@ class VisitorParser {
             "Kicks",
             "Leif",
             "Redd",
+            "Gullivarr"
         };
 
         static_assert(visitor_offsets.size() == static_cast<std::size_t>(Version::Total));

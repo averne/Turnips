@@ -419,7 +419,13 @@ void draw_visitor_tab(const tp::VisitorParser &parser, const TimeCalendarAdditio
 
     auto print_day = [&](std::uint32_t day) -> void {
         im::TableNextCell(); im::TextUnformatted(day_names[day]);
-        do_with_color(get_color(day), [&] { im::TableNextCell(), im::Text("%s", names[day].c_str()); });
+        do_with_color(get_color(day), [&] {
+            im::TableNextCell(), im::Text("%s", names[day].c_str());
+            if (day == parser.get_celeste_day())
+                im::SameLine(), im::TextUnformatted("Celeste");
+            if (day == parser.get_wisp_day())
+                im::SameLine(), im::TextUnformatted("Wisp");
+        });
     };
 
     print_day(0);

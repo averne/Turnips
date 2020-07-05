@@ -72,7 +72,12 @@ struct TurnipPrices {
     std::uint32_t unk;
 };
 
-using VisitorSchedule = std::array<std::uint32_t, 7>;
+struct VisitorSchedule {
+    std::array<std::uint32_t, 7> npcs;
+    std::uint8_t                 _stuff[0x54];
+    std::uint32_t                wisp_day;
+    std::uint32_t                celeste_day;
+};
 
 struct Date {
     std::uint16_t year;
@@ -87,7 +92,7 @@ struct WeatherInfo {
 
 static_assert(sizeof(VersionInfo)     == 0x10 && std::is_standard_layout_v<VersionInfo>);
 static_assert(sizeof(TurnipPrices)    == 0x44 && std::is_standard_layout_v<TurnipPrices>);
-static_assert(sizeof(VisitorSchedule) == 0x1c && std::is_standard_layout_v<VisitorSchedule>);
+static_assert(sizeof(VisitorSchedule) == 0x78 && std::is_standard_layout_v<VisitorSchedule>);
 static_assert(sizeof(Date)            == 0x8  && std::is_standard_layout_v<Date>);
 static_assert(sizeof(WeatherInfo)     == 0x8  && std::is_standard_layout_v<WeatherInfo>);
 
@@ -211,11 +216,19 @@ class VisitorParser {
 
         inline std::array<std::string, 7> get_visitor_names() const {
             std::array<std::string, 7> names;
-            std::transform(this->schedule.begin(), this->schedule.end(), names.begin(),
+            std::transform(this->schedule.npcs.begin(), this->schedule.npcs.end(), names.begin(),
             [this](std::uint32_t visitor) {
                 return this->visitor_names[visitor];
             });
             return names;
+        }
+
+        inline std::uint32_t get_wisp_day() const {
+            return this->schedule.wisp_day;
+        }
+
+        inline std::uint32_t get_celeste_day() const {
+            return this->schedule.celeste_day;
         }
 
     private:

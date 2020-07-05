@@ -32,7 +32,7 @@ ASFLAGS           =
 LDFLAGS           =    -Wl,-pie -specs=$(DEVKITPRO)/libnx/switch.specs -g
 LINKS             =    -limgui -lstbi -ldeko3d -lnx
 
-PREFIX            =    aarch64-none-elf-
+PREFIX            =    $(DEVKITPRO)/devkitA64/bin/aarch64-none-elf-
 CC                =    $(PREFIX)gcc
 CXX               =    $(PREFIX)g++
 AS                =    $(PREFIX)as

@@ -7,7 +7,7 @@ DISLAIMER: This reads data from your save. I am not responsible for any data los
 <p align="center"><img src="https://i.imgur.com/J1Ef38k.jpg" </p>
 
 # Compiling
-Building needs a working devkitA64 environment, with packages `libnx`, and `deko3d` installed (`sudo (dkp-)pacman -S switch-dev`).
+Building needs a working devkitA64 environment, with packages `libnx`,`deko3d` and `switch-glm` installed (`sudo (dkp-)pacman -S switch-dev`).
 ```
 $ git clone --recursive https://github.com/averne/Turnips.git
 $ cd Turnips

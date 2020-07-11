@@ -17,6 +17,7 @@
 
 #include <cstdio>
 #include <cstring>
+#include <algorithm>
 #include <numeric>
 #include <switch.h>
 #include <imgui.h>
@@ -404,9 +405,12 @@ void draw_turnip_tab(const tp::TurnipParser &parser, const TimeCalendarTime &cal
     im::EndTabItem();
 }
 
-void draw_visitor_tab(const tp::VisitorParser &parser, const TimeCalendarAdditionalInfo &cal_info) {
+void draw_visitor_tab(const tp::VisitorParser &parser, const TimeCalendarTime &cal_time, const TimeCalendarAdditionalInfo &cal_info) {
     if (!im::BeginTabItem("Visitors"))
         return;
+
+    // Visitors leave at 5am, so adjust the weekday
+    auto wday = (cal_time.hour >= 5) ? cal_info.wday : std::clamp(cal_info.wday - 1, 0u, 7u);
 
     auto names = parser.get_visitor_names();
 
@@ -414,7 +418,7 @@ void draw_visitor_tab(const tp::VisitorParser &parser, const TimeCalendarAdditio
     im::BeginTable("##Visitors table", 2, ImGuiTableFlags_RowBg | ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV);
 
     auto get_color = [&](std::uint32_t day) -> std::uint32_t {
-        return (cal_info.wday == day) ? th::text_cur_col : th::text_def_col;
+        return (wday == day) ? th::text_cur_col : th::text_def_col;
     };
 
     auto print_day = [&](std::uint32_t day) -> void {

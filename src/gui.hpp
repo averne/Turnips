@@ -39,7 +39,7 @@ void exit();
 bool create_background(const std::string &path);
 
 void draw_turnip_tab(const tp::TurnipParser &parser, const TimeCalendarTime &cal_time, const TimeCalendarAdditionalInfo &cal_info);
-void draw_visitor_tab(const tp::VisitorParser &parser, const TimeCalendarAdditionalInfo &cal_info);
+void draw_visitor_tab(const tp::VisitorParser &parser, const TimeCalendarTime &cal_time, const TimeCalendarAdditionalInfo &cal_info);
 void draw_weather_tab(const tp::WeatherSeedParser &parser);
 
 template <typename F>

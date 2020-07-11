@@ -128,7 +128,7 @@ int main(int argc, char **argv) {
         im::BeginTabBar("##tab_bar");
 
         gui::draw_turnip_tab(turnip_parser, cal_time, cal_info);
-        gui::draw_visitor_tab(visitor_parser, cal_info);
+        gui::draw_visitor_tab(visitor_parser, cal_time, cal_info);
         gui::draw_weather_tab(seed_parser);
 
         im::EndTabBar();

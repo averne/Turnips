@@ -124,22 +124,22 @@ bool imgui::nx::init() {
 
     // Load nintendo font
     PlFontData standard, extended;
-    static ImWchar extended_range[] = {0xe000, 0xe152};
+    //static ImWchar extended_range[] = {0xe000, 0xe152};
     if (R_SUCCEEDED(plGetSharedFontByType(&standard, PlSharedFontType_Standard)) &&
             R_SUCCEEDED(plGetSharedFontByType(&extended, PlSharedFontType_NintendoExt))) {
-        std::uint8_t *px;
-        int w, h, bpp;
-        ImFontConfig font_cfg;
-        font_cfg.FontDataOwnedByAtlas = false;
-        io.Fonts->AddFontFromMemoryTTF(standard.address, standard.size, 20.0f, &font_cfg, io.Fonts->GetGlyphRangesDefault());
+        //std::uint8_t *px;
+        //int w, h, bpp;
+        //ImFontConfig font_cfg;
+        //font_cfg.FontDataOwnedByAtlas = false;
+        io.Fonts->AddFontFromFileTTF("romfs:/DroidSans.ttf", 20.0f, NULL, io.Fonts->GetGlyphRangesChineseSimplifiedCommon());
 
         // Merge second font (cannot set it before)
-        font_cfg.MergeMode            = true;
-        io.Fonts->AddFontFromMemoryTTF(extended.address, extended.size, 20.0f, &font_cfg, extended_range);
-        io.Fonts->GetTexDataAsAlpha8(&px, &w, &h, &bpp);
+        //font_cfg.MergeMode            = true;
+        //io.Fonts->AddFontFromMemoryTTF(extended.address, extended.size, 20.0f, &font_cfg, extended_range);
+        //io.Fonts->GetTexDataAsAlpha8(&px, &w, &h, &bpp);
 
         // build font atlas
-        io.Fonts->Flags |= ImFontAtlasFlags_NoPowerOfTwoHeight;
+        //io.Fonts->Flags |= ImFontAtlasFlags_NoPowerOfTwoHeight;
         io.Fonts->Build();
     }
 

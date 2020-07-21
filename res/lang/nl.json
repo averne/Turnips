@@ -50,11 +50,11 @@
         "gullivarrr":     "Gullivarrr"
     },
 
-    "hemisphere":         "halfrond: %s",
+    "hemisphere":         "Halfrond: %s",
     "weather_seed":       "Weer seed: %d (%#x)",
     "weather_url_tip":    "Vul deze seed in op wuffs.org/acnh/weather om het weer &\nmeteorenregens te voorspellen",
     "hemispheres": {
-        "northern":       "noordelijk",
-        "southern":       "zuidelijk"
+        "northern":       "Noordelijk",
+        "southern":       "Zuidelijk"
     }
 }

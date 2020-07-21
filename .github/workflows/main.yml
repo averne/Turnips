@@ -1,0 +1,20 @@
+name: CI
+on:
+  push:
+    branches: [ master ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container: devkitpro/devkita64:latest
+    steps:
+    - name: Checkout master branch
+      run: git clone --recursive https://github.com/tiansongyu/Turnips.git $GITHUB_WORKSPACE
+
+    - name: make all
+      run: |
+        cd $GITHUB_WORKSPACE
+        make -j$(nproc) > extra-file.txt
+    - uses: actions/upload-artifact@master
+      with:
+        name: Build
+        path: out/Turnips.nro

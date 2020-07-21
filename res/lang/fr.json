@@ -1,0 +1,60 @@
+{
+    "app_name":           "Turnips",
+    "version":            "version",
+
+    "turnips":            "Navets",
+    "visitors":           "Visiteurs",
+    "weather":            "Météo",
+    "language":           "Language",
+
+    "last_save_time":     "Dernière sauvegarde: %02d-%02d-%04d %02d:%02d:%02d\n",
+    "save_outdated":      "Sauvegarde n'est pas à jour!",
+
+    "days": {
+        "sunday":         "Dimanche",
+        "monday":         "Lundi",
+        "tuesday":        "Mardi",
+        "wednesday":      "Mercredi",
+        "thursday":       "Jeudi",
+        "friday":         "Vendredi",
+        "saturday":       "Samedi"
+    },
+
+    "am":                 "Matin",
+    "pm":                 "Après-midi",
+
+    "price_pattern":      "Prix d'achat: %d, Motif: %s\n",
+    "turnips_max":        "Max: %d",
+    "turnips_min":        "Min: %d",
+    "turnips_average":    "Moy: %.1f",
+    "week_graph":         "Évolution hebdomadaire",
+    "turnips_patterns": {
+        "fluctuating":    "Fluctuation",
+        "large_spike":    "Large pic",
+        "decreasing":     "Diminution",
+        "small_spike":    "Faible pic"
+    },
+
+    "npcs": {
+        "none":           "Aucun",
+        "gulliver":       "Gulliver",
+        "label":          "Tiquette",
+        "saharah":        "Sarah",
+        "wisp":           "Follet",
+        "mabel":          "Layette",
+        "cj":             "Pollux",
+        "flick":          "Djason",
+        "kicks":          "Blaise",
+        "leif":           "Racine",
+        "redd":           "Rounard",
+        "gullivarrr":     "Gullivarrr"
+    },
+
+    "hemisphere":         "Hémisphère: %s",
+    "weather_seed":       "Graine météo: %d (%#x)",
+    "weather_url_tip":    "Saisissez cette graine sur wuffs.org/acnh/weather pour prédire la météo et\nles pluies de météores",
+    "hemispheres": {
+        "northern":       "Nord",
+        "southern":       "Sud"
+    }
+}

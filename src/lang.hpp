@@ -25,6 +25,7 @@ namespace lang {
 enum class Language {
     English,
     Chinese,
+    French,
     Default,
 };
 

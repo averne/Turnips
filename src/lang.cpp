@@ -47,6 +47,9 @@ Result set_language(Language lang) {
         case Language::Chinese:
             path = "romfs:/lang/ch.json";
             break;
+        case Language::French:
+            path = "romfs:/lang/fr.json";
+            break;
         case Language::English:
         case Language::Default:
         default:
@@ -98,6 +101,8 @@ Result initialize_to_system_language() {
         case SetLanguage_ZHCN:
         case SetLanguage_ZHHANS:
             return set_language(Language::Chinese);
+        case SetLanguage_FR:
+            return set_language(Language::French);
         default:
             return set_language(Language::Default);
     }

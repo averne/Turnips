@@ -19,7 +19,7 @@ TARGET            =    $(APP_TITLE).nro
 OUT               =    out
 BUILD             =    build
 SOURCES           =    src
-INCLUDES          =    include
+INCLUDES          =    include lib/json-hpp/include
 CUSTOM_LIBS       =    lib/imgui lib/stb_image
 ROMFS             =    res
 

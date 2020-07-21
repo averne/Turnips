@@ -1,34 +1,60 @@
 {
-	"version":"Turnips, 版本号 ",
-	"last_save_time":"上次游玩时间: %02d-%02d-%04d %02d:%02d:%02d\n",
-	"save_outdated":"存档已过期!",
-	"Turnips":"Turnips",
-	"price_pattern":"买入价格: %d, 价格趋势: %s\n",
-	"AM":"上午",
-	"PM":"下午",
-	"MAX":"最大值: %d",
-	"MIN":"最小值: %d",
-	"arg":"平均值: %.1f",
-	"week_graph":"本周图表",
-	"visitors":"来访者",
-	"celeste":"Celeste",
-	"wisp":"Wisp",
-	"weather":"天气",
-	"Hemisphere":"所处半球: %s",
-	"weather_seed":"天气种子: %d (%#x)",
-	"tips":"在 wuffs.org/acnh/weather 这个网站输入种子可以预测天气 &\n流星雨",
-	"lanuage_setting":"语言",
-	"Sunday":"星期天",
-	"Monday":"星期一",
-	"Tuesday":"星期二",
-	"Wednesday":"星期三",
-	"Thursday":"星期四",
-	"Friday":"星期五",
-	"Saturday":"星期六",
-	"Fluctuating":"上下波动",
-	"Large_spike":"大高峰",
-	"Decreasing":"贬值",
-	"Small_spike":"小高峰"	,
-	"Northern":"北半球",
-	"Southern":"南半球"
+    "app_name":           "Turnips",
+    "version":            "版本号 ",
+
+    "turnips":            "萝卜",
+    "visitors":           "来访者",
+    "weather":            "天气",
+    "language":           "语言",
+
+    "last_save_time":     "上次游玩时间: %02d-%02d-%04d %02d:%02d:%02d\n",
+    "save_outdated":      "存档已过期!",
+
+    "days": {
+        "sunday":         "星期天",
+        "monday":         "星期一",
+        "tuesday":        "星期二",
+        "wednesday":      "星期三",
+        "thursday":       "星期四",
+        "friday":         "星期五",
+        "saturday":       "星期六"
+    },
+
+    "am":                 "上午",
+    "pm":                 "下午",
+
+    "price_pattern":      "买入价格: %d, 价格趋势: %s\n",
+    "turnips_max":        "最大值: %d",
+    "turnips_min":        "最小值: %d",
+    "turnips_average":    "平均值: %.1f",
+    "week_graph":         "本周图表",
+    "turnips_patterns": {
+        "fluctuating":    "上下波动",
+        "large_spike":    "大高峰",
+        "decreasing":     "贬值",
+        "small_spike":    "小高峰"
+    },
+
+    "npcs": {
+        "none":           "毫不",
+        "gulliver":       "吕游",
+        "label":          "绵儿",
+        "saharah":        "骆岚",
+        "wisp":           "幽幽",
+        "mabel":          "绢儿",
+        "cj":             "俞司廷",
+        "flick":          "龙克斯",
+        "kicks":          "Kicks",
+        "leif":           "Leif",
+        "redd":           "狐利",
+        "gullivarrr":     "海盗"
+    },
+
+    "hemisphere":         "所处半球: %s",
+    "weather_seed":       "天气种子: %d (%#x)",
+    "weather_url_tip":    "在 wuffs.org/acnh/weather 这个网站输入种子可以预测天气 & 流星雨",
+    "hemispheres": {
+        "northern":       "北半球",
+        "southern":       "南半球"
+    }
 }

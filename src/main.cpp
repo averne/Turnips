@@ -22,19 +22,20 @@
 #include <math.h>
 #include <imgui.h>
 
-#include "gui.hpp"
 #include "fs.hpp"
+#include "gui.hpp"
+#include "lang.hpp"
 #include "save.hpp"
 #include "theme.hpp"
 #include "parser.hpp"
-#include "Lang.hpp"
-#include "json.hpp"
+
+using namespace lang::literals;
+
 constexpr static auto acnh_programid = 0x01006f8002326000ul;
 constexpr static auto save_main_path = "/main.dat";
-constexpr static auto save_hdr_path = "/mainHeader.dat";
+constexpr static auto save_hdr_path  = "/mainHeader.dat";
 
-extern "C" void userAppInit()
-{
+extern "C" void userAppInit() {
     setsysInitialize();
     plInitialize(PlServiceType_User);
     romfsInit();
@@ -44,8 +45,7 @@ extern "C" void userAppInit()
 #endif
 }
 
-extern "C" void userAppExit()
-{
+extern "C" void userAppExit() {
     setsysExit();
     plExit();
     romfsExit();
@@ -54,25 +54,19 @@ extern "C" void userAppExit()
 #endif
 }
 
-int main(int argc, char **argv)
-{
-    tp::TurnipParser turnip_parser;
-    tp::VisitorParser visitor_parser;
-    tp::DateParser date_parser;
-    tp::WeatherSeedParser seed_parser;
+int main(int argc, char **argv) {
+    tp::TurnipParser turnip_parser; tp::VisitorParser visitor_parser; tp::DateParser date_parser; tp::WeatherSeedParser seed_parser;
     {
         printf("Opening save...\n");
         FsFileSystem handle;
         auto rc = fsOpen_DeviceSaveData(&handle, acnh_programid);
         auto fs = fs::Filesystem(handle);
-        if (R_FAILED(rc))
-        {
+        if (R_FAILED(rc)) {
             printf("Failed to open save: %#x\n", rc);
             return 1;
         }
         fs::File header, main;
-        if (rc = fs.open_file(header, save_hdr_path) | fs.open_file(main, save_main_path); R_FAILED(rc))
-        {
+        if (rc = fs.open_file(header, save_hdr_path) | fs.open_file(main, save_main_path); R_FAILED(rc)) {
             printf("Failed to open save files: %#x\n", rc);
             return 1;
         }
@@ -80,18 +74,21 @@ int main(int argc, char **argv)
         printf("Deriving keys...\n");
         auto [key, ctr] = sv::get_keys(header);
         printf("Decrypting save...\n");
-        auto decrypted = sv::decrypt(main, 0xb00000, key, ctr);
+        auto decrypted  = sv::decrypt(main, 0xb00000, key, ctr);
 
         printf("Parsing save...\n");
         auto version_parser = tp::VersionParser(header);
-        turnip_parser = tp::TurnipParser(static_cast<tp::Version>(version_parser), decrypted);
-        visitor_parser = tp::VisitorParser(static_cast<tp::Version>(version_parser), decrypted);
-        date_parser = tp::DateParser(static_cast<tp::Version>(version_parser), decrypted);
-        seed_parser = tp::WeatherSeedParser(static_cast<tp::Version>(version_parser), decrypted);
+        turnip_parser  = tp::TurnipParser     (static_cast<tp::Version>(version_parser), decrypted);
+        visitor_parser = tp::VisitorParser    (static_cast<tp::Version>(version_parser), decrypted);
+        date_parser    = tp::DateParser       (static_cast<tp::Version>(version_parser), decrypted);
+        seed_parser    = tp::WeatherSeedParser(static_cast<tp::Version>(version_parser), decrypted);
     }
 
     auto save_date = date_parser.date;
-    auto save_ts = date_parser.to_posix();
+    auto save_ts   = date_parser.to_posix();
+
+    if (auto rc = lang::initialize_to_system_language(); R_FAILED(rc))
+        printf("Failed to init language: %#x, will fall back to key names\n", rc);
 
     printf("Starting gui\n");
     if (!gui::init())
@@ -105,43 +102,42 @@ int main(int argc, char **argv)
         th::apply_theme(th::Theme::Light);
     else
         th::apply_theme(th::Theme::Dark);
-    //init Language
-    Lang::setLanguage(Lang::getSystemLanguage());
-    while (gui::loop())
-    {
+
+    while (gui::loop()) {
         u64 ts = 0;
         auto rc = timeGetCurrentTime(TimeType_UserSystemClock, &ts);
         if (R_FAILED(rc))
             printf("Failed to get timestamp\n");
 
-        TimeCalendarTime cal_time = {};
+        TimeCalendarTime           cal_time = {};
         TimeCalendarAdditionalInfo cal_info = {};
         rc = timeToCalendarTimeWithMyRule(ts, &cal_time, &cal_info);
         if (R_FAILED(rc))
             printf("Failed to convert timestamp\n");
 
-        bool is_outdated = (floor(ts / (24 * 60 * 60)) > floor(save_ts / (24 * 60 * 60)) + cal_info.wday) && ((cal_info.wday != 0) || (cal_time.hour >= 5));
+        bool is_outdated = (floor(ts / (24 * 60 * 60)) > floor(save_ts / (24 * 60 * 60)) + cal_info.wday)
+            && ((cal_info.wday != 0) || (cal_time.hour >= 5));
 
         auto &[width, height] = im::GetIO().DisplaySize;
 
         im::SetNextWindowFocus();
-        //char name[] = Lang::stringtochar("version"_lang) VERSION "-" COMMIT;
-        im::Begin("Turnips, version " VERSION "-" COMMIT, nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove);
+        im::Begin(std::string("app_name"_lang + ", " + "version"_lang + " " + VERSION + "-" + COMMIT).c_str(), nullptr,
+            ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove);
         im::SetWindowPos({0.23f * width, 0.16f * height});
         im::SetWindowSize({0.55f * width, 0.73f * height});
 
-        im::Text(Lang::stringtochar("last_save_time"_lang),
-                 save_date.day, save_date.month, save_date.year, save_date.hour, save_date.minute, save_date.second);
+        im::Text("last_save_time"_lang.c_str(),
+            save_date.day, save_date.month, save_date.year, save_date.hour, save_date.minute, save_date.second);
         if (is_outdated)
-            im::SameLine(), gui::do_with_color(th::text_min_col, [] { im::TextUnformatted(Lang::stringtochar("save_outdated"_lang)); });
+            im::SameLine(), gui::do_with_color(th::text_min_col, [] { im::TextUnformatted("save_outdated"_lang.c_str()); });
 
         im::BeginTabBar("##tab_bar");
 
         gui::draw_turnip_tab(turnip_parser, cal_time, cal_info);
         gui::draw_visitor_tab(visitor_parser, cal_time, cal_info);
         gui::draw_weather_tab(seed_parser);
-        gui::draw_language_tab(Lang::get_current_language());
-        
+        gui::draw_language_tab();
+
         im::EndTabBar();
 
         im::End();

@@ -37,17 +37,17 @@
 
     "npcs": {
         "none":           "毫不",
-        "gulliver":       "吕游",
-        "label":          "绵儿",
-        "saharah":        "骆岚",
-        "wisp":           "幽幽",
-        "mabel":          "绢儿",
-        "cj":             "俞司廷",
-        "flick":          "龙克斯",
+        "gulliver":       "Gulliver",
+        "label":          "Label",
+        "saharah":        "Saharah",
+        "wisp":           "Wisp",
+        "mabel":          "Mabel",
+        "cj":             "CJ",
+        "flick":          "Flick",
         "kicks":          "Kicks",
         "leif":           "Leif",
-        "redd":           "狐利",
-        "gullivarrr":     "海盗"
+        "redd":           "Redd",
+        "gullivarrr":     "Gullivarrr"
     },
 
     "hemisphere":         "所处半球: %s",

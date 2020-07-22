@@ -27,6 +27,7 @@ enum class Language {
     Chinese,
     French,
     Dutch,
+    Italian,
     Default,
 };
 

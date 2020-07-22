@@ -486,6 +486,7 @@ void draw_language_tab() {
     im::RadioButton("中文",       reinterpret_cast<int *>(&cur_lang), static_cast<int>(lang::Language::Chinese));
     im::RadioButton("Français",   reinterpret_cast<int *>(&cur_lang), static_cast<int>(lang::Language::French));
     im::RadioButton("Nederlands", reinterpret_cast<int *>(&cur_lang), static_cast<int>(lang::Language::Dutch));
+    im::RadioButton("Italiano",   reinterpret_cast<int *>(&cur_lang), static_cast<int>(lang::Language::Italian));
 
     if (cur_lang != prev_lang)
         lang::set_language(cur_lang);

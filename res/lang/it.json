@@ -52,7 +52,7 @@
 
     "hemisphere":         "Emisfero: %s",
     "weather_seed":       "Codice Meteo: %d (%#x)",
-    "weather_url_tip":    "Inserisci il tuo codice meteo su wuffs.org/acnh/weather per prevedere il meteo\ne le piogge di stelle cadenti",
+    "weather_url_tip":    "Inserisci il tuo codice meteo su wuffs.org/acnh/weather per prevedere il\nmeteo e le piogge di stelle cadenti",
     "hemispheres": {
         "northern":       "Settentrionale",
         "southern":       "Meridionale"

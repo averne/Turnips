@@ -1,0 +1,60 @@
+{
+    "app_name":           "Turnips",
+    "version":            "versione",
+
+    "turnips":            "Turnips",
+    "visitors":           "Visitatori",
+    "weather":            "Meteo",
+    "language":           "Lingua",
+
+    "last_save_time":     "Ultimo salvataggio: %02d-%02d-%04d %02d:%02d:%02d\n",
+    "save_outdated":      "Salvataggio troppo vecchio!",
+
+    "days": {
+        "sunday":         "Domenica",
+        "monday":         "Lunedì",
+        "tuesday":        "Martedì",
+        "wednesday":      "Mercoledì",
+        "thursday":       "Giovedì",
+        "friday":         "Venerdì",
+        "saturday":       "Sabato"
+    },
+
+    "am":                 "AM",
+    "pm":                 "PM",
+
+    "price_pattern":      "Prezzo d'acquisto: %d, Modello: %s\n",
+    "turnips_max":        "Max: %d",
+    "turnips_min":        "Min: %d",
+    "turnips_average":    "Media: %.1f",
+    "week_graph":         "Grafico settimanale",
+    "turnips_patterns": {
+        "fluctuating":    "Oscillante",
+        "large_spike":    "Grande forbice",
+        "decreasing":     "In discesa",
+        "small_spike":    "Piccola forbice"
+    },
+
+    "npcs": {
+        "none":           "Nessuno",
+        "gulliver":       "Gulliver",
+        "label":          "Beatrice",
+        "saharah":        "Sahara",
+        "wisp":           "Spirideo",
+        "mabel":          "Agostina",
+        "cj":             "Castorino",
+        "flick":          "Ivano",
+        "kicks":          "Sciuscià",
+        "leif":           "Florindo",
+        "redd":           "Volpolo",
+        "gullivarrr":     "Gullivarrr"
+    },
+
+    "hemisphere":         "Emisfero: %s",
+    "weather_seed":       "Codice Meteo: %d (%#x)",
+    "weather_url_tip":    "Inserisci il tuo codice meteo su wuffs.org/acnh/weather per prevedere il\nmeteo e le piogge di stelle cadenti",
+    "hemispheres": {
+        "northern":       "Settentrionale",
+        "southern":       "Meridionale"
+    }
+}

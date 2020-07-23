@@ -22,11 +22,14 @@
 #include <math.h>
 #include <imgui.h>
 
-#include "gui.hpp"
 #include "fs.hpp"
+#include "gui.hpp"
+#include "lang.hpp"
 #include "save.hpp"
 #include "theme.hpp"
 #include "parser.hpp"
+
+using namespace lang::literals;
 
 constexpr static auto acnh_programid = 0x01006f8002326000ul;
 constexpr static auto save_main_path = "/main.dat";
@@ -84,6 +87,9 @@ int main(int argc, char **argv) {
     auto save_date = date_parser.date;
     auto save_ts   = date_parser.to_posix();
 
+    if (auto rc = lang::initialize_to_system_language(); R_FAILED(rc))
+        printf("Failed to init language: %#x, will fall back to key names\n", rc);
+
     printf("Starting gui\n");
     if (!gui::init())
         printf("Failed to init\n");
@@ -115,21 +121,22 @@ int main(int argc, char **argv) {
         auto &[width, height] = im::GetIO().DisplaySize;
 
         im::SetNextWindowFocus();
-        im::Begin("Turnips, version " VERSION "-" COMMIT, nullptr, ImGuiWindowFlags_NoResize |
-                ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove);
+        im::Begin(std::string("app_name"_lang + ", " + "version"_lang + " " + VERSION + "-" + COMMIT).c_str(), nullptr,
+            ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove);
         im::SetWindowPos({0.23f * width, 0.16f * height});
         im::SetWindowSize({0.55f * width, 0.73f * height});
 
-        im::Text("Last save time: %02d-%02d-%04d %02d:%02d:%02d\n",
+        im::Text("last_save_time"_lang.c_str(),
             save_date.day, save_date.month, save_date.year, save_date.hour, save_date.minute, save_date.second);
         if (is_outdated)
-            im::SameLine(), gui::do_with_color(th::text_min_col, [] { im::TextUnformatted("Save outdated!"); });
+            im::SameLine(), gui::do_with_color(th::text_min_col, [] { im::TextUnformatted("save_outdated"_lang.c_str()); });
 
         im::BeginTabBar("##tab_bar");
 
         gui::draw_turnip_tab(turnip_parser, cal_time, cal_info);
-        gui::draw_visitor_tab(visitor_parser, cal_info);
+        gui::draw_visitor_tab(visitor_parser, cal_time, cal_info);
         gui::draw_weather_tab(seed_parser);
+        gui::draw_language_tab();
 
         im::EndTabBar();
 

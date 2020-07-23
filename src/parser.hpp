@@ -25,6 +25,7 @@
 #include <vector>
 
 #include "fs.hpp"
+#include "lang.hpp"
 
 namespace tp {
 
@@ -32,7 +33,7 @@ enum class Version: std::size_t {
     V100,
     V110, V111, V112, V113, V114,
     V120, V121,
-    V130,
+    V130, V131,
     Unknown,
     Total = Unknown,
 };
@@ -108,6 +109,7 @@ class VersionParser {
             VersionInfo{ 0x20006, 0x20008, 2, 0, 2, 6 }, // 1.2.0
             VersionInfo{ 0x20006, 0x20008, 2, 0, 2, 7 }, // 1.2.1
             VersionInfo{ 0x40002, 0x40008, 2, 0, 2, 8 }, // 1.3.0
+            VersionInfo{ 0x40002, 0x40008, 2, 0, 2, 9 }, // 1.3.1
         };
 
         static_assert(versions.size() == static_cast<std::size_t>(Version::Total));
@@ -143,14 +145,14 @@ class TurnipParser {
             0x4118C0ul,                                                 // 1.0.0
             0x412060ul, 0x412060ul, 0x412060ul, 0x412060ul, 0x412060ul, // 1.1.x
             0x412060ul, 0x412060ul,                                     // 1.2.x
-            0x412060ul,                                                 // 1.3.0
+            0x412060ul, 0x412060ul,                                     // 1.3.0
         };
 
         constexpr static std::array turnip_patterns = {
-            "Fluctuating",
-            "Large spike",
-            "Decreasing",
-            "Small spike",
+            "fluctuating",
+            "large_spike",
+            "decreasing",
+            "small_spike",
         };
 
         static_assert(turnip_offsets.size() == static_cast<std::size_t>(Version::Total));
@@ -164,7 +166,7 @@ class TurnipParser {
         TurnipParser(Version version, const std::vector<std::uint8_t> &save): version(version), prices(this->get_prices(save)) { }
 
         inline std::string get_pattern() const {
-            return this->turnip_patterns[this->prices.pattern_type];
+            return lang::get_string(this->turnip_patterns[this->prices.pattern_type], lang::get_json()["turnips_patterns"]);
         }
 
     private:
@@ -186,22 +188,22 @@ class VisitorParser {
             0x414f8cul,                                                 // 1.0.0
             0x41572cul, 0x41572cul, 0x41572cul, 0x41572cul, 0x41572cul, // 1.1.x
             0x4159d8ul, 0x4159d8ul,                                     // 1.2.x
-            0x4159d8ul,                                                 // 1.3.0
+            0x4159d8ul, 0x4159d8ul,                                     // 1.3.0
         };
 
         constexpr static std::array visitor_names = {
-            "None",
-            "Gulliver",
-            "Label",
-            "Saharah",
-            "Wisp",
-            "Mabel",
-            "CJ",
-            "Flick",
-            "Kicks",
-            "Leif",
-            "Redd",
-            "Gullivarr"
+            "none",
+            "gulliver",
+            "label",
+            "saharah",
+            "wisp",
+            "mabel",
+            "cj",
+            "flick",
+            "kicks",
+            "leif",
+            "redd",
+            "gullivarrr"
         };
 
         static_assert(visitor_offsets.size() == static_cast<std::size_t>(Version::Total));
@@ -217,9 +219,10 @@ class VisitorParser {
         inline std::array<std::string, 7> get_visitor_names() const {
             std::array<std::string, 7> names;
             std::transform(this->schedule.npcs.begin(), this->schedule.npcs.end(), names.begin(),
-            [this](std::uint32_t visitor) {
-                return this->visitor_names[visitor];
-            });
+                [this](std::uint32_t visitor) {
+                    return lang::get_string(this->visitor_names[visitor], lang::get_json()["npcs"]);
+                }
+            );
             return names;
         }
 
@@ -250,7 +253,7 @@ class DateParser {
             0xac0928ul,                                                 // 1.0.0
             0xac27c8ul, 0xac27c8ul, 0xac27c8ul, 0xac27c8ul, 0xac27c8ul, // 1.1.x
             0xace9f8ul, 0xace9f8ul,                                     // 1.2.x
-            0xaceaa8ul,                                                 // 1.3.0
+            0xaceaa8ul, 0xaceaa8ul,                                     // 1.3.0
         };
 
         static_assert(date_offsets.size() == static_cast<std::size_t>(Version::Total));
@@ -288,14 +291,14 @@ class WeatherSeedParser {
             0x1d70ccul,                                                 // 1.0.0
             0x1d70d4ul, 0x1d70d4ul, 0x1d70d4ul, 0x1d70d4ul, 0x1d70d4ul, // 1.1.x
             0x1d70d4ul, 0x1d70d4ul,                                     // 1.2.x
-            0x1d70d4ul,                                                 // 1.3.0
+            0x1d70d4ul, 0x1d70d4ul                                      // 1.3.0
         };
 
         constexpr static std::uint32_t weather_seed_max = 2147483647;
 
         constexpr static std::array hemisphere_names = {
-            "Northern",
-            "Southern",
+            "northern",
+            "southern",
         };
 
         static_assert(info_offsets.size() == static_cast<std::size_t>(Version::Total));
@@ -313,7 +316,7 @@ class WeatherSeedParser {
         }
 
         inline std::string get_hemisphere_name() const {
-            return this->hemisphere_names[this->info.hemisphere];
+            return lang::get_string(this->hemisphere_names[this->info.hemisphere], lang::get_json()["hemispheres"]);
         }
 
     private:

@@ -1,0 +1,60 @@
+{
+    "app_name":           "Turnips",
+    "version":            "versie",
+
+    "turnips":            "Rapen",
+    "visitors":           "Bezoekers",
+    "weather":            "Weer",
+    "language":           "Taal",
+
+    "last_save_time":     "Laatst opgeslagen: %02d-%02d-%04d %02d:%02d:%02d\n",
+    "save_outdated":      "Opslag verouderd!",
+
+    "days": {
+        "sunday":         "Zondag",
+        "monday":         "Maandag",
+        "tuesday":        "Dinsdag",
+        "wednesday":      "Woensdag",
+        "thursday":       "Donderdag",
+        "friday":         "Vrijdag",
+        "saturday":       "Zaterdag"
+    },
+
+    "am":                 "AM",
+    "pm":                 "PM",
+
+    "price_pattern":      "Koopprijs: %d, Patroon: %s\n",
+    "turnips_max":        "Max: %d",
+    "turnips_min":        "Min: %d",
+    "turnips_average":    "Gem: %.1f",
+    "week_graph":         "Grafiek",
+    "turnips_patterns": {
+        "fluctuating":    "Fluctuerend",
+        "large_spike":    "Grote piek",
+        "decreasing":     "Afnemend",
+        "small_spike":    "Kleine piek"
+    },
+
+    "npcs": {
+        "none":           "None",
+        "gulliver":       "Gulliver",
+        "label":          "Label",
+        "saharah":        "Saharah",
+        "wisp":           "Wisp",
+        "mabel":          "Mabel",
+        "cj":             "CJ",
+        "flick":          "Flick",
+        "kicks":          "Kicks",
+        "leif":           "Leif",
+        "redd":           "Redd",
+        "gullivarrr":     "Gullivarrr"
+    },
+
+    "hemisphere":         "Halfrond: %s",
+    "weather_seed":       "Weer seed: %d (%#x)",
+    "weather_url_tip":    "Vul deze seed in op wuffs.org/acnh/weather om het weer &\nmeteorenregens te voorspellen",
+    "hemispheres": {
+        "northern":       "Noordelijk",
+        "southern":       "Zuidelijk"
+    }
+}

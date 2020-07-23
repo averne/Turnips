@@ -4,7 +4,7 @@ endif
 
 TOPDIR           ?=   $(CURDIR)
 
-VERSION           =   1.5.0
+VERSION           =   1.5.2
 COMMIT            =   $(shell git rev-parse --short HEAD)
 
 # -----------------------------------------------
@@ -19,7 +19,7 @@ TARGET            =    $(APP_TITLE).nro
 OUT               =    out
 BUILD             =    build
 SOURCES           =    src
-INCLUDES          =    include
+INCLUDES          =    include lib/json-hpp/include
 CUSTOM_LIBS       =    lib/imgui lib/stb_image
 ROMFS             =    res
 

@@ -17,6 +17,7 @@
 
 #include <cstdio>
 #include <cstring>
+#include <algorithm>
 #include <numeric>
 #include <switch.h>
 #include <imgui.h>
@@ -25,8 +26,11 @@
 #include "imgui_nx/imgui_nx.h"
 
 #include "gui.hpp"
+#include "lang.hpp"
 
 #include "theme.hpp"
+
+using namespace lang::literals;
 
 namespace gui {
 
@@ -64,10 +68,6 @@ dk::ImageDescriptor   *s_imageDescriptors   = nullptr;
 
 dk::UniqueQueue        s_queue;
 dk::UniqueSwapchain    s_swapchain;
-
-constexpr std::array day_names = {
-    "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday",
-};
 
 void rebuildSwapchain(unsigned const width_, unsigned const height_) {
     // destroy old swapchain
@@ -348,11 +348,22 @@ bool create_background(const std::string &path) {
 }
 
 void draw_turnip_tab(const tp::TurnipParser &parser, const TimeCalendarTime &cal_time, const TimeCalendarAdditionalInfo &cal_info) {
-    if (!im::BeginTabItem("Turnips"))
+    if (!im::BeginTabItem("turnips"_lang.c_str()))
         return;
 
     auto prices  = parser.prices;
     auto pattern = parser.get_pattern();
+
+    auto days_json = lang::get_json()["days"];
+    std::array day_names = {
+        lang::get_string("sunday",    days_json),
+        lang::get_string("monday",    days_json),
+        lang::get_string("tuesday",   days_json),
+        lang::get_string("wednesday", days_json),
+        lang::get_string("thursday",  days_json),
+        lang::get_string("friday",    days_json),
+        lang::get_string("saturday",  days_json),
+    };
 
     std::array<float, 14> float_prices;
     for (std::size_t i = 0; i < prices.week_prices.size(); ++i)
@@ -362,12 +373,12 @@ void draw_turnip_tab(const tp::TurnipParser &parser, const TimeCalendarTime &cal
     float average = static_cast<float>(std::accumulate(prices.week_prices.begin() + 2,
         prices.week_prices.end(), 0)) / (prices.week_prices.size() - 2);
 
-    im::Text("Buy price: %d, Pattern: %s\n", prices.buy_price, pattern.c_str());
+    im::Text("price_pattern"_lang.c_str(), prices.buy_price, pattern.c_str());
 
     im::BeginTable("##Prices table", 3, ImGuiTableFlags_RowBg | ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV);
     im::TableNextRow();
-    im::TableNextCell(), im::TextUnformatted("AM");
-    im::TableNextCell(), im::TextUnformatted("PM");
+    im::TableNextCell(), im::TextUnformatted("am"_lang.c_str());
+    im::TableNextCell(), im::TextUnformatted("pm"_lang.c_str());
 
     auto get_color = [&](std::uint32_t day, bool is_am) -> std::uint32_t {
         auto price = prices.week_prices[2 * day + !is_am];
@@ -381,7 +392,7 @@ void draw_turnip_tab(const tp::TurnipParser &parser, const TimeCalendarTime &cal
     };
 
     auto print_day = [&](std::uint32_t day) -> void {
-        im::TableNextRow(); im::TextUnformatted(day_names[day]);
+        im::TableNextRow(); im::TextUnformatted(day_names[day].c_str());
         do_with_color(get_color(day, true),  [&] { im::TableNextCell(), im::Text("%d", prices.week_prices[2 * day]); });
         do_with_color(get_color(day, false), [&] { im::TableNextCell(), im::Text("%d", prices.week_prices[2 * day + 1]); });
     };
@@ -392,21 +403,35 @@ void draw_turnip_tab(const tp::TurnipParser &parser, const TimeCalendarTime &cal
     im::EndTable();
 
     im::Separator();
-    do_with_color(th::text_max_col, [&] { im::Text("Max: %d", max); }); im::SameLine();
-    do_with_color(th::text_min_col, [&] { im::Text("Min: %d", min); }); im::SameLine();
-    im::Text("Avg: %.1f", average);
+    do_with_color(th::text_max_col, [&] { im::Text("turnips_max"_lang.c_str(), max); }); im::SameLine();
+    do_with_color(th::text_min_col, [&] { im::Text("turnips_min"_lang.c_str(), min); }); im::SameLine();
+    im::Text("turnips_average"_lang.c_str(), average);
 
     im::Separator();
-    im::TextUnformatted("Week graph");
+    im::TextUnformatted("week_graph"_lang.c_str());
     im::PlotLines("##Graph", float_prices.data() + 2, float_prices.size() - 2,
         0, "", FLT_MAX, FLT_MAX, {im::GetWindowWidth() - 30.0f, 125.0f});
 
     im::EndTabItem();
 }
 
-void draw_visitor_tab(const tp::VisitorParser &parser, const TimeCalendarAdditionalInfo &cal_info) {
-    if (!im::BeginTabItem("Visitors"))
+void draw_visitor_tab(const tp::VisitorParser &parser, const TimeCalendarTime &cal_time, const TimeCalendarAdditionalInfo &cal_info) {
+    if (!im::BeginTabItem("visitors"_lang.c_str()))
         return;
+
+    // Visitors leave at 5am, so adjust the weekday
+    auto wday = (cal_time.hour >= 5) ? cal_info.wday : std::clamp(cal_info.wday - 1, 0u, 7u);
+
+    auto days_json = lang::get_json()["days"];
+    std::array day_names = {
+        lang::get_string("sunday",    days_json),
+        lang::get_string("monday",    days_json),
+        lang::get_string("tuesday",   days_json),
+        lang::get_string("wednesday", days_json),
+        lang::get_string("thursday",  days_json),
+        lang::get_string("friday",    days_json),
+        lang::get_string("saturday",  days_json),
+    };
 
     auto names = parser.get_visitor_names();
 
@@ -414,17 +439,17 @@ void draw_visitor_tab(const tp::VisitorParser &parser, const TimeCalendarAdditio
     im::BeginTable("##Visitors table", 2, ImGuiTableFlags_RowBg | ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV);
 
     auto get_color = [&](std::uint32_t day) -> std::uint32_t {
-        return (cal_info.wday == day) ? th::text_cur_col : th::text_def_col;
+        return (wday == day) ? th::text_cur_col : th::text_def_col;
     };
 
     auto print_day = [&](std::uint32_t day) -> void {
-        im::TableNextCell(); im::TextUnformatted(day_names[day]);
+        im::TableNextCell(); im::TextUnformatted(day_names[day].c_str());
         do_with_color(get_color(day), [&] {
             im::TableNextCell(), im::Text("%s", names[day].c_str());
             if (day == parser.get_celeste_day())
-                im::SameLine(), im::TextUnformatted("Celeste");
+                im::SameLine(), im::TextUnformatted("celeste"_lang.c_str());
             if (day == parser.get_wisp_day())
-                im::SameLine(), im::TextUnformatted("Wisp");
+                im::SameLine(), im::TextUnformatted("wisp"_lang.c_str());
         });
     };
 
@@ -437,17 +462,34 @@ void draw_visitor_tab(const tp::VisitorParser &parser, const TimeCalendarAdditio
 }
 
 void draw_weather_tab(const tp::WeatherSeedParser &parser) {
-    if (!im::BeginTabItem("Weather"))
+    if (!im::BeginTabItem("weather"_lang.c_str()))
         return;
 
     auto seed = parser.calculate_weather_seed();
 
     im::Dummy(ImVec2(0.0f, 10.0f));
-    im::Text("Hemisphere: %s", parser.get_hemisphere_name().c_str());
-    im::Text("Weather seed: %d (%#x)", seed, seed);
+    im::Text("hemisphere"_lang.c_str(), parser.get_hemisphere_name().c_str());
+    im::Text("weather_seed"_lang.c_str(), seed, seed);
 
     im::Separator();
-    im::TextUnformatted("Enter this seed on wuffs.org/acnh/weather to predict weather &\nmeteor showers");
+    im::TextUnformatted("weather_url_tip"_lang.c_str());
+
+    im::EndTabItem();
+}
+
+void draw_language_tab() {
+    if (!im::BeginTabItem("language"_lang.c_str()))
+        return;
+
+    auto cur_lang = lang::get_current_language(), prev_lang = cur_lang;
+    im::RadioButton("English",    reinterpret_cast<int *>(&cur_lang), static_cast<int>(lang::Language::English));
+    im::RadioButton("中文",       reinterpret_cast<int *>(&cur_lang), static_cast<int>(lang::Language::Chinese));
+    im::RadioButton("Français",   reinterpret_cast<int *>(&cur_lang), static_cast<int>(lang::Language::French));
+    im::RadioButton("Nederlands", reinterpret_cast<int *>(&cur_lang), static_cast<int>(lang::Language::Dutch));
+    im::RadioButton("Italiano",   reinterpret_cast<int *>(&cur_lang), static_cast<int>(lang::Language::Italian));
+
+    if (cur_lang != prev_lang)
+        lang::set_language(cur_lang);
 
     im::EndTabItem();
 }

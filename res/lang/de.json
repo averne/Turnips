@@ -1,0 +1,60 @@
+{
+    "app_name":           "Turnips",
+    "version":            "Version",
+
+    "turnips":            "Rüben",
+    "visitors":           "Besucher",
+    "weather":            "Wetter",
+    "language":           "Sprache",
+
+    "last_save_time":     "Zuletzt gespeichert: %02d-%02d-%04d %02d:%02d:%02d\n",
+    "save_outdated":      "Spielstand veraltet!",
+
+    "days": {
+        "sunday":         "Sonntag",
+        "monday":         "Montag",
+        "tuesday":        "Dienstag",
+        "wednesday":      "Mittwoch",
+        "thursday":       "Donnerstag",
+        "friday":         "Freitag",
+        "saturday":       "Samstag"
+    },
+
+    "am":                 "AM",
+    "pm":                 "PM",
+
+    "price_pattern":      "Kaufpreis: %d, Muster: %s\n",
+    "turnips_max":        "Max: %d",
+    "turnips_min":        "Min: %d",
+    "turnips_average":    "Durchschn: %.1f",
+    "week_graph":         "Wochengraph",
+    "turnips_patterns": {
+        "fluctuating":    "Schwankend",
+        "large_spike":    "Große Spitze",
+        "decreasing":     "Abnehmend",
+        "small_spike":    "Kleine Spitze"
+    },
+
+    "npcs": {
+        "none":           "keiner",
+        "gulliver":       "Gulliver",
+        "label":          "Minna",
+        "saharah":        "Aziza",
+        "wisp":           "Buhu",
+        "mabel":          "Tina",
+        "cj":             "Lomeus",
+        "flick":          "Carlson",
+        "kicks":          "Schubert",
+        "leif":           "Gerd",
+        "redd":           "Reiner",
+        "gullivarrr":     "Gullivarrr"
+    },
+
+    "hemisphere":         "Hemisphäre: %s",
+    "weather_seed":       "Wetter-Seed: %d (%#x)",
+    "weather_url_tip":    "Trage diesen Seed auf wuffs.org/acnh/weather ein, &\num das Wetter und Meteorschauer vorherzusagen",
+    "hemispheres": {
+        "northern":       "Nördliche",
+        "southern":       "Südliche"
+    }
+}

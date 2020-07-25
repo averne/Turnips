@@ -53,7 +53,7 @@
 
     "hemisphere":         "Hemisphäre: %s",
     "weather_seed":       "Wetter-Seed: %d (%#x)",
-    "weather_url_tip":    "Trage diesen Seed auf wuffs.org/acnh/weather ein, &\num das Wetter und Meteorschauer vorherzusagen",
+    "weather_url_tip":    "Trage diesen Seed auf wuffs.org/acnh/weather ein, um das Wetter\nund Meteorschauer vorherzusagen",
     "hemispheres": {
         "northern":       "Nördliche",
         "southern":       "Südliche"

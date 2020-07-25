@@ -447,9 +447,9 @@ void draw_visitor_tab(const tp::VisitorParser &parser, const TimeCalendarTime &c
         do_with_color(get_color(day), [&] {
             im::TableNextCell(), im::Text("%s", names[day].c_str());
             if (day == parser.get_celeste_day())
-                im::SameLine(), im::TextUnformatted("celeste"_lang.c_str());
+                im::SameLine(), im::TextUnformatted(lang::get_string("celeste", lang::get_json()["npcs"]).c_str());
             if (day == parser.get_wisp_day())
-                im::SameLine(), im::TextUnformatted("wisp"_lang.c_str());
+                im::SameLine(), im::TextUnformatted(lang::get_string("wisp",    lang::get_json()["npcs"]).c_str());
         });
     };
 

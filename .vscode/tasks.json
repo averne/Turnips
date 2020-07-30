@@ -24,6 +24,19 @@
             }
         },
         {
+            "label": "dist",
+            "type": "shell",
+            "command": "make",
+            "args": [
+                "dist"
+            ],
+            "presentation": {
+                "panel": "shared",
+                "reveal": "always"
+            },
+            "problemMatcher": []
+        },
+        {
             "label": "clean",
             "type": "shell",
             "command": "make",

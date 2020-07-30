@@ -112,8 +112,8 @@ run: all
 
 dist: $(NX_TARGET)
 	@rm -f $(OUT)/$(TARGET)-*.zip
-	@7z a $(OUT)/$(TARGET)-$(VERSION)-$(COMMIT).zip $(NRO_TARGET) >/dev/null
-	@echo Compressed to $(OUT)/$(TARGET)-$(VERSION)-$(COMMIT).zip
+	@7z a $(OUT)/$(APP_TITLE)-$(VERSION)-$(COMMIT).zip $(NRO_TARGET) >/dev/null
+	@echo Compressed to $(OUT)/$(APP_TITLE)-$(VERSION)-$(COMMIT).zip
 
 libs: $(CUSTOM_LIBS)
 	@:

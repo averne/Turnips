@@ -492,6 +492,9 @@ void draw_language_tab() {
     if (cur_lang != prev_lang)
         lang::set_language(cur_lang);
 
+    im::Separator();
+    im::TextUnformatted("If you'd like to see your language here, make an issue on\nhttps://github.com/averne/Turnips");
+
     im::EndTabItem();
 }
 

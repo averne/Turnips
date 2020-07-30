@@ -74,7 +74,7 @@ int main(int argc, char **argv) {
         printf("Deriving keys...\n");
         auto [key, ctr] = sv::get_keys(header);
         printf("Decrypting save...\n");
-        auto decrypted  = sv::decrypt(main, 0xb00000, key, ctr);
+        auto decrypted  = sv::decrypt(main, 0xc00000, key, ctr);
 
         printf("Parsing save...\n");
         auto version_parser = tp::VersionParser(header);

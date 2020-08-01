@@ -75,12 +75,9 @@ void handleAppletHook(AppletHookType type, void *param) {
 
 void updateTouch(ImGuiIO &io_) {
     // read touch positions
-    static bool had_mouse = false;
-
     auto const touchCount = hidTouchCount();
     if (touchCount < 1) {
         io_.MouseDown[0] = false;
-        had_mouse = false;
         return;
     }
 
@@ -90,8 +87,7 @@ void updateTouch(ImGuiIO &io_) {
 
     // set mouse position to touch point
     s_mousePos = ImVec2(pos.px, pos.py);
-    io_.MouseDown[0] = !had_mouse;
-    had_mouse = true;
+    io_.MouseDown[0] = true;
 }
 
 void updateKeys(ImGuiIO &io_) {

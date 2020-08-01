@@ -131,7 +131,7 @@ int main(int argc, char **argv) {
         if (is_outdated)
             im::SameLine(), gui::do_with_color(th::text_min_col, [] { im::TextUnformatted("save_outdated"_lang.c_str()); });
 
-        im::BeginTabBar("##tab_bar");
+        im::BeginTabBar("##tab_bar", ImGuiTabBarFlags_NoTooltip);
 
         gui::draw_turnip_tab(turnip_parser, cal_time, cal_info);
         gui::draw_visitor_tab(visitor_parser, cal_time, cal_info);

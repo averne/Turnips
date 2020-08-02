@@ -1,1 +1,61 @@
+{
+    "app_name":           "Turnips",
+    "version":            "versión",
 
+    "turnips":            "Nabos",
+    "visitors":           "Visitantes",
+    "weather":            "Clima",
+    "language":           "Idioma",
+
+    "last_save_time":     "Fecha último guardado: %02d-%02d-%04d %02d:%02d:%02d\n",
+    "save_outdated":      "Guardado obsoleto¡¡",
+
+    "days": {
+        "sunday":         "Domingo",
+        "monday":         "Lunes",
+        "tuesday":        "Martes",
+        "wednesday":      "Miércoles",
+        "thursday":       "Jueves",
+        "friday":         "Viernes",
+        "saturday":       "Sábado"
+    },
+
+    "am":                 "AM",
+    "pm":                 "PM",
+
+    "price_pattern":      "Precio de compra: %d, Patrón: %s\n",
+    "turnips_max":        "Max: %d",
+    "turnips_min":        "Min: %d",
+    "turnips_average":    "Med: %.1f",
+    "week_graph":         "Gráfico semanal",
+    "turnips_patterns": {
+        "fluctuating":    "Fluctuante",
+        "large_spike":    "Pico largo",
+        "decreasing":     "Decreciente",
+        "small_spike":    "Pico pequeño"
+    },
+
+    "npcs": {
+        "none":           "Ninguno",
+        "gulliver":       "Gulliver",
+        "label":          "Tili",
+        "saharah":        "Alcatifa",
+        "wisp":           "Buh",
+        "celeste":        "Estela",
+        "mabel":          "Pili",
+        "cj":             "CJ",
+        "flick":          "Kamilo",
+        "kicks":          "Betunio",
+        "leif":           "Gandulio",
+        "redd":           "Ladino",
+        "gullivarrr":     "Gullivarrr"
+    },
+
+    "hemisphere":         "Hemisferio: %s",
+    "weather_seed":       "Semilla de clima: %d (%#x)",
+    "weather_url_tip":    "Introduce esta semilla en wuffs.org/acnh/weather para predecir el clima\ny las lluvias de estrellas",
+    "hemispheres": {
+        "northern":       "Norte",
+        "southern":       "Sur"
+    }
+}

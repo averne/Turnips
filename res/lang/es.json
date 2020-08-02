@@ -8,7 +8,7 @@
     "language":           "Idioma",
 
     "last_save_time":     "Fecha último guardado: %02d-%02d-%04d %02d:%02d:%02d\n",
-    "save_outdated":      "Guardado obsoleto¡¡",
+    "save_outdated":      "Guardado obsoleto¡",
 
     "days": {
         "sunday":         "Domingo",

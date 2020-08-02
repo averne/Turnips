@@ -29,6 +29,7 @@ enum class Language {
     Dutch,
     Italian,
     German,
+    Spanish,
     Default,
 };
 

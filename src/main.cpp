@@ -121,7 +121,7 @@ int main(int argc, char **argv) {
         auto &[width, height] = im::GetIO().DisplaySize;
 
         im::SetNextWindowFocus();
-        im::Begin(std::string("app_name"_lang + ", " + "version"_lang + " " + VERSION + "-" + COMMIT).c_str(), nullptr,
+        im::Begin(std::string("app_name"_lang + ", " + "version"_lang + " " + VERSION + "-" + COMMIT + "###main").c_str(), nullptr,
             ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove);
         im::SetWindowPos({0.23f * width, 0.16f * height});
         im::SetWindowSize({0.55f * width, 0.73f * height});

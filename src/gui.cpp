@@ -348,7 +348,7 @@ bool create_background(const std::string &path) {
 }
 
 void draw_turnip_tab(const tp::TurnipParser &parser, const TimeCalendarTime &cal_time, const TimeCalendarAdditionalInfo &cal_info) {
-    if (!im::BeginTabItem("turnips"_lang.c_str()))
+    if (!im::BeginTabItem(("turnips"_lang + "###turnips").c_str()))
         return;
 
     auto prices  = parser.prices;
@@ -416,7 +416,7 @@ void draw_turnip_tab(const tp::TurnipParser &parser, const TimeCalendarTime &cal
 }
 
 void draw_visitor_tab(const tp::VisitorParser &parser, const TimeCalendarTime &cal_time, const TimeCalendarAdditionalInfo &cal_info) {
-    if (!im::BeginTabItem("visitors"_lang.c_str()))
+    if (!im::BeginTabItem(("visitors"_lang + "###visitors").c_str()))
         return;
 
     // Visitors leave at 5am, so adjust the weekday
@@ -462,7 +462,7 @@ void draw_visitor_tab(const tp::VisitorParser &parser, const TimeCalendarTime &c
 }
 
 void draw_weather_tab(const tp::WeatherSeedParser &parser) {
-    if (!im::BeginTabItem("weather"_lang.c_str()))
+    if (!im::BeginTabItem(("weather"_lang + "###weather").c_str()))
         return;
 
     auto seed = parser.calculate_weather_seed();
@@ -478,7 +478,7 @@ void draw_weather_tab(const tp::WeatherSeedParser &parser) {
 }
 
 void draw_language_tab() {
-    if (!im::BeginTabItem("language"_lang.c_str()))
+    if (!im::BeginTabItem(("language"_lang + "###lang").c_str()))
         return;
 
     auto cur_lang = lang::get_current_language(), prev_lang = cur_lang;

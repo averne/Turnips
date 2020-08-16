@@ -53,7 +53,7 @@
 
     "hemisphere":         "Hemisferio: %s",
     "weather_seed":       "Semilla de clima: %d (%#x)",
-    "weather_url_tip":    "Introduce esta semilla en wuffs.org/acnh/weather para predecir el clima\ny las lluvias de estrellas",
+    "weather_url_tip":    "Introduce esta semilla en wuffs.org/acnh/weather para\npredecir el clima y las lluvias de estrellas",
     "hemispheres": {
         "northern":       "Norte",
         "southern":       "Sur"

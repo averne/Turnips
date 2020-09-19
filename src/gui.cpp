@@ -453,9 +453,9 @@ void draw_visitor_tab(const tp::VisitorParser &parser, const TimeCalendarTime &c
         });
     };
 
-    print_day(0);
     print_day(1); print_day(2); print_day(3);
     print_day(4); print_day(5); print_day(6);
+    print_day(0);
     im::EndTable();
 
     im::EndTabItem();

@@ -4,7 +4,7 @@ endif
 
 TOPDIR           ?=   $(CURDIR)
 
-VERSION           =   1.6.2
+VERSION           =   1.6.3
 COMMIT            =   $(shell git rev-parse --short HEAD)
 
 # -----------------------------------------------

@@ -6,6 +6,7 @@
     "visitors":           "Visitatori",
     "weather":            "Meteo",
     "language":           "Lingua",
+    "update":             "ITUpdate",
 
     "last_save_time":     "Ultimo salvataggio: %02d-%02d-%04d %02d:%02d:%02d\n",
     "save_outdated":      "Salvataggio troppo vecchio!",

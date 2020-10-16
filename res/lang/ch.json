@@ -6,6 +6,7 @@
     "visitors":           "来访者",
     "weather":            "天气",
     "language":           "语言",
+    "update":             "CHUpdate",
 
     "last_save_time":     "上次游玩时间: %02d-%02d-%04d %02d:%02d:%02d\n",
     "save_outdated":      "存档已过期!",

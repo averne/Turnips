@@ -499,4 +499,13 @@ void draw_language_tab() {
     im::EndTabItem();
 }
 
+void draw_update_tab() {
+    if (!im::BeginTabItem(("update"_lang + "###update").c_str()))
+        return;
+
+    im::TextUnformatted("TEST");
+
+    im::EndTabItem();
+}
+
 } // namespace gui

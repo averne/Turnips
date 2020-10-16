@@ -6,6 +6,7 @@
     "visitors":           "Visiteurs",
     "weather":            "Météo",
     "language":           "Language",
+    "update":             "FRUpdate",
 
     "last_save_time":     "Dernière sauvegarde: %02d-%02d-%04d %02d:%02d:%02d\n",
     "save_outdated":      "Sauvegarde n'est pas à jour!",

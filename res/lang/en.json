@@ -6,6 +6,7 @@
     "visitors":           "Visitors",
     "weather":            "Weather",
     "language":           "Language",
+    "update":             "Update",
 
     "last_save_time":     "Last save time: %02d-%02d-%04d %02d:%02d:%02d\n",
     "save_outdated":      "Save outdated!",

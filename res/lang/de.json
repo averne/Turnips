@@ -6,6 +6,7 @@
     "visitors":           "Besucher",
     "weather":            "Wetter",
     "language":           "Sprache",
+    "update":             "DEUpdate",
 
     "last_save_time":     "Zuletzt gespeichert: %02d-%02d-%04d %02d:%02d:%02d\n",
     "save_outdated":      "Spielstand veraltet!",

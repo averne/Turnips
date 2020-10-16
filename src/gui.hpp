@@ -42,6 +42,7 @@ void draw_turnip_tab(const tp::TurnipParser &parser, const TimeCalendarTime &cal
 void draw_visitor_tab(const tp::VisitorParser &parser, const TimeCalendarTime &cal_time, const TimeCalendarAdditionalInfo &cal_info);
 void draw_weather_tab(const tp::WeatherSeedParser &parser);
 void draw_language_tab();
+void draw_update_tab();
 
 template <typename F>
 void do_with_color(std::uint32_t col, F f) {

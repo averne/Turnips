@@ -6,6 +6,7 @@
     "visitors":           "Bezoekers",
     "weather":            "Weer",
     "language":           "Taal",
+    "update":             "NLUpdate",
 
     "last_save_time":     "Laatst opgeslagen: %02d-%02d-%04d %02d:%02d:%02d\n",
     "save_outdated":      "Opslag verouderd!",

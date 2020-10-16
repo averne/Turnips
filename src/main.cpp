@@ -137,6 +137,7 @@ int main(int argc, char **argv) {
         gui::draw_visitor_tab(visitor_parser, cal_time, cal_info);
         gui::draw_weather_tab(seed_parser);
         gui::draw_language_tab();
+        gui::draw_update_tab();
 
         im::EndTabBar();
 

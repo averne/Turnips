@@ -1,4 +1,4 @@
-{
+﻿{
     "app_name":           "Turnips",
     "version":            "版本号 ",
 
@@ -37,18 +37,18 @@
 
     "npcs": {
         "none":           "毫不",
-        "gulliver":       "Gulliver",
-        "label":          "Label",
-        "saharah":        "Saharah",
-        "wisp":           "Wisp",
-        "celeste":        "Celeste",
-        "mabel":          "Mabel",
-        "cj":             "CJ",
-        "flick":          "Flick",
-        "kicks":          "Kicks",
-        "leif":           "Leif",
-        "redd":           "Redd",
-        "gullivarrr":     "Gullivarrr"
+        "gulliver":       "吕游",
+        "label":          "绵儿",
+        "saharah":        "骆岚",
+        "wisp":           "幽幽",
+        "celeste":        "傅珂",
+        "mabel":          "绢儿",
+        "cj":             "俞司廷",
+        "flick":          "龙克斯",
+        "kicks":          "薛革",
+        "leif":           "然然",
+        "redd":           "狐利",
+        "gullivarrr":     "海盗"
     },
 
     "hemisphere":         "所处半球: %s",

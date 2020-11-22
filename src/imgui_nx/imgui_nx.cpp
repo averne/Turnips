@@ -123,8 +123,7 @@ bool imgui::nx::init() {
     static ImWchar extended_range[] = {0xe000, 0xe152};
     if (R_SUCCEEDED(plGetSharedFontByType(&standard,     PlSharedFontType_Standard)) &&
             R_SUCCEEDED(plGetSharedFontByType(&extended, PlSharedFontType_NintendoExt)) &&
-            R_SUCCEEDED(plGetSharedFontByType(&chinese,  PlSharedFontType_ChineseSimplified)) &&
-            R_SUCCEEDED(plGetSharedFontByType(&korean,   PlSharedFontType_KO))) {
+            R_SUCCEEDED(plGetSharedFontByType(&chinese,  PlSharedFontType_ChineseSimplified))) {
         std::uint8_t *px;
         int w, h, bpp;
         ImFontConfig font_cfg;
@@ -133,8 +132,7 @@ bool imgui::nx::init() {
         io.Fonts->AddFontFromMemoryTTF(standard.address, standard.size, 20.0f, &font_cfg, io.Fonts->GetGlyphRangesDefault());
         font_cfg.MergeMode            = true;
         io.Fonts->AddFontFromMemoryTTF(extended.address, extended.size, 20.0f, &font_cfg, extended_range);
-        io.Fonts->AddFontFromMemoryTTF(chinese.address,  chinese.size,  20.0f, &font_cfg, io.Fonts->GetGlyphRangesChineseSimplifiedCommon());
-        io.Fonts->AddFontFromMemoryTTF(korean.address,   korean.size,   20.0f, &font_cfg, io.Fonts->GetGlyphRangesKorean());
+        io.Fonts->AddFontFromMemoryTTF(chinese.address,  chinese.size,  20.0f, &font_cfg, io.Fonts->GetGlyphRangesChineseFull());
 
         // build font atlas
         io.Fonts->GetTexDataAsAlpha8(&px, &w, &h, &bpp);

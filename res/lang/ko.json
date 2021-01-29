@@ -1,0 +1,61 @@
+﻿{
+    "app_name":           "Turnips",
+    "version":            "버전",
+
+    "turnips":            "순무",
+    "visitors":           "방문객",
+    "weather":            "날씨",
+    "language":           "언어",
+
+    "last_save_time":     "마지막 저장 시간: %02d-%02d-%04d %02d:%02d:%02d\n",
+    "save_outdated":      "오래된 저장 파일!",
+
+    "days": {
+        "sunday":         "일요일",
+        "monday":         "월요일",
+        "tuesday":        "화요일",
+        "wednesday":      "수요일",
+        "thursday":       "목요일",
+        "friday":         "금요일",
+        "saturday":       "토요일"
+    },
+
+    "am":                 "오전",
+    "pm":                 "오후",
+
+    "price_pattern":      "구매 가격: %d, 가격 시세: %s\n",
+    "turnips_max":        "최대: %d",
+    "turnips_min":        "최소: %d",
+    "turnips_average":    "평균: %.1f",
+    "week_graph":         "금주의 차트",
+    "turnips_patterns": {
+        "fluctuating":    "변동",
+        "large_spike":    "큰 반동",
+        "decreasing":     "감소",
+        "small_spike":    "작은 반동"
+    },
+
+    "npcs": {
+        "none":           "없음",
+        "gulliver":       "죠니",
+        "label":          "고숙이",
+        "saharah":        "사하라",
+        "wisp":           "깨빈",
+        "celeste":        "부옥",
+        "mabel":          "고순이",
+        "cj":             "저스틴",
+        "flick":          "레온",
+        "kicks":          "패트릭",
+        "leif":           "늘봉",
+        "redd":           "여욱",
+        "gullivarrr":     "해적 죠니"
+    },
+
+    "hemisphere":         "반구: %s",
+    "weather_seed":       "날씨 씨앗: %d (%#x)",
+    "weather_url_tip":    "팁: wuffs.org/acnh/weather 사이트에서 씨앗을 입력하여 날씨 및 유성우를\n확인하세요.",
+    "hemispheres": {
+        "northern":       "북반구",
+        "southern":       "남반구"
+    }
+}

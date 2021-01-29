@@ -218,15 +218,7 @@ bool loop() {
     if (!appletMainLoop())
         return false;
 
-    hidScanInput();
-
-    auto const keysDown = hidKeysDown(CONTROLLER_P1_AUTO);
-
-    // check if the user wants to exit
-    if (keysDown & KEY_PLUS)
-        return false;
-
-    imgui::nx::newFrame();
+    auto down = imgui::nx::newFrame();
     ImGui::NewFrame();
 
     // Add background image
@@ -235,7 +227,7 @@ bool loop() {
         ImVec2(0, 0),
         ImGui::GetIO().DisplaySize);
 
-    return true;
+    return !(down & HidNpadButton_Plus);
 }
 
 void render() {

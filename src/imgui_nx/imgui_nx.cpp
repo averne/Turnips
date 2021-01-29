@@ -49,6 +49,8 @@ ImVec2 s_mousePos = ImVec2(0.0f, 0.0f);
 
 AppletHookCookie s_appletHookCookie;
 
+PadState s_pad;
+
 void handleAppletHook(AppletHookType type, void *param) {
     if (type != AppletHookType_OnOperationMode)
         return;
@@ -56,15 +58,13 @@ void handleAppletHook(AppletHookType type, void *param) {
     switch (appletGetOperationMode()) {
         default:
         case AppletOperationMode_Handheld:
-            printf("Switching to 720p mode\n");
             // use handheld mode resolution (720p) and scale
             s_width  = 1280.0f, s_height = 720.0f;
             ImGui::GetStyle().ScaleAllSizes(1.9f / 2.6f);
             ImGui::GetIO().FontGlobalScale = 0.9f;
             break;
 
-        case AppletOperationMode_Docked:
-            printf("Switching to 1080p mode\n");
+        case AppletOperationMode_Console:
             // use docked mode resolution (1080p) and scale
             s_width  = 1920.0f, s_height = 1080.0f;
             ImGui::GetStyle().ScaleAllSizes(2.6f / 1.9f);
@@ -75,38 +75,36 @@ void handleAppletHook(AppletHookType type, void *param) {
 
 void updateTouch(ImGuiIO &io_) {
     // read touch positions
-    auto const touchCount = hidTouchCount();
-    if (touchCount < 1) {
+    HidTouchScreenState state = {0};
+    auto count = hidGetTouchScreenStates(&state, 1);
+    if (count < 1 || state.count < 1) {
         io_.MouseDown[0] = false;
         return;
     }
 
-    // use first touch position
-    touchPosition pos;
-    hidTouchRead(&pos, 0);
-
     // set mouse position to touch point
-    s_mousePos = ImVec2(pos.px, pos.py);
+    s_mousePos = ImVec2(state.touches[0].x, state.touches[0].y);
     io_.MouseDown[0] = true;
 }
 
 void updateKeys(ImGuiIO &io_) {
     constexpr std::array mapping = {
-        std::pair(ImGuiNavInput_Activate,  KEY_A),
-        std::pair(ImGuiNavInput_Cancel,    KEY_B),
-        std::pair(ImGuiNavInput_Input,     KEY_X),
-        std::pair(ImGuiNavInput_Menu,      KEY_Y),
-        std::pair(ImGuiNavInput_FocusPrev, KEY_L),
-        std::pair(ImGuiNavInput_TweakSlow, KEY_L),
-        std::pair(ImGuiNavInput_FocusNext, KEY_R),
-        std::pair(ImGuiNavInput_TweakFast, KEY_R),
-        std::pair(ImGuiNavInput_DpadUp,    KEY_DUP),
-        std::pair(ImGuiNavInput_DpadRight, KEY_DRIGHT),
-        std::pair(ImGuiNavInput_DpadDown,  KEY_DDOWN),
-        std::pair(ImGuiNavInput_DpadLeft,  KEY_DLEFT),
+        std::pair(ImGuiNavInput_Activate,  HidNpadButton_A),
+        std::pair(ImGuiNavInput_Cancel,    HidNpadButton_B),
+        std::pair(ImGuiNavInput_Input,     HidNpadButton_X),
+        std::pair(ImGuiNavInput_Menu,      HidNpadButton_Y),
+        std::pair(ImGuiNavInput_FocusPrev, HidNpadButton_L),
+        std::pair(ImGuiNavInput_TweakSlow, HidNpadButton_L),
+        std::pair(ImGuiNavInput_FocusNext, HidNpadButton_R),
+        std::pair(ImGuiNavInput_TweakFast, HidNpadButton_R),
+        std::pair(ImGuiNavInput_DpadUp,    HidNpadButton_Up),
+        std::pair(ImGuiNavInput_DpadRight, HidNpadButton_Right),
+        std::pair(ImGuiNavInput_DpadDown,  HidNpadButton_Down),
+        std::pair(ImGuiNavInput_DpadLeft,  HidNpadButton_Left),
     };
 
-    auto down = hidKeysDown(CONTROLLER_P1_AUTO);
+    padUpdate(&s_pad);
+    auto down = padGetButtonsDown(&s_pad);
 
     for (auto [im, nx]: mapping)
         if (down & nx)
@@ -116,6 +114,9 @@ void updateKeys(ImGuiIO &io_) {
 } // namespace
 
 bool imgui::nx::init() {
+    padConfigureInput(1, HidNpadStyleSet_NpadStandard);
+    padInitializeDefault(&s_pad);
+
     auto &io = ImGui::GetIO();
 
     // Load nintendo font
@@ -172,7 +173,7 @@ bool imgui::nx::init() {
     return true;
 }
 
-void imgui::nx::newFrame() {
+std::uint64_t imgui::nx::newFrame() {
     auto &io = ImGui::GetIO();
 
     // setup display metrics
@@ -195,6 +196,8 @@ void imgui::nx::newFrame() {
     s_mousePos.x = std::clamp(s_mousePos.x, 0.0f, s_width);
     s_mousePos.y = std::clamp(s_mousePos.y, 0.0f, s_height);
     io.MousePos  = s_mousePos;
+
+    return padGetButtonsDown(&s_pad);
 }
 
 void imgui::nx::exit() {

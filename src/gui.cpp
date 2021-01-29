@@ -368,9 +368,10 @@ void draw_turnip_tab(const tp::TurnipParser &parser, const TimeCalendarTime &cal
     im::Text("price_pattern"_lang.c_str(), prices.buy_price, pattern.c_str());
 
     im::BeginTable("##Prices table", 3, ImGuiTableFlags_RowBg | ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV);
-    im::TableNextRow();
-    im::TableNextCell(), im::TextUnformatted("am"_lang.c_str());
-    im::TableNextCell(), im::TextUnformatted("pm"_lang.c_str());
+    im::TableSetupColumn("");
+    im::TableSetupColumn("am"_lang.c_str());
+    im::TableSetupColumn("pm"_lang.c_str());
+    ImGui::TableHeadersRow();
 
     auto get_color = [&](std::uint32_t day, bool is_am) -> std::uint32_t {
         auto price = prices.week_prices[2 * day + !is_am];
@@ -384,9 +385,9 @@ void draw_turnip_tab(const tp::TurnipParser &parser, const TimeCalendarTime &cal
     };
 
     auto print_day = [&](std::uint32_t day) -> void {
-        im::TableNextRow(); im::TextUnformatted(day_names[day].c_str());
-        do_with_color(get_color(day, true),  [&] { im::TableNextCell(), im::Text("%d", prices.week_prices[2 * day]); });
-        do_with_color(get_color(day, false), [&] { im::TableNextCell(), im::Text("%d", prices.week_prices[2 * day + 1]); });
+        im::TableNextRow(), im::TableNextColumn(), im::TextUnformatted(day_names[day].c_str());
+        do_with_color(get_color(day, true),  [&] { im::TableNextColumn(), im::Text("%d", prices.week_prices[2 * day]); });
+        do_with_color(get_color(day, false), [&] { im::TableNextColumn(), im::Text("%d", prices.week_prices[2 * day + 1]); });
     };
 
     print_day(0);
@@ -435,9 +436,9 @@ void draw_visitor_tab(const tp::VisitorParser &parser, const TimeCalendarTime &c
     };
 
     auto print_day = [&](std::uint32_t day) -> void {
-        im::TableNextCell(); im::TextUnformatted(day_names[day].c_str());
+        im::TableNextColumn(); im::TextUnformatted(day_names[day].c_str());
         do_with_color(get_color(day), [&] {
-            im::TableNextCell(), im::Text("%s", names[day].c_str());
+            im::TableNextColumn(), im::Text("%s", names[day].c_str());
             if (day == parser.get_celeste_day())
                 im::SameLine(), im::TextUnformatted(lang::get_string("celeste", lang::get_json()["npcs"]).c_str());
             if (day == parser.get_wisp_day())

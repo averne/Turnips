@@ -37,6 +37,7 @@ enum class Version: std::size_t {
     V140, V141, V142,
     V150, V151,
     V160,
+    V170,
     Unknown,
     Total = Unknown,
 };
@@ -119,6 +120,7 @@ class VersionParser {
             VersionInfo{ 0x60001, 0x6000c, 2, 0, 2, 13 }, // 1.5.0
             VersionInfo{ 0x60001, 0x6000c, 2, 0, 2, 14 }, // 1.5.1
             VersionInfo{ 0x70001, 0x70006, 2, 0, 2, 15 }, // 1.6.0
+            VersionInfo{ 0x74001, 0x74005, 2, 0, 2, 16 }, // 1.7.0
         };
 
         static_assert(versions.size() == static_cast<std::size_t>(Version::Total));
@@ -158,6 +160,7 @@ class TurnipParser {
             0x412060ul, 0x412060ul, 0x412060ul,                         // 1.4.x
             0x41d4a0ul, 0x41d4a0ul,                                     // 1.5.x
             0x41d570ul,                                                 // 1.6.0
+            0x41b63cul,                                                 // 1.7.0
         };
 
         constexpr static std::array turnip_patterns = {
@@ -204,6 +207,7 @@ class VisitorParser {
             0x4159d8ul, 0x4159d8ul, 0x4159d8ul,                         // 1.4.x
             0x420e18ul, 0x420e18ul,                                     // 1.5.x
             0x420ee8ul,                                                 // 1.6.0
+            0x41f0b4ul,                                                 // 1.7.0
         };
 
         constexpr static std::array visitor_names = {
@@ -272,6 +276,7 @@ class DateParser {
             0xb054a8ul, 0xb054a8ul, 0xb054a8ul,                         // 1.4.x
             0xb20468ul, 0xb20468ul,                                     // 1.5.x
             0xb25038ul,                                                 // 1.6.0
+            0x849388ul,                                                 // 1.7.0
         };
 
         static_assert(date_offsets.size() == static_cast<std::size_t>(Version::Total));
@@ -313,6 +318,7 @@ class WeatherSeedParser {
             0x1d70d4ul, 0x1d70d4ul, 0x1d70d4ul,                         // 1.4.x
             0x1e24d4ul, 0x1e24d4ul,                                     // 1.5.x
             0x1e24d4ul,                                                 // 1.6.0
+            0x1e24d4ul,                                                 // 1.7.0
         };
 
         constexpr static std::uint32_t weather_seed_max = 2147483647;

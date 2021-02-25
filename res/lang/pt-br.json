@@ -1,0 +1,61 @@
+{
+    "app_name":           "Turnips",
+    "version":            "versão",
+
+    "turnips":            "Nabos",
+    "visitors":           "Visitantes",
+    "weather":            "Clima",
+    "language":           "Linguagem",
+
+    "last_save_time":     "Horário do último save: %02d-%02d-%04d %02d:%02d:%02d\n",
+    "save_outdated":      "Arquivo save obsoleto!",
+
+    "days": {
+        "sunday":         "Domingo",
+        "monday":         "Segunda-Feira",
+        "tuesday":        "Terça-Feira",
+        "wednesday":      "Quarta-Feira",
+        "thursday":       "Quinta-Feira",
+        "friday":         "Sexta-Feira",
+        "saturday":       "Sábado"
+    },
+
+    "am":                 "AM",
+    "pm":                 "PM",
+
+    "price_pattern":      "Preço de compra: %d, Padrão: %s\n",
+    "turnips_max":        "Max: %d",
+    "turnips_min":        "Min: %d",
+    "turnips_average":    "Méd: %.1f",
+    "week_graph":         "Gráfico semanal",
+    "turnips_patterns": {
+        "fluctuating":    "Flutuação",
+        "large_spike":    "Maior pico",
+        "decreasing":     "Diminuição",
+        "small_spike":    "Menor pico"
+    },
+
+    "npcs": {
+        "none":           "Ninguém",
+        "gulliver":       "Gulliver",
+        "label":          "Label",
+        "saharah":        "Saharah",
+        "wisp":           "Wisp",
+        "celeste":        "Celeste",
+        "mabel":          "Mabel",
+        "cj":             "CJ",
+        "flick":          "Flick",
+        "kicks":          "Kicks",
+        "leif":           "Leif",
+        "redd":           "Redd",
+        "gullivarrr":     "Gullivarrr"
+    },
+
+    "hemisphere":         "Hemisfério: %s",
+    "weather_seed":       "Geração climática: %d (%#x)",
+    "weather_url_tip":    "Digite esse código em wuffs.org/acnh/weather para prever o clima &\nchuva de meteoros",
+    "hemispheres": {
+        "northern":       "Norte",
+        "southern":       "Sul"
+    }
+}

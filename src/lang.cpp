@@ -65,6 +65,9 @@ Result set_language(Language lang) {
         case Language::Korean:
             path = "romfs:/lang/ko.json";
             break;
+        case Language::Portuguese:
+            path = "romfs:/lang/pt-br.json";
+            break;
         case Language::English:
         case Language::Default:
         default:
@@ -128,6 +131,9 @@ Result initialize_to_system_language() {
             return set_language(Language::Spanish);
         case SetLanguage_KO:
             return set_language(Language::Korean);
+        case SetLanguage_PT:
+        case SetLanguage_PTBR:
+            return set_language(Language::Portuguese);
         default:
             return set_language(Language::Default);
     }

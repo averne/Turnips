@@ -6,7 +6,7 @@
                 "${workspaceFolder}/**",
 
                 "${workspaceFolder}/lib/imgui/include",
-                "${workspaceFolder}/lib/stb_image/include",
+                "${workspaceFolder}/lib/nvjpg/oss-nvjpg/include",
                 "${workspaceFolder}/lib/json-hpp/include",
 
                 "~/Bureau/Switch/libnx/nx/source",

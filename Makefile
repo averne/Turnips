@@ -19,18 +19,18 @@ TARGET            =    $(APP_TITLE).nro
 OUT               =    out
 BUILD             =    build
 SOURCES           =    src
-INCLUDES          =    include lib/json-hpp/include
-CUSTOM_LIBS       =    lib/imgui lib/stb_image
+INCLUDES          =    include lib/json-hpp/include lib/nvjpg/oss-nvjpg/include
+CUSTOM_LIBS       =    lib/imgui lib/nvjpg
 ROMFS             =    res
 
 DEFINES           =    __SWITCH__ VERSION=\"$(VERSION)\" COMMIT=\"$(COMMIT)\"
 ARCH              =    -march=armv8-a+crc+crypto+simd -mtune=cortex-a57 -mtp=soft -fpie
 FLAGS             =    -Wall -pipe -g -O2 -ffunction-sections -fdata-sections
 CFLAGS            =    -std=gnu11
-CXXFLAGS          =    -std=gnu++17 -fno-rtti -fno-exceptions
+CXXFLAGS          =    -std=gnu++20 -fno-rtti -fno-exceptions
 ASFLAGS           =
 LDFLAGS           =    -Wl,-pie -specs=$(DEVKITPRO)/libnx/switch.specs -g
-LINKS             =    -limgui -lstbi -ldeko3d -lnx
+LINKS             =    -limgui -lnvjpg -ldeko3d -lnx
 
 PREFIX            =    $(DEVKITPRO)/devkitA64/bin/aarch64-none-elf-
 CC                =    $(PREFIX)gcc

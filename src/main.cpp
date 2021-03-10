@@ -21,6 +21,7 @@
 #include <switch.h>
 #include <math.h>
 #include <imgui.h>
+#include <nvjpg.hpp>
 
 #include "fs.hpp"
 #include "gui.hpp"
@@ -43,12 +44,15 @@ extern "C" void userAppInit() {
     socketInitializeDefault();
     nxlinkStdio();
 #endif
+    if (auto rc = nj::initialize(); R_FAILED(rc))
+        printf("Failed to initialize library: %#x\n", rc);
 }
 
 extern "C" void userAppExit() {
     setsysExit();
     plExit();
     romfsExit();
+    nj::finalize();
 #ifdef DEBUG
     socketExit();
 #endif

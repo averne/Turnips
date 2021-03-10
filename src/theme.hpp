@@ -40,7 +40,7 @@ static inline void apply_theme(Theme theme) {
     std::string background_path;
 
     if (theme == Theme::Light) {
-        background_path = "romfs:/background_light.png";
+        background_path = "romfs:/background_light.jpg";
 
         colors[ImGuiCol_WindowBg]      = ImVec4(1.00f, 0.98f, 0.89f, 0.90f);
         colors[ImGuiCol_PopupBg]       = ImVec4(0.95f, 0.93f, 0.84f, 0.90f);
@@ -56,7 +56,7 @@ static inline void apply_theme(Theme theme) {
         text_min_col = 0xff7573ff;
         text_max_col = 0xff52b949;
     } else {
-        background_path = "romfs:/background_dark.png";
+        background_path = "romfs:/background_dark.jpg";
 
         colors[ImGuiCol_WindowBg]      = ImVec4(0.30f, 0.32f, 0.33f, 0.90f);
         colors[ImGuiCol_TitleBgActive] = ImVec4(0.15f, 0.16f, 0.16f, 1.00f);

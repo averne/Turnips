@@ -47,8 +47,6 @@ struct VersionInfo {
     std::uint32_t major = 0, minor = 0;
     std::uint16_t unk_1 = 0, header_rev = 0, unk_2 = 0, save_rev = 0;
 
-    constexpr inline VersionInfo() = default;
-
     constexpr inline bool operator ==(const VersionInfo &other) const {
         return (this->major == other.major) && (this->minor      == other.minor)
             && (this->unk_1 == other.unk_1) && (this->header_rev == other.header_rev)

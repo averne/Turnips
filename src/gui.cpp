@@ -21,7 +21,7 @@
 #include <numeric>
 #include <switch.h>
 #include <imgui.h>
-#include <stb_image.h>
+#include <nvjpg.hpp>
 #include "imgui_nx/imgui_deko3d.h"
 #include "imgui_nx/imgui_nx.h"
 
@@ -277,64 +277,41 @@ void exit() {
 }
 
 bool create_background(const std::string &path) {
-    int w, h, nchan;
-    auto *data = stbi_load(path.c_str(), &w, &h, &nchan, 4);
-    if (!data) {
-        printf("Failed to load background image: %s\n", stbi_failure_reason());
+    nj::Decoder decoder;
+    if (auto rc = decoder.initialize(); rc) {
+        printf("Failed to initialize decoder: %#x\n", rc);
+        return false;
+    }
+    NJ_SCOPEGUARD([&decoder] { decoder.finalize(); });
+
+    nj::Image background(path);
+    if (!background.is_valid() || background.parse()) {
+        printf("Invalid file");
         return false;
     }
 
-    auto imageSize = w * h * nchan;
+    nj::Surface background_surf(background.width, background.height, nj::PixelFormat::RGBA);
+    if (R_FAILED(background_surf.allocate())) {
+        printf("Failed to allocate surface\n");
+        return false;
+    }
 
-    printf("Decoded png at %s, %dx%d with %d channels: %d (%#x) bytes\n", path.c_str(), w, h, nchan, imageSize, imageSize);
+    if (R_FAILED(decoder.render(background, background_surf, 255)))
+        printf("Failed to render image\n");
+    decoder.wait(background_surf);
 
-    // wait for previous commands to complete
-    s_queue.waitIdle();
-
-    dk::ImageLayout layout;
-    dk::ImageLayoutMaker{s_device}
-        .setFlags(0)
-        .setFormat(DkImageFormat_RGBA8_Unorm)
-        .setDimensions(w, h)
-        .initialize(layout);
-
-    printf("Initialized layout: %#lx aligned to %#x\n", layout.getSize(), layout.getAlignment());
-
-    auto memBlock = dk::MemBlockMaker{s_device, imgui::deko3d::align(imageSize, DK_MEMBLOCK_ALIGNMENT)}
-        .setFlags(DkMemBlockFlags_CpuUncached | DkMemBlockFlags_GpuCached)
-        .create();
-
-    s_imageMemBlock = dk::MemBlockMaker{s_device, imgui::deko3d::align(layout.getSize(), DK_MEMBLOCK_ALIGNMENT)}
-        .setFlags(DkMemBlockFlags_GpuCached | DkMemBlockFlags_Image)
-        .create();
-
-    printf("Created mem blocks of size %#x & %#x\n", memBlock.getSize(), s_imageMemBlock.getSize());
-
-    std::memcpy(memBlock.getCpuAddr(), data, imageSize);
-
+    // upload data to deko3d
     dk::Image image;
-    image.initialize(layout, s_imageMemBlock, 0);
-    s_imageDescriptors[BG_IMAGE_ID].initialize(image);
+    std::tie(s_imageMemBlock, image) = background_surf.to_deko3d(s_device, s_queue, 0, DkImageFormat_RGBA8_Unorm);
 
-    // copy texture to image
-    dk::ImageView imageView(image);
-    s_cmdBuf[0].copyBufferToImage({memBlock.getGpuAddr()},
-        imageView,
-        {0, 0, 0, static_cast<std::uint32_t>(w), static_cast<std::uint32_t>(h), 1});
-    s_queue.submitCommands(s_cmdBuf[0].finishList());
+    // initialize image descriptor
+    s_imageDescriptors[BG_IMAGE_ID].initialize(image);
 
     // initialize sampler descriptor
     s_samplerDescriptors[BG_SAMPLER_ID].initialize(
         dk::Sampler{}
             .setFilter(DkFilter_Linear, DkFilter_Linear)
             .setWrapMode(DkWrapMode_ClampToEdge, DkWrapMode_ClampToEdge, DkWrapMode_ClampToEdge));
-
-    // wait for commands to complete before releasing memblocks
-    s_queue.waitIdle();
-
-    stbi_image_free(data);
-
-    printf("Done uploading texture\n");
 
     return true;
 }

@@ -1,3 +1,6 @@
 [submodule "lib/imgui/imgui"]
 	path = lib/imgui/imgui
 	url = https://github.com/ocornut/imgui.git
+[submodule "lib/nvjpg/oss-nvjpg"]
+	path = lib/nvjpg/oss-nvjpg
+	url = https://github.com/averne/oss-nvjpg.git

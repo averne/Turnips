@@ -42,7 +42,7 @@ enum class Version: std::size_t {
     V190,
     V1100,
     V1110, V1111,
-    V200, V201, V202,
+    V200, V201, V202, V203,
     Unknown,
     Total = Unknown,
 };
@@ -132,6 +132,7 @@ class VersionParser {
             VersionInfo{ 0x80009, 0x80085, 2, 0, 2, 22 }, // 2.0.0
             VersionInfo{ 0x80009, 0x80085, 2, 0, 2, 23 }, // 2.0.1
             VersionInfo{ 0x80009, 0x80085, 2, 0, 2, 24 }, // 2.0.2
+            VersionInfo{ 0x80009, 0x80085, 2, 0, 2, 25 }, // 2.0.3
         };
 
         static_assert(versions.size() == static_cast<std::size_t>(Version::Total));
@@ -176,7 +177,7 @@ class TurnipParser {
             0x43ec6cul,                                                 // 1.9.0
             0x43ec7cul,                                                 // 1.10.0
             0x43ec7cul, 0x43ec7cul,                                     // 1.11.x
-            0x45e35cul, 0x45e35cul, 0x45e35cul,                         // 2.0.x
+            0x45e35cul, 0x45e35cul, 0x45e35cul, 0x45e35cul,             // 2.0.x
         };
 
         constexpr static std::array turnip_patterns = {
@@ -228,7 +229,7 @@ class VisitorParser {
             0x4426e4ul,                                                 // 1.9.0
             0x4426f4ul,                                                 // 1.10.0
             0x4426f4ul, 0x4426f4ul,                                     // 1.11.x
-            0x462158ul, 0x462158ul, 0x462158ul,                         // 2.0.x
+            0x462158ul, 0x462158ul, 0x462158ul, 0x462158ul,             // 2.0.x
         };
 
         constexpr static std::array visitor_names = {
@@ -302,7 +303,7 @@ class DateParser {
             0x86ccc0ul,                                                 // 1.9.0
             0x86ccd0ul,                                                 // 1.10.0
             0x86ccd0ul, 0x86ccd0ul,                                     // 1.11.x
-            0x8be540ul, 0x8be540ul, 0x8be540ul,                         // 2.0.x
+            0x8be540ul, 0x8be540ul, 0x8be540ul, 0x8be540ul,             // 2.0.x
         };
 
         static_assert(date_offsets.size() == static_cast<std::size_t>(Version::Total));
@@ -349,7 +350,7 @@ class WeatherSeedParser {
             0x1e24d4ul,                                                 // 1.9.0
             0x1e24e4ul,                                                 // 1.10.0
             0x1e24e4ul, 0x1e24e4ul,                                     // 1.11.x
-            0x1e3714ul, 0x1e3714ul, 0x1e3714ul,                         // 2.0.x
+            0x1e3714ul, 0x1e3714ul, 0x1e3714ul, 0x1e3714ul,             // 2.0.x
         };
 
         constexpr static std::uint32_t weather_seed_max = 2147483647;

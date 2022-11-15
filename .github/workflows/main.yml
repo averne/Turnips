@@ -8,14 +8,6 @@ jobs:
     container: devkitpro/devkita64:latest
 
     steps:
-    - name: Build and install libnx master
-      run: |
-        git clone https://github.com/switchbrew/libnx.git
-        sed -i 's/ lib\/libnxd\.a//g' libnx/nx/Makefile
-        make -C libnx -j$(nproc)
-        sudo -E make -C libnx install
-        rm -rf *
-
     - uses: actions/checkout@v1
       with:
         submodules: recursive

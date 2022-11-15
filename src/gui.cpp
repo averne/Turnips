@@ -302,7 +302,7 @@ bool create_background(const std::string &path) {
 
     // upload data to deko3d
     dk::Image image;
-    std::tie(s_imageMemBlock, image) = background_surf.to_deko3d(s_device, s_queue, 0, DkImageFormat_RGBA8_Unorm);
+    std::tie(s_imageMemBlock, image) = background_surf.to_deko3d(s_device, DkImageFlags_Usage2DEngine);
 
     // initialize image descriptor
     s_imageDescriptors[BG_IMAGE_ID].initialize(image);

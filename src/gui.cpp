@@ -451,25 +451,33 @@ void draw_language_tab() {
     if (!im::BeginTabItem(("language"_lang + "###lang").c_str()))
         return;
 
-    auto cur_lang = lang::get_current_language(), prev_lang = cur_lang;
-    im::RadioButton("English",    reinterpret_cast<int *>(&cur_lang), static_cast<int>(lang::Language::English));
-    im::RadioButton("中文",        reinterpret_cast<int *>(&cur_lang), static_cast<int>(lang::Language::Simplified Chinese));
-    im::RadioButton("Français",   reinterpret_cast<int *>(&cur_lang), static_cast<int>(lang::Language::French));
-    im::RadioButton("Nederlands", reinterpret_cast<int *>(&cur_lang), static_cast<int>(lang::Language::Dutch));
-    im::RadioButton("Italiano",   reinterpret_cast<int *>(&cur_lang), static_cast<int>(lang::Language::Italian));
-    im::RadioButton("Deutsch",    reinterpret_cast<int *>(&cur_lang), static_cast<int>(lang::Language::German));
-    im::RadioButton("Español",    reinterpret_cast<int *>(&cur_lang), static_cast<int>(lang::Language::Spanish));
-    im::RadioButton("Português",  reinterpret_cast<int *>(&cur_lang), static_cast<int>(lang::Language::Portuguese));
-    im::RadioButton("한국어" ,    reinterpret_cast<int *>(&cur_lang), static_cast<int>(lang::Language::Korean));
-    im::RadioButton("日本語",    reinterpret_cast<int *>(&cur_lang), static_cast<int>(lang::Language::Japanese));
-    im::RadioButton("琉球諸語",  reinterpret_cast<int *>(&cur_lang), static_cast<int>(lang::Language::Ryukyuan));
-    im::RadioButton("繁體中文" , reinterpret_cast<int *>(&cur_lang), static_cast<int>(lang::Language::Traditional Chinese));
-    
-    if (cur_lang != prev_lang)
-        lang::set_language(cur_lang);
+    if (im::BeginTable("##langtbl", 2)) {
+        auto cur_lang = lang::get_current_language(), prev_lang = cur_lang;
+
+        im::TableNextColumn();
+        im::RadioButton("English",    reinterpret_cast<int *>(&cur_lang), static_cast<int>(lang::Language::English));
+        im::RadioButton("Nederlands", reinterpret_cast<int *>(&cur_lang), static_cast<int>(lang::Language::Dutch));
+        im::RadioButton("Français",   reinterpret_cast<int *>(&cur_lang), static_cast<int>(lang::Language::French));
+        im::RadioButton("Italiano",   reinterpret_cast<int *>(&cur_lang), static_cast<int>(lang::Language::Italian));
+        im::RadioButton("Deutsch",    reinterpret_cast<int *>(&cur_lang), static_cast<int>(lang::Language::German));
+        im::RadioButton("Español",    reinterpret_cast<int *>(&cur_lang), static_cast<int>(lang::Language::Spanish));
+        im::RadioButton("Português",  reinterpret_cast<int *>(&cur_lang), static_cast<int>(lang::Language::Portuguese));
+
+        im::TableNextColumn();
+        im::RadioButton("简体中文",     reinterpret_cast<int *>(&cur_lang), static_cast<int>(lang::Language::ChineseSimplified));
+        im::RadioButton("繁體中文",     reinterpret_cast<int *>(&cur_lang), static_cast<int>(lang::Language::ChineseTraditional));
+        im::RadioButton("日本語",       reinterpret_cast<int *>(&cur_lang), static_cast<int>(lang::Language::Japanese));
+        im::RadioButton("琉球諸語",     reinterpret_cast<int *>(&cur_lang), static_cast<int>(lang::Language::JapaneseRyukyuan));
+        im::RadioButton("한국어",       reinterpret_cast<int *>(&cur_lang), static_cast<int>(lang::Language::Korean));
+
+        im::EndTable();
+
+        if (cur_lang != prev_lang)
+            lang::set_language(cur_lang);
+    }
 
     im::Separator();
-    im::TextUnformatted("If you'd like to see your language here, make an issue on\nhttps://github.com/averne/Turnips");
+    im::TextUnformatted("If you'd like to see your language here, create an issue on\nhttps://github.com/averne/Turnips");
 
     im::EndTabItem();
 }

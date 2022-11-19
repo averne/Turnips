@@ -1,62 +1,63 @@
 {
     "app_name":           "Turnips",
-    "version":            "version",
+    "version":            "バージョン",
 
-    "turnips":            "Turnips",
-    "visitors":           "Visitors",
-    "weather":            "Weather",
-    "language":           "Language",
+    "turnips":            "カブ",
+    "visitors":           "訪問者",
+    "weather":            "わーちち",
+    "language":           "言語",
 
-    "last_save_time":     "Last save time: %02d-%02d-%04d %02d:%02d:%02d\n",
-    "save_outdated":      "Save outdated!",
+    "last_save_time":     "最終保存時刻: %02d-%02d-%04d %02d:%02d:%02d\n",
+    "save_outdated":      "古さし保存！",
 
     "days": {
-        "sunday":         "Sunday",
-        "monday":         "Monday",
-        "tuesday":        "Tuesday",
-        "wednesday":      "Wednesday",
-        "thursday":       "Thursday",
-        "friday":         "Friday",
-        "saturday":       "Saturday"
+        "sunday":         "日曜日",
+        "monday":         "月曜日",
+        "tuesday":        "火曜日",
+        "wednesday":      "水曜日",
+        "thursday":       "木曜日",
+        "friday":         "金曜日",
+        "saturday":       "土曜日"
     },
 
-    "am":                 "AM",
-    "pm":                 "PM",
+    "am":                 "午前",
+    "pm":                 "午後",
 
-    "price_pattern":      "Buy price: %d, Pattern: %s\n",
-    "turnips_max":        "Max: %d",
-    "turnips_min":        "Min: %d",
-    "turnips_average":    "Avg: %.1f",
-    "week_graph":         "Week graph",
+    "price_pattern":      "購入価格: %d、パターン: %s\n",
+    "turnips_max":        "最大: %d",
+    "turnips_min":        "分: %d",
+    "turnips_average":    "ふぃーちん: %.1f",
+    "week_graph":         "週ぬグラフ",
     "turnips_patterns": {
-        "fluctuating":    "Fluctuating",
-        "large_spike":    "Large spike",
-        "decreasing":     "Decreasing",
-        "small_spike":    "Small spike"
+        "fluctuating":    "変動すん",
+        "large_spike":    "まぎさるスパイク",
+        "decreasing":     "減少",
+        "small_spike":    "くーさるスパイク"
     },
 
     "npcs": {
-        "none":           "None",
-        "gulliver":       "Gulliver",
-        "label":          "Label",
-        "saharah":        "Saharah",
-        "wisp":           "Wisp",
-        "celeste":        "Celeste",
-        "mabel":          "Mabel",
+        "none":           "なし",
+        "gulliver":       "ガリバー",
+        "label":          "ラベル",
+        "saharah":        "サハラ",
+        "wisp":           "ウィスプ",
+        "celeste":        "セレステ",
+        "mabel":          "メイベル",
         "cj":             "CJ",
-        "flick":          "Flick",
-        "kicks":          "Kicks",
-        "leif":           "Leif",
-        "redd":           "Redd",
-        "gullivarrr":     "Gullivarrr"
+        "flick":          "フリック",
+        "kicks":          "キック",
+        "leif":           "レイフ",
+        "redd":           "レッド",
+        "gullivarrr":     "ガリヴァー"
     },
 
-    "hemisphere":         "Hemisphere: %s",
-    "weather_seed":       "Weather seed: %d (%#x)",
-    "weather_url_tip":    "Enter this seed on wuffs.org/acnh/weather to predict weather &\nmeteor showers",
+    "hemisphere":         "半球: %s",
+    "weather_seed":       "ウェザーシード: %d (%#x)",
+    "weather_url_tip":    "くぬシード wuffs.org/acnh/weather んかい入力し、わーちちとぅ\nふしぬやーうちー群予測さびーん",
     "hemispheres": {
-        "northern":       "Northern",
-        "southern":       "Southern"
+        "northern":       "にし",
+        "southern":       "ふぇー"
     }
 }
+
 

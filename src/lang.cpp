@@ -44,8 +44,17 @@ Result set_language(Language lang) {
     const char *path;
     current_language = lang;
     switch (lang) {
-        case Language::Chinese:
-            path = "romfs:/lang/ch.json";
+        case Language::ChineseSimplified:
+            path = "romfs:/lang/zh-cn.json";
+            break;
+        case Language::ChineseTraditional:
+            path = "romfs:/lang/zh-tw.json";
+            break;
+        case Language::Japanese:
+            path = "romfs:/lang/ja.json";
+            break;
+        case Language::JapaneseRyukyuan:
+            path = "romfs:/lang/ja-ryu.json";
             break;
         case Language::French:
             path = "romfs:/lang/fr.json";
@@ -118,7 +127,12 @@ Result initialize_to_system_language() {
             return set_language(Language::English);
         case SetLanguage_ZHCN:
         case SetLanguage_ZHHANS:
-            return set_language(Language::Chinese);
+            return set_language(Language::ChineseSimplified);
+        case SetLanguage_ZHTW:
+        case SetLanguage_ZHHANT:
+            return set_language(Language::ChineseTraditional);
+        case SetLanguage_JA:
+            return set_language(Language::Japanese);
         case SetLanguage_FR:
             return set_language(Language::French);
         case SetLanguage_NL:

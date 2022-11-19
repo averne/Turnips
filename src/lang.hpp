@@ -24,7 +24,10 @@ namespace lang {
 
 enum class Language {
     English,
-    Chinese,
+    ChineseTraditional,
+    ChineseSimplified,
+    Japanese,
+    JapaneseRyukyuan,
     French,
     Dutch,
     Italian,

@@ -1,0 +1,62 @@
+{
+    "app_name":           "Turnips",
+    "version":            "版本",
+
+    "turnips":            "蘿蔔",
+    "visitors":           "訪客",
+    "weather":            "天氣",
+    "language":           "語",
+
+    "last_save_time":     "上次保存時間: %02d-%02d-%04d %02d:%02d:%02d\n",
+    "save_outdated":      "保存過時！",
+
+    "days": {
+        "sunday":         "星期日",
+        "monday":         "星期一",
+        "tuesday":        "星期二",
+        "wednesday":      "星期三",
+        "thursday":       "星期四",
+        "friday":         "星期五",
+        "saturday":       "星期六"
+    },
+
+    "am":                 "是",
+    "pm":                 "下午",
+
+    "price_pattern":      "購買價格：%d，模式：%s\n",
+    "turnips_max":        "最大值：%d",
+    "turnips_min":        "敏： %d",
+    "turnips_average":    "平均：%.1f",
+    "week_graph":         "週圖",
+    "turnips_patterns": {
+        "fluctuating":    "波動的",
+        "large_spike":    "大穗",
+        "decreasing":     "遞減",
+        "small_spike":    "小穗"
+    },
+
+    "npcs": {
+        "none":           "沒有任何",
+        "gulliver":       "格列佛",
+        "label":          "標籤",
+        "saharah":        "撒哈拉",
+        "wisp":           "小精靈",
+        "celeste":        "蔚",
+        "mabel":          "梅布爾",
+        "cj":             "CJ",
+        "flick":          "輕彈",
+        "kicks":          "踢",
+        "leif":           "萊夫",
+        "redd":           "雷德",
+        "gullivarrr":     "古利瓦"
+    },
+
+    "hemisphere":         "半球：%s",
+    "weather_seed":       "天氣種子：%d (%#x)",
+    "weather_url_tip":    "在 wuffs.org/acnh/weather 上輸入此種子以預測天氣和\n流星雨",
+    "hemispheres": {
+        "northern":       "北方",
+        "southern":       "南方"
+    }
+}
+

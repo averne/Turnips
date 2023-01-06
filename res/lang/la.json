@@ -1,0 +1,61 @@
+{
+    "app_name":           "Turnips",
+    "version":            "version",
+
+    "turnips":            "Rapa",
+    "visitors":           "Visitatores",
+    "weather":            "Tempestas",
+    "language":           "Lingua",
+
+    "last_save_time":     "Novissimus servo tempus: %02d-%02d-%04d %02d:%02d:%02d\n",
+    "save_outdated":      "Servo obsoletus!",
+
+    "days": {
+        "sunday":         "Dies Solis",
+        "monday":         "Dies Lunae",
+        "tuesday":        "Dies Martis",
+        "wednesday":      "Dies Mercurii",
+        "thursday":       "Dies Jovis",
+        "friday":         "Dies Veneris",
+        "saturday":       "Dies Saturni"
+    },
+
+    "am":                 "AM",
+    "pm":                 "PM",
+
+    "price_pattern":      "Buy price: %d, Pattern: %s\n",
+    "turnips_max":        "Max: %d",
+    "turnips_min":        "Min: %d",
+    "turnips_average":    "Med: %.1f",
+    "week_graph":         "Hebdomadis indico",
+    "turnips_patterns": {
+        "fluctuating":    "Fluctuatus",
+        "large_spike":    "Magna incremento",
+        "decreasing":     "Decrescentes",
+        "small_spike":    "Parva incrementa"
+    },
+
+    "npcs": {
+        "none":           "Nullus",
+        "gulliver":       "Gulliver",
+        "label":          "Beatrice",
+        "saharah":        "Saharah",
+        "wisp":           "Spirideo",
+        "celeste":        "Celeste",
+        "mabel":          "Agostina",
+        "cj":             "Castorino",
+        "flick":          "Ivano",
+        "kicks":          "Sciuscia",
+        "leif":           "Florindo",
+        "redd":           "Volpolo",
+        "gullivarrr":     "Gullivarrr"
+    },
+
+    "hemisphere":         "Hemisphaerium: %s",
+    "weather_seed":       "Tempestas numerus: %d (%#x)",
+    "weather_url_tip":    "Scribe hunc numerum in wuffs.org/acnh/weather to praedicere \ntempestatem et meteororum",
+    "hemispheres": {
+        "northern":       "Septentriones",
+        "southern":       "Meridiem"
+    }
+}

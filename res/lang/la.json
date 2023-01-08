@@ -1,6 +1,6 @@
 {
     "app_name":           "Turnips",
-    "version":            "version",
+    "version":            "versio",
 
     "turnips":            "Rapa",
     "visitors":           "Visitatores",
@@ -23,7 +23,7 @@
     "am":                 "AM",
     "pm":                 "PM",
 
-    "price_pattern":      "Buy price: %d, Pattern: %s\n",
+    "price_pattern":      "Emptio pretium: %d, Forma: %s\n",
     "turnips_max":        "Max: %d",
     "turnips_min":        "Min: %d",
     "turnips_average":    "Med: %.1f",

@@ -462,6 +462,7 @@ void draw_language_tab() {
         im::RadioButton("Deutsch",    reinterpret_cast<int *>(&cur_lang), static_cast<int>(lang::Language::German));
         im::RadioButton("Español",    reinterpret_cast<int *>(&cur_lang), static_cast<int>(lang::Language::Spanish));
         im::RadioButton("Português",  reinterpret_cast<int *>(&cur_lang), static_cast<int>(lang::Language::Portuguese));
+        im::RadioButton("Latina",     reinterpret_cast<int *>(&cur_lang), static_cast<int>(lang::Language::Latin));
 
         im::TableNextColumn();
         im::RadioButton("简体中文",     reinterpret_cast<int *>(&cur_lang), static_cast<int>(lang::Language::ChineseSimplified));

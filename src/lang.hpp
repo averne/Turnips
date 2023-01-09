@@ -35,6 +35,7 @@ enum class Language {
     Spanish,
     Korean,
     Portuguese,
+    Latin,
     Default,
 };
 

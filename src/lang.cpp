@@ -77,6 +77,9 @@ Result set_language(Language lang) {
         case Language::Portuguese:
             path = "romfs:/lang/pt-br.json";
             break;
+        case Language::Latin:
+            path = "romfs:/lang/la.json";
+            break;
         case Language::English:
         case Language::Default:
         default:

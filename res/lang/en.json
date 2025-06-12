@@ -2,10 +2,10 @@
     "app_name":           "Репы",
     "version":            "Версия",
 
-    "turnips":            "Цены на репы",
-    "visitors":           "Посетители",
+    "turnips":            "Цены",
+    "visitors":           "Гости",
     "weather":            "Погода",
-    "language":           "Выбор языка",
+    "language":           "Язык",
 
     "last_save_time":     "Последнее сохранение: %02d-%02d-%04d %02d:%02d:%02d\n",
     "save_outdated":      "Сохранение устарело!",
@@ -51,9 +51,9 @@
 
     "hemisphere":         "Полушарие: %s",
     "weather_seed":       "Сид погоды: %d (%#x)",
-    "weather_url_tip":    "Введите ваш сид на странице wuffs.org/acnh/weather для просмотра прогноза на дожди и/или меторитные дожди",
+    "weather_url_tip":    "Введите ваш сид на странице wuffs.org/acnh/weather",
     "hemispheres": {
-        "northern":       "Севернее",
-        "southern":       "Южнее"
+        "northern":       "Северное",
+        "southern":       "Южное"
     }
 }

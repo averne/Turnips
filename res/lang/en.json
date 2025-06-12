@@ -24,13 +24,13 @@
     "pm":                 "После 13    "price_pattern":      "Цена: %d, Pattern: %s\n",
     "turnips_max":        "Максимум: %d",
     "turnips_min":        "Минимум: %d",
-    "turnips_average":    "Средняя цена: %.1f",
+    "turnips_average":    "Средняя: %.1f",
     "week_graph":         "Шкала цен",
     "turnips_patterns": {
         "fluctuating":    "Колебание",
         "large_spike":    "Большой всплеск",
         "decreasing":     "Уменьшение",
-        "small_spike":    "маленький вспеск"
+        "small_spike":    "маленький всплеск"
     },
 
     "npcs": {
@@ -41,7 +41,7 @@
         "wisp":           "Уисп",
         "celeste":        "Селеста",
         "mabel":          "Мэйбл",
-        "cj":             "К.Ж",
+        "cj":             "Си - джей",
         "flick":          "Флик",
         "kicks":          "Кикс",
         "leif":           "Лейф",

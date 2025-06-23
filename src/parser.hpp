@@ -42,7 +42,7 @@ enum class Version: std::size_t {
     V190,
     V1100,
     V1110, V1111,
-    V200, V201, V202, V203, V204, V205, V206, V207,
+    V200, V201, V202, V203, V204, V205, V206, V207, V208,
     Unknown,
     Total = Unknown,
 };
@@ -137,6 +137,7 @@ class VersionParser {
             VersionInfo{ 0x80009, 0x80085, 2, 0, 2, 27 }, // 2.0.5
             VersionInfo{ 0x80009, 0x80085, 2, 0, 2, 28 }, // 2.0.6
             VersionInfo{ 0x80009, 0x80085, 2, 0, 2, 29 }, // 2.0.7
+            VersionInfo{ 0x80009, 0x80085, 2, 0, 2, 30 }, // 2.0.8
         };
 
         static_assert(versions.size() == static_cast<std::size_t>(Version::Total));
@@ -169,19 +170,19 @@ class VersionParser {
 class TurnipParser {
     private:
         constexpr static std::array turnip_offsets = {
-            0x4118C0ul,                                                                                     // 1.0.0
-            0x412060ul, 0x412060ul, 0x412060ul, 0x412060ul, 0x412060ul,                                     // 1.1.x
-            0x412060ul, 0x412060ul,                                                                         // 1.2.x
-            0x412060ul, 0x412060ul,                                                                         // 1.3.x
-            0x412060ul, 0x412060ul, 0x412060ul,                                                             // 1.4.x
-            0x41d4a0ul, 0x41d4a0ul,                                                                         // 1.5.x
-            0x41d570ul,                                                                                     // 1.6.0
-            0x41b63cul,                                                                                     // 1.7.0
-            0x41b63cul,                                                                                     // 1.8.0
-            0x43ec6cul,                                                                                     // 1.9.0
-            0x43ec7cul,                                                                                     // 1.10.0
-            0x43ec7cul, 0x43ec7cul,                                                                         // 1.11.x
-            0x45e35cul, 0x45e35cul, 0x45e35cul, 0x45e35cul, 0x45e35cul, 0x45e35cul, 0x45e35cul, 0x45e35cul, // 2.0.x
+            0x4118C0ul,                                                                                                 // 1.0.0
+            0x412060ul, 0x412060ul, 0x412060ul, 0x412060ul, 0x412060ul,                                                 // 1.1.x
+            0x412060ul, 0x412060ul,                                                                                     // 1.2.x
+            0x412060ul, 0x412060ul,                                                                                     // 1.3.x
+            0x412060ul, 0x412060ul, 0x412060ul,                                                                         // 1.4.x
+            0x41d4a0ul, 0x41d4a0ul,                                                                                     // 1.5.x
+            0x41d570ul,                                                                                                 // 1.6.0
+            0x41b63cul,                                                                                                 // 1.7.0
+            0x41b63cul,                                                                                                 // 1.8.0
+            0x43ec6cul,                                                                                                 // 1.9.0
+            0x43ec7cul,                                                                                                 // 1.10.0
+            0x43ec7cul, 0x43ec7cul,                                                                                     // 1.11.x
+            0x45e35cul, 0x45e35cul, 0x45e35cul, 0x45e35cul, 0x45e35cul, 0x45e35cul, 0x45e35cul, 0x45e35cul, 0x45e35cul, // 2.0.x
         };
 
         constexpr static std::array turnip_patterns = {
@@ -221,19 +222,19 @@ class TurnipParser {
 class VisitorParser {
     private:
         constexpr static std::array visitor_offsets = {
-            0x414f8cul,                                                                                     // 1.0.0
-            0x41572cul, 0x41572cul, 0x41572cul, 0x41572cul, 0x41572cul,                                     // 1.1.x
-            0x4159d8ul, 0x4159d8ul,                                                                         // 1.2.x
-            0x4159d8ul, 0x4159d8ul,                                                                         // 1.3.x
-            0x4159d8ul, 0x4159d8ul, 0x4159d8ul,                                                             // 1.4.x
-            0x420e18ul, 0x420e18ul,                                                                         // 1.5.x
-            0x420ee8ul,                                                                                     // 1.6.0
-            0x41f0b4ul,                                                                                     // 1.7.0
-            0x41f0b4ul,                                                                                     // 1.8.0
-            0x4426e4ul,                                                                                     // 1.9.0
-            0x4426f4ul,                                                                                     // 1.10.0
-            0x4426f4ul, 0x4426f4ul,                                                                         // 1.11.x
-            0x462158ul, 0x462158ul, 0x462158ul, 0x462158ul, 0x462158ul, 0x462158ul, 0x462158ul, 0x462158ul, // 2.0.x
+            0x414f8cul,                                                                                                 // 1.0.0
+            0x41572cul, 0x41572cul, 0x41572cul, 0x41572cul, 0x41572cul,                                                 // 1.1.x
+            0x4159d8ul, 0x4159d8ul,                                                                                     // 1.2.x
+            0x4159d8ul, 0x4159d8ul,                                                                                     // 1.3.x
+            0x4159d8ul, 0x4159d8ul, 0x4159d8ul,                                                                         // 1.4.x
+            0x420e18ul, 0x420e18ul,                                                                                     // 1.5.x
+            0x420ee8ul,                                                                                                 // 1.6.0
+            0x41f0b4ul,                                                                                                 // 1.7.0
+            0x41f0b4ul,                                                                                                 // 1.8.0
+            0x4426e4ul,                                                                                                 // 1.9.0
+            0x4426f4ul,                                                                                                 // 1.10.0
+            0x4426f4ul, 0x4426f4ul,                                                                                     // 1.11.x
+            0x462158ul, 0x462158ul, 0x462158ul, 0x462158ul, 0x462158ul, 0x462158ul, 0x462158ul, 0x462158ul, 0x462158ul, // 2.0.x
         };
 
         constexpr static std::array visitor_names = {
@@ -295,19 +296,19 @@ class VisitorParser {
 class DateParser {
     private:
         constexpr static std::array date_offsets = {
-            0xac0928ul,                                                                                     // 1.0.0
-            0xac27c8ul, 0xac27c8ul, 0xac27c8ul, 0xac27c8ul, 0xac27c8ul,                                     // 1.1.x
-            0xace9f8ul, 0xace9f8ul,                                                                         // 1.2.x
-            0xaceaa8ul, 0xaceaa8ul,                                                                         // 1.3.x
-            0xb054a8ul, 0xb054a8ul, 0xb054a8ul,                                                             // 1.4.x
-            0xb20468ul, 0xb20468ul,                                                                         // 1.5.x
-            0xb25038ul,                                                                                     // 1.6.0
-            0x849388ul,                                                                                     // 1.7.0
-            0x849388ul,                                                                                     // 1.8.0
-            0x86ccc0ul,                                                                                     // 1.9.0
-            0x86ccd0ul,                                                                                     // 1.10.0
-            0x86ccd0ul, 0x86ccd0ul,                                                                         // 1.11.x
-            0x8be540ul, 0x8be540ul, 0x8be540ul, 0x8be540ul, 0x8be540ul, 0x8be540ul, 0x8be540ul, 0x8be540ul, // 2.0.x
+            0xac0928ul,                                                                                                 // 1.0.0
+            0xac27c8ul, 0xac27c8ul, 0xac27c8ul, 0xac27c8ul, 0xac27c8ul,                                                 // 1.1.x
+            0xace9f8ul, 0xace9f8ul,                                                                                     // 1.2.x
+            0xaceaa8ul, 0xaceaa8ul,                                                                                     // 1.3.x
+            0xb054a8ul, 0xb054a8ul, 0xb054a8ul,                                                                         // 1.4.x
+            0xb20468ul, 0xb20468ul,                                                                                     // 1.5.x
+            0xb25038ul,                                                                                                 // 1.6.0
+            0x849388ul,                                                                                                 // 1.7.0
+            0x849388ul,                                                                                                 // 1.8.0
+            0x86ccc0ul,                                                                                                 // 1.9.0
+            0x86ccd0ul,                                                                                                 // 1.10.0
+            0x86ccd0ul, 0x86ccd0ul,                                                                                     // 1.11.x
+            0x8be540ul, 0x8be540ul, 0x8be540ul, 0x8be540ul, 0x8be540ul, 0x8be540ul, 0x8be540ul, 0x8be540ul, 0x8be540ul, // 2.0.x
         };
 
         static_assert(date_offsets.size() == static_cast<std::size_t>(Version::Total));
@@ -342,19 +343,19 @@ class DateParser {
 class WeatherSeedParser {
     private:
         constexpr static std::array info_offsets = {
-            0x1d70ccul,                                                                                     // 1.0.0
-            0x1d70d4ul, 0x1d70d4ul, 0x1d70d4ul, 0x1d70d4ul, 0x1d70d4ul,                                     // 1.1.x
-            0x1d70d4ul, 0x1d70d4ul,                                                                         // 1.2.x
-            0x1d70d4ul, 0x1d70d4ul,                                                                         // 1.3.x
-            0x1d70d4ul, 0x1d70d4ul, 0x1d70d4ul,                                                             // 1.4.x
-            0x1e24d4ul, 0x1e24d4ul,                                                                         // 1.5.x
-            0x1e24d4ul,                                                                                     // 1.6.0
-            0x1e24d4ul,                                                                                     // 1.7.0
-            0x1e24d4ul,                                                                                     // 1.8.0
-            0x1e24d4ul,                                                                                     // 1.9.0
-            0x1e24e4ul,                                                                                     // 1.10.0
-            0x1e24e4ul, 0x1e24e4ul,                                                                         // 1.11.x
-            0x1e3714ul, 0x1e3714ul, 0x1e3714ul, 0x1e3714ul, 0x1e3714ul, 0x1e3714ul, 0x1e3714ul, 0x1e3714ul, // 2.0.x
+            0x1d70ccul,                                                                                                 // 1.0.0
+            0x1d70d4ul, 0x1d70d4ul, 0x1d70d4ul, 0x1d70d4ul, 0x1d70d4ul,                                                 // 1.1.x
+            0x1d70d4ul, 0x1d70d4ul,                                                                                     // 1.2.x
+            0x1d70d4ul, 0x1d70d4ul,                                                                                     // 1.3.x
+            0x1d70d4ul, 0x1d70d4ul, 0x1d70d4ul,                                                                         // 1.4.x
+            0x1e24d4ul, 0x1e24d4ul,                                                                                     // 1.5.x
+            0x1e24d4ul,                                                                                                 // 1.6.0
+            0x1e24d4ul,                                                                                                 // 1.7.0
+            0x1e24d4ul,                                                                                                 // 1.8.0
+            0x1e24d4ul,                                                                                                 // 1.9.0
+            0x1e24e4ul,                                                                                                 // 1.10.0
+            0x1e24e4ul, 0x1e24e4ul,                                                                                     // 1.11.x
+            0x1e3714ul, 0x1e3714ul, 0x1e3714ul, 0x1e3714ul, 0x1e3714ul, 0x1e3714ul, 0x1e3714ul, 0x1e3714ul, 0x1e3714ul, // 2.0.x
         };
 
         constexpr static std::uint32_t weather_seed_max = 2147483647;

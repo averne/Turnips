@@ -1,0 +1,61 @@
+{
+    "app_name":           "Turnips",
+    "version":            "wersja",
+
+    "turnips":            "Rzepy",
+    "visitors":           "Goście",
+    "weather":            "Pogoda",
+    "language":           "Język",
+
+    "last_save_time":     "Ostatni zapis: %02d-%02d-%04d %02d:%02d:%02d\n",
+    "save_outdated":      "Zapis nieaktualny!",
+
+    "days": {
+        "sunday":         "Niedziela",
+        "monday":         "Poniedziałek",
+        "tuesday":        "Wtorek",
+        "wednesday":      "Środa",
+        "thursday":       "Czwartek",
+        "friday":         "Piątek",
+        "saturday":       "Sobota"
+    },
+
+    "am":                 "AM",
+    "pm":                 "PM",
+
+    "price_pattern":      "Cena zakupu: %d, Wzór: %s\n",
+    "turnips_max":        "Maks: %d",
+    "turnips_min":        "Min: %d",
+    "turnips_average":    "Średnia: %.1f",
+    "week_graph":         "Wykres tygodnia",
+    "turnips_patterns": {
+        "fluctuating":    "Wahania",
+        "large_spike":    "Duży wzrost",
+        "decreasing":     "Malejący",
+        "small_spike":    "Mały wzrost"
+    },
+
+    "npcs": {
+        "none":           "Brak",
+        "gulliver":       "Gulliver",
+        "label":          "Label",
+        "saharah":        "Saharah",
+        "wisp":           "Wisp",
+        "celeste":        "Celeste",
+        "mabel":          "Mabel",
+        "cj":             "CJ",
+        "flick":          "Flick",
+        "kicks":          "Kicks",
+        "leif":           "Leif",
+        "redd":           "Redd",
+        "gullivarrr":     "Gullivarrr"
+    },
+
+    "hemisphere":         "Półkula: %s",
+    "weather_seed":       "Ziarno pogody: %d (%#x)",
+    "weather_url_tip":    "Wpisz to ziarno na wuffs.org/acnh/weather aby przewidzieć pogodę i spadające gwiazdy",
+    "hemispheres": {
+        "northern":       "Północna",
+        "southern":       "Południowa"
+    }
+}

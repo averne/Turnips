@@ -1,61 +1,59 @@
 {
-    "app_name":           "Turnips",
-    "version":            "version",
+    "app_name":           "Turnips,
+    "version":            "Версия",
 
-    "turnips":            "Turnips",
-    "visitors":           "Visitors",
-    "weather":            "Weather",
-    "language":           "Language",
+    "turnips":            "Цены",
+    "visitors":           "Гости",
+    "weather":            "Погода",
+    "language":           "Язык",
 
-    "last_save_time":     "Last save time: %02d-%02d-%04d %02d:%02d:%02d\n",
-    "save_outdated":      "Save outdated!",
+    "last_save_time":     "Последнее сохранение: %02d-%02d-%04d %02d:%02d:%02d\n",
+    "save_outdated":      "Сохранение устарело!",
 
     "days": {
-        "sunday":         "Sunday",
-        "monday":         "Monday",
-        "tuesday":        "Tuesday",
-        "wednesday":      "Wednesday",
-        "thursday":       "Thursday",
-        "friday":         "Friday",
-        "saturday":       "Saturday"
+        "sunday":         "Воскресенье",
+        "monday":         "Понедельник",
+        "tuesday":        "Вторник",
+        "wednesday":      "Среда",
+        "thursday":       "Четверг",
+        "friday":         "Пятница",
+        "saturday":       "Суббота"
     },
 
-    "am":                 "AM",
-    "pm":                 "PM",
-
-    "price_pattern":      "Buy price: %d, Pattern: %s\n",
-    "turnips_max":        "Max: %d",
-    "turnips_min":        "Min: %d",
-    "turnips_average":    "Avg: %.1f",
-    "week_graph":         "Week graph",
+    "am":                 "До 13",
+    "pm":                 "После 13    "price_pattern":      "Цена: %d, Pattern: %s\n",
+    "turnips_max":        "Максимум: %d",
+    "turnips_min":        "Минимум: %d",
+    "turnips_average":    "Средняя: %.1f",
+    "week_graph":         "Шкала цен",
     "turnips_patterns": {
-        "fluctuating":    "Fluctuating",
-        "large_spike":    "Large spike",
-        "decreasing":     "Decreasing",
-        "small_spike":    "Small spike"
+        "fluctuating":    "Колебание",
+        "large_spike":    "Большой всплеск",
+        "decreasing":     "Уменьшение",
+        "small_spike":    "маленький всплеск"
     },
 
     "npcs": {
-        "none":           "None",
-        "gulliver":       "Gulliver",
-        "label":          "Label",
-        "saharah":        "Saharah",
-        "wisp":           "Wisp",
-        "celeste":        "Celeste",
-        "mabel":          "Mabel",
-        "cj":             "CJ",
-        "flick":          "Flick",
-        "kicks":          "Kicks",
-        "leif":           "Leif",
-        "redd":           "Redd",
-        "gullivarrr":     "Gullivarrr"
+        "none":           "Никого",
+        "gulliver":       "Гулливер",
+        "label":          "Лейбл",
+        "saharah":        "Сахара",
+        "wisp":           "Уисп",
+        "celeste":        "Селеста",
+        "mabel":          "Мэйбл",
+        "cj":             "Си - джей",
+        "flick":          "Флик",
+        "kicks":          "Кикс",
+        "leif":           "Лейф",
+        "redd":           "Ред",
+        "gullivarrr":     "Гуливарр"
     },
 
-    "hemisphere":         "Hemisphere: %s",
-    "weather_seed":       "Weather seed: %d (%#x)",
-    "weather_url_tip":    "Enter this seed on wuffs.org/acnh/weather to predict weather &\nmeteor showers",
+    "hemisphere":         "Полушарие: %s",
+    "weather_seed":       "Сид погоды: %d (%#x)",
+    "weather_url_tip":    "Введите ваш сид на странице wuffs.org/acnh/weather",
     "hemispheres": {
-        "northern":       "Northern",
-        "southern":       "Southern"
+        "northern":       "Северное",
+        "southern":       "Южное"
     }
 }

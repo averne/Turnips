@@ -1,5 +1,5 @@
 {
-    "app_name":           "Turnips,
+    "app_name":           "Turnips",
     "version":            "Версия",
 
     "turnips":            "Цены",
@@ -21,7 +21,8 @@
     },
 
     "am":                 "До 13",
-    "pm":                 "После 13    "price_pattern":      "Цена: %d, Pattern: %s\n",
+    "pm":                 "После 13",
+    "price_pattern":      "Цена: %d, Pattern: %s\n",
     "turnips_max":        "Максимум: %d",
     "turnips_min":        "Минимум: %d",
     "turnips_average":    "Средняя: %.1f",

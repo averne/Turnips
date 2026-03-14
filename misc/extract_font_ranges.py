@@ -14,6 +14,7 @@ LANG_NAMES = [
     "Deutsch",
     "Español",
     "Português",
+    "Русский",
     "简体中文",
     "繁體中文",
     "日本語",

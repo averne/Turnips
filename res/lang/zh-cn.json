@@ -1,8 +1,8 @@
 {
     "app_name":           "Turnips",
-    "version":            "版本号 ",
+    "version":            "版本号",
 
-    "turnips":            "萝卜",
+    "turnips":            "大头菜",
     "visitors":           "来访者",
     "weather":            "天气",
     "language":           "语言",
@@ -23,20 +23,20 @@
     "am":                 "上午",
     "pm":                 "下午",
 
-    "price_pattern":      "买入价格: %d, 价格趋势: %s\n",
-    "turnips_max":        "最大值: %d",
-    "turnips_min":        "最小值: %d",
-    "turnips_average":    "平均值: %.1f",
-    "week_graph":         "本周图表",
+    "price_pattern":      "买入价: %d, 价格趋势: %s\n",
+    "turnips_max":        "最高价: %d",
+    "turnips_min":        "最低价: %d",
+    "turnips_average":    "均价: %.1f",
+    "week_graph":         "本周价格趋势图",
     "turnips_patterns": {
-        "fluctuating":    "上下波动",
-        "large_spike":    "大高峰",
-        "decreasing":     "贬值",
-        "small_spike":    "小高峰"
+        "fluctuating":    "波动型",
+        "large_spike":    "大幅上涨(三期型)",
+        "decreasing":     "递减型",
+        "small_spike":    "小幅上涨(四期型)"
     },
 
     "npcs": {
-        "none":           "毫不",
+        "none":           "无",
         "gulliver":       "吕游",
         "label":          "绵儿",
         "saharah":        "骆岚",

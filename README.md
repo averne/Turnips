@@ -8,40 +8,25 @@ DISLAIMER: This reads data from your save. I am not responsible for any data los
 
 # Compiling (Windows and Linux):
 
-Important: 
-Building needs a working devkitA64 environment, with packages libnx, deko3d and switch-glm installed.
-Windows:
-
-(Type all commands without quotes.)
-
----
+Important:
+Building needs a working devkitA64 environment, with packages `libnx`, `deko3d` and `switch-glm` installed.
 
 Windows:
 
-1.	Download DevkitA64 / DevkitPro ( https://github.com/devkitPro/installer )
-2.	Without overcomplicating it just install everything included and click through the installer.
-3.	Start Msys2 (Just a black command Window) found via Windows start menu search. Alternatively you can start the .bat file (C:\devkitPro\msys2\msys2_shell.bat)
-4.	Type "pacman -S switch-glm" and then press enter.
-5.	Type "Y" to confirm installation/download and press enter.
---- Compile Turnips project into .nro ---
-6. Type in (still in Msys2) "git clone --recursive https://github.com/averne/Turnips.git"
-7. Then type in "cd Turnips" so it switches to the directory the project has been downloaded in.
-8. Type "make".
-9. If everything is working corectly now the project should be compiled and be in "C:\users\username\Turnips\out".
-Done
-
----
+1. Download devkitA64/devkitPro (https://github.com/devkitPro/installer). Without overcomplicating it, just install everything included and click through the installer.
+2. Start msys2 via the start menu search. Alternatively you can start the .bat file (`C:\devkitPro\msys2\msys2_shell.bat`).
+3. Install required libraries: run `pacman -S libnx deko3d switch-glm`, then type "Y" to confirm download/installation.
+4. Still in msys2, run `git clone --recursive https://github.com/averne/Turnips.git`, then type `cd Turnips` to switch to the directory the project has been cloned into.
+6. Type `make` to compile.
+7. The executable should be found in `C:\Users\username\Turnips\out`.
 
 Linux:
 
-In Terminal type:
-1.	sudo (dkp-)pacman -S switch-dev
-2.	$ git clone --recursive https://github.com/averne/Turnips.git
-3.	$ cd Turnips
-4.	$ make -j$(nproc)
-5.	Output will be located in out/.
-
----
+1. `sudo (dkp-)pacman -S switch-dev libnx deko3d switch-glm`
+2. `git clone --recursive https://github.com/averne/Turnips.git`
+3. `cd Turnips`
+4. `make -j$(nproc)`
+5. Output will be located in out/.
 
 # Credits
 - The [NHSE](https://github.com/kwsch/NHSE) project for save decrypting/parsing.

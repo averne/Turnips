@@ -1,0 +1,61 @@
+{
+    "app_name":           "Turnips",
+    "version":            "версия",
+
+    "turnips":            "Turnips",
+    "visitors":           "Посетители",
+    "weather":            "Погода",
+    "language":           "Язык",
+
+    "last_save_time":     "Последнее сохранение: %02d-%02d-%04d %02d:%02d:%02d\n",
+    "save_outdated":      "Сохранить устаревшее!",
+
+    "days": {
+        "sunday":         "Воскресенье",
+        "monday":         "Понедельник",
+        "tuesday":        "Вторник",
+        "wednesday":      "Среда",
+        "thursday":       "Четверг",
+        "friday":         "Пятница",
+        "saturday":       "Суббота"
+    },
+
+    "am":                 "Утро",
+    "pm":                 "Вечер",
+
+    "price_pattern":      "Цена покупки: %d, Pattern: %s\n",
+    "turnips_max":        "Максимум: %d",
+    "turnips_min":        "Минимум: %d",
+    "turnips_average":    "Среднее: %.1f",
+    "week_graph":         "График недели",
+    "turnips_patterns": {
+        "fluctuating":    "Колеблющийся",
+        "large_spike":    "Большой пик",
+        "decreasing":     "Убывающий",
+        "small_spike":    "Малый пик"
+    },
+
+    "npcs": {
+        "none":           "Нет",
+        "gulliver":       "Гулливер",
+        "label":          "Лейбл",
+        "saharah":        "Сахара",
+        "wisp":           "Дух",
+        "celeste":        "Селеста",
+        "mabel":          "Мейбл",
+        "cj":             "С.Дж.",
+        "flick":          "Флик",
+        "kicks":          "Кикс",
+        "leif":           "Лейф",
+        "redd":           "Рэдд",
+        "gullivarrr":     "Гулливарр"
+    },
+
+    "hemisphere":         "Полушарие: %s",
+    "weather_seed":       "Сид погоды: %d (%#x)",
+    "weather_url_tip":    "Введите этот сид на wuffs.org/acnh/weather для прогноза погоды и\nметеорных дождей",
+    "hemispheres": {
+        "northern":       "Северное",
+        "southern":       "Южное"
+    }
+}

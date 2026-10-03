@@ -110,9 +110,9 @@ run: all
 	@echo "Running" $(NRO_TARGET)
 	@nxlink -s $(NRO_TARGET)
 
-dist: $(NX_TARGET)
+dist: $(NRO_TARGET)
 	@rm -f $(OUT)/$(TARGET)-*.zip
-	@7z a $(OUT)/$(APP_TITLE)-$(VERSION)-$(COMMIT).zip $(NRO_TARGET) >/dev/null
+	@cd $(OUT) && 7z a $(APP_TITLE)-$(VERSION)-$(COMMIT).zip $(notdir $(NRO_TARGET)) >/dev/null && cd $(CURDIR)
 	@echo Compressed to $(OUT)/$(APP_TITLE)-$(VERSION)-$(COMMIT).zip
 
 libs: $(CUSTOM_LIBS)
